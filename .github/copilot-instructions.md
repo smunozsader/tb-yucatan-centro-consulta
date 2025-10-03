@@ -73,17 +73,27 @@ Sistema desarrollado por la Representación de la Secretaría de Agricultura y D
 - Config files: `__/firebase/init.js` and `__/firebase/init.json`
 - No database URL configured (likely uses Firestore or external data)
 
-## Data Sources & Management
-Excel databases in `BASES DATOS/`:
-- `base datos APHIS USDA.xlsx` - USDA Agricultural data and agreements
-- `base datos CESO.xlsx` - CESO organization data and agreements
-- `Tabla de acuerdos (CESO TABLA ORIGINAL).xlsx` - Original agreements table
+## Data Sources & Management - THE FOUNDATION 🏗️
 
-### Evidence Management System
+**Critical Asset**: Excel databases in `BASES DATOS/` are the **core data foundation** for the entire application:
+
+- `base datos APHIS USDA.xlsx` - **APHIS-USDA agreements and monitoring data**
+- `base datos CESO.xlsx` - **CESO organization data and agreements** 
+- `Tabla de acuerdos (CESO TABLA ORIGINAL).xlsx` - **Original agreements master table**
+
+### Database-Driven Architecture
+- **Dashboard Generation**: Built from Excel data structure
+- **Agreement Monitoring**: Real-time status tracking from database
+- **Evidence System**: Modal integration tied to database records
+- **Search & Filter**: All functionality based on database schema
+
+### Evidence Management System - THE CENTERPIECE 💎
+- **Core Feature**: Evidence modal is the **heart of the web app**
 - **Supported Formats**: PDF, JPG, PNG, Word documents
 - **Upload Workflow**: Restricted to Administrator/Responsible roles
 - **Viewing Access**: Public via EVIDENCIA column in Dashboard
 - **Download Feature**: Direct access from detail modals
+- **Database Integration**: Evidence records linked to agreement IDs
 - **Version Control**: Evidence tracking with v2.5.0 implementation
 
 ### User Roles & Permissions
