@@ -3,3 +3,11 @@ SECRET/
 serviceAccountKey.json
 node_modules/
 
+
+serviceAccountKey.json.local-backup
+
+repo.git/
+
+repo.git.bfg-report/
+
+.tmp.driveupload/
