@@ -1,0 +1,5 @@
+﻿# ignore sensitive and local files
+SECRET/
+serviceAccountKey.json
+node_modules/
+
