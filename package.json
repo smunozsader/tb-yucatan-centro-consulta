@@ -1,0 +1,74 @@
+{
+  "name": "tb-yucatan-centro-consulta",
+  "version": "2.5.0",
+  "description": "Centro de Consulta de Acuerdos Sanitarios - Gobierno de México (Yucatán)",
+  "private": true,
+  "homepage": "https://tb-yucatan.web.app",
+  "dependencies": {
+    "@react-pdf/renderer": "^3.1.0",
+    "bootstrap": "^5.3.0",
+    "bootstrap-icons": "^1.13.1",
+    "csv-parse": "^6.1.0",
+    "file-saver": "^2.0.5",
+    "firebase": "^10.0.0",
+    "firebase-admin": "^13.5.0",
+    "papaparse": "^5.4.1",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.8.0",
+    "react-datepicker": "^4.21.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.9.3",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "vite": "^4.4.5",
+  "firebase-tools": "^11.23.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "firebase:serve": "firebase serve",
+    "firebase:deploy": "firebase deploy",
+    "emulators:start": "firebase emulators:start --only firestore,auth,storage --import=./emulator_export --export-on-exit",
+    "test:emulator": "node tests/emulator-e2e.js",
+    "deploy:rules": "firebase deploy --only firestore:rules,storage:rules",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy": "firebase deploy --only hosting,firestore:rules,storage:rules"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "government",
+    "mexico",
+    "yucatan",
+    "sanitary-agreements",
+    "ceso",
+    "aphis-usda",
+    "react",
+    "firebase"
+  ],
+  "author": "Secretar\u00eda de Agricultura y Desarrollo Rural - Yucat\u00e1n",
+  "license": "UNLICENSED"
+}

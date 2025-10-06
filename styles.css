@@ -1,0 +1,71 @@
+/*
+	Project-wide styles and utility classes for gob.mx v3 compliance.
+	This file centralizes the government color palette and button utilities
+	so pages avoid inline styles and follow the official design tokens.
+
+	Note: keep this file small and use the framework's main.css for base styles.
+*/
+
+:root{
+	--color-gobierno-principal: #611232;
+	--color-gobierno-secundario: #9d2449;
+	--color-gobierno-dorado: #a57f2c;
+	--color-gobierno-dorado-claro: #DDC9A3;
+	--color-gobierno-gris: #98989A;
+	--color-gobierno-verde: #13322e;
+	--color-texto-principal: #545454;
+}
+
+/* Gov button utilities - follow gob.mx palette and accessible contrast */
+.btn-gobierno-principal{
+	background-color: var(--color-gobierno-principal) !important;
+	border-color: var(--color-gobierno-principal) !important;
+	color: #ffffff !important;
+}
+.btn-gobierno-principal:hover, .btn-gobierno-principal:focus{
+	background-color: #4e0f28 !important;
+	border-color: #4e0f28 !important;
+	box-shadow: 0 6px 18px rgba(97,18,50,0.18);
+}
+
+.btn-gobierno-secundario{
+	background-color: var(--color-gobierno-secundario) !important;
+	border-color: var(--color-gobierno-secundario) !important;
+	color: #ffffff !important;
+}
+.btn-gobierno-dorado{
+	background-color: var(--color-gobierno-dorado) !important;
+	border-color: var(--color-gobierno-dorado) !important;
+	color: #ffffff !important;
+}
+.btn-gobierno-dorado:hover, .btn-gobierno-dorado:focus{
+	background-color: #8f6a23 !important;
+	border-color: #8f6a23 !important;
+}
+
+.btn-gobierno-verde{
+	background-color: var(--color-gobierno-verde) !important;
+	border-color: var(--color-gobierno-verde) !important;
+	color: #ffffff !important;
+}
+.btn-gobierno-verde:hover, .btn-gobierno-verde:focus{
+	background-color: #0f2622 !important;
+	border-color: #0f2622 !important;
+}
+
+/* Outline variant */
+.btn-gobierno-outline{
+	background: transparent !important;
+	color: var(--color-gobierno-principal) !important;
+	border: 2px solid var(--color-gobierno-principal) !important;
+}
+.btn-gobierno-outline:hover{ background-color: rgba(97,18,50,0.06); }
+
+/* Form focus states as suggested in gob.mx guidelines */
+.form-control:focus{
+	box-shadow: 0 0 0 0.2rem rgba(97,18,50,0.12) !important;
+	border-color: var(--color-gobierno-principal) !important;
+}
+
+/* Small accessibility helpers */
+.sr-only{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }

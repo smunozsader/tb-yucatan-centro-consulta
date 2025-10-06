@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Centro de Consulta de Acuerdos Sanitarios - Gobierno de México (Yucatán)</title>
+
+  <!-- Favicon oficial -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
+  
+  <!-- Framework gob.mx v3 oficial -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
+  
+  <!-- Fuentes oficiales (incluidas en framework) -->
+  <!-- Firebase SDKs intentionally omitted on the landing to keep the page minimal. -->
+  <style>
+    /* Colores oficiales según gob.mx */
+    :root {
+      --color-gobierno-principal: #611232;
+      --color-gobierno-secundario: #9d2449;
+      --color-gobierno-dorado: #a57f2c;
+      --color-gobierno-dorado-claro: #DDC9A3;
+      --color-gobierno-gris: #98989A;
+      --color-gobierno-verde: #13322e;
+      --color-gobierno-beige: #BC955C;
+      --color-texto-principal: #545454;
+    }
+
+    /* Estilos personalizados para el landing */
+    .hero-section {
+      /* Landing has a clean white background for a minimal, official look */
+      background: #ffffff;
+      color: var(--color-texto-principal);
+      padding: 120px 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-family: 'Patria', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    /* Marco elegante para los botones principales */
+    .buttons-frame {
+      background: rgba(255, 255, 255, 0.95);
+      border: 3px solid var(--color-gobierno-principal);
+      border-radius: 16px;
+      padding: 40px 30px;
+      margin: 0 auto;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(97, 18, 50, 0.2);
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .buttons-frame::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--color-gobierno-principal), var(--color-gobierno-secundario), var(--color-gobierno-dorado));
+      border-radius: 18px;
+      z-index: -1;
+    }
+
+    /* Botones principales mejorados */
+    .btn-lg {
+      padding: 18px 40px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      min-width: 200px;
+    }
+
+    .btn-lg:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .hero-section {
+        padding: 80px 0;
+        min-height: 90vh;
+      }
+      
+      .hero-title {
+        font-size: 2.2rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .buttons-frame {
+        margin: 0 15px;
+        padding: 30px 20px;
+        max-width: none;
+      }
+      
+      .btn-lg {
+        width: 100%;
+        margin-bottom: 15px;
+        min-width: auto;
+      }
+      
+      .d-flex.gap-4 {
+        flex-direction: column;
+        gap: 1rem !important;
+      }
+    }
+
+    /* Estilos específicos para formularios según gob.mx */
+    .form-control {
+      border-radius: 6px;
+      border: 2px solid #e9ecef;
+      padding: 12px 15px;
+    }
+
+    .form-control:focus {
+      border-color: var(--color-gobierno-principal);
+      box-shadow: 0 0 0 0.2rem rgba(97, 18, 50, 0.25);
+    }
+
+    .control-label {
+      font-weight: 600;
+      color: var(--color-texto-principal);
+      margin-bottom: 8px;
+    }
+
+    .logo-yucatan {
+      max-width: 120px;
+      height: auto;
+      margin: 0 20px;
+    }
+
+    .footer-info {
+      background-color: var(--color-gobierno-principal);
+      color: white;
+      padding: 40px 0;
+      margin-top: 40px;
+    }
+
+    /* Authentication button */
+    .auth-access-btn {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      z-index: 1000;
+      background-color: var(--color-gobierno-verde);
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .auth-access-btn:hover {
+      background-color: #1a4842;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Organization cards with auth integration */
+    .org-card-header {
+      position: relative;
+    }
+
+    .auth-status-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #dc3545;
+    }
+
+    .auth-status-indicator.authenticated {
+      background-color: #28a745;
+    }
+  </style>
+</head>
+<body>
+  <!-- Minimal official header to satisfy framework expectations (visually hidden on landing). -->
+  <header aria-hidden="true" style="height:0;overflow:hidden;">
+    <nav class="navbar" style="display:none;" aria-hidden="true"></nav>
+  </header>
+  <!-- Landing buttons now act as redirects to CESO / APHIS secondary pages. No top-right auth button. -->
+
+  <!-- Contenido principal -->
+  <main class="page">
+    <!-- Sección principal única y centrada -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <h1 class="hero-title mb-4">
+              Centro de Consulta de Acuerdos Sanitarios
+            </h1>
+            <p class="hero-subtitle mb-5">
+              Sistema desarrollado por la Representación de la Secretaría de Agricultura y Desarrollo Rural 
+              (Gobierno Federal Mexicano) en Yucatán, en beneficio de la Ganadería yucateca
+            </p>
+            
+            <!-- Botones principales únicos con marco -->
+            <div class="buttons-frame">
+              <div class="d-flex justify-content-center gap-4 flex-wrap">
+                <a href="ceso.html" class="btn btn-lg btn-gobierno-dorado" onclick="console.debug('Landing -> CESO clicked');" style="min-width: 200px;">
+                  <span class="bootstrap-icons" aria-hidden="true">
+                    <i class="bi bi-building"></i>
+                  </span>
+                  CESO
+                </a>
+                
+                <a href="aphis.html" class="btn btn-lg btn-gobierno-verde" onclick="console.debug('Landing -> APHIS clicked');" style="min-width: 200px;">
+                  <span class="bootstrap-icons" aria-hidden="true">
+                    <i class="bi bi-globe"></i>
+                  </span>
+                  APHIS-USDA
+                </a>
+              </div>
+            </div>
+            
+            <!-- Logo institucional -->
+            <div class="mt-5">
+              <p class="text-muted">
+                <span class="bootstrap-icons" aria-hidden="true">
+                  <i class="bi bi-geo-alt"></i>
+                </span>
+                Representación en Yucatán • Secretaría de Agricultura y Desarrollo Rural
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Dashboard and evidence UI moved to organization pages (ceso.html / aphis.html).
+         The landing page should remain minimal: hero + two buttons. -->
+  </main>
+
+  <!-- Framework gob.mx JavaScript -->
+  <!-- jQuery and Bootstrap (required by some legacy scripts) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
+  
+  <!-- Inicialización: keep simple ready handler for landing page behavior -->
+  <script>
+    $gmx(document).ready(function() {
+      // Tooltips (if present)
+      try { $('[data-bs-toggle="tooltip"]').tooltip(); } catch (e) {}
+      console.log('🏛️ Centro de Consulta de Acuerdos Sanitarios - Gobierno de México');
+      console.log('🌐 Landing page: CESO and APHIS buttons redirect to their secondary pages');
+    });
+  </script>
+</body>
+</html>

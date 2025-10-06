@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Centro de Consulta de Acuerdos Sanitarios - Gobierno de México</title>
+  <meta name="description" content="Centro de consulta especializado para acuerdos sanitarios entre CESO y APHIS-USDA en Yucatán. Gobierno de México." />
+  <meta name="keywords" content="acuerdos sanitarios, CESO, APHIS-USDA, Yucatán, gobierno, México" />
+  <meta name="author" content="Gobierno de México" />
+  
+  <!-- Government Framework -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
+  
+  <!-- jQuery UI for datepicker -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css">
+  
+  <!-- Google Fonts for Government Typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Patria:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main class="page">
+    <div id="root"></div>
+  </main>
+  
+  <!-- jQuery and Government Framework -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  
+  <script type="module" src="/src-development/main.jsx"></script>
+  
+  <script>
+    // Government framework initialization
+    if (typeof $gmx !== 'undefined') {
+      $gmx(document).ready(function() {
+        console.log('🏛️ Framework gob.mx v3 cargado correctamente');
+        console.log('🚀 Centro de Consulta de Acuerdos Sanitarios inicializado');
+        
+        // Initialize tooltips if available
+        if ($gmx.fn && $gmx.fn.tooltip) {
+          $gmx('[data-bs-toggle="tooltip"]').tooltip();
+        }
+        
+        console.log('📄 Header y footer oficiales de gob.mx activados');
+        console.log('🎯 Sistema: Centro de Consulta de Acuerdos Sanitarios CESO-APHIS');
+      });
+    }
+    
+    // Custom error handler for detectOverflow issues
+    window.addEventListener('error', function(e) {
+      if (e.message && e.message.includes('detectOverflow')) {
+        e.preventDefault();
+        return false;
+      }
+    });
+  </script>
+</body>
+</html>

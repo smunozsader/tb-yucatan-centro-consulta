@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Public read access for listing agreements is allowed. Adjust if needed.
+    match /{document=**} {
+      allow read: if true;
+    }
+
+    // Agreement documents. Collection name examples: acuerdos, acuerdos-aphis, acuerdos-ceso
+    match /{coll}/{docId} {
+      // Creating or updating an agreement requires authentication.
+      allow create, update: if request.auth != null;
+      // Deleting agreements should be restricted to server-side/admin flows.
+      allow delete: if false;
+    }
+
+    // Evidencias subcollection: metadata describing uploaded evidence files
+    match /{coll}/{docId}/evidencias/{evidId} {
+      // Anyone may read evidence metadata (public), but creating evidence metadata
+      // requires authentication and a minimal required shape.
+      allow read: if true;
+
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll(['filename','storagePath','uploader','createdAt'])
+        && request.resource.data.filename is string
+        && request.resource.data.storagePath is string
+        && request.resource.data.uploader is string
+        && request.resource.data.createdAt is timestamp;
+
+      // Disallow updates/deletes from clients; handle via admin processes if needed.
+      allow update, delete: if false;
+    }
+  }
+}

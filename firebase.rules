@@ -1,0 +1,11 @@
+/*
+  Aggregate rule files for reference. Use the specific files when deploying.
+  firestore.rules  - Firestore security rules
+  storage.rules    - Firebase Storage rules
+*/
+
+// firestore.rules
+@INCLUDE "firestore.rules"
+
+// storage.rules
+@INCLUDE "storage.rules"

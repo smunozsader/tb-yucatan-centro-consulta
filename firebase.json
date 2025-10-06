@@ -1,0 +1,18 @@
+{
+  "emulators": {
+    "firestore": { "host": "localhost", "port": 8080 },
+    "storage": { "host": "localhost", "port": 9199 },
+    "auth": { "host": "localhost", "port": 9099 }
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      ".tmp.driveupload/**",
+      ".tmp/**"
+    ],
+    "cleanUrls": true
+  }
+}

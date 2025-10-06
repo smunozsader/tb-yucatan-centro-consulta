@@ -1,0 +1,93 @@
+<!-- Organization-specific Authentication Modal for APHIS -->
+<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" data-org="APHIS">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background: linear-gradient(135deg, var(--color-gobierno-verde) 0%, #1a4842 100%); color: white;">
+        <h5 class="modal-title" id="authModalLabel"><i class="bi bi-shield-check"></i> Acceso Administrativo — APHIS</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3 d-flex align-items-center gap-3">
+          <div style="font-size:2rem;color:var(--color-gobierno-verde)"><i class="bi bi-globe"></i></div>
+          <div><strong>APHIS-USDA</strong><div class="small text-muted">Grupo de Trabajo APHIS-USDA/SENASICA</div></div>
+        </div>
+
+        <hr class="my-3">
+
+        <form id="governmentLoginForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="authEmail" class="form-label fw-bold">Correo Electrónico Institucional:</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-at"></i></span>
+                  <input type="email" class="form-control form-control-lg" id="authEmail" placeholder="usuario@organizacion.gob.mx" required>
+                </div>
+                <div class="form-text">Use su correo oficial del organismo</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="authPassword" class="form-label fw-bold">Contraseña:</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input type="password" class="form-control form-control-lg" id="authPassword" required>
+                  <button class="btn btn-outline-secondary" type="button" id="togglePassword"><i class="bi bi-eye"></i></button>
+                </div>
+                <div class="form-text">Contraseña del sistema</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="authError" class="alert alert-danger d-none" role="alert"><span id="authErrorMessage"></span></div>
+          <div id="authSuccess" class="alert alert-success d-none" role="alert"><span id="authSuccessMessage"></span></div>
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión Administrativa</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('togglePassword').addEventListener('click', function(){
+  const p = document.getElementById('authPassword'); const i = this.querySelector('i');
+  if (p.type === 'password') { p.type = 'text'; i.className='bi bi-eye-slash'; } else { p.type='password'; i.className='bi bi-eye'; }
+});
+document.getElementById('governmentLoginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const organization = document.getElementById('authModal').dataset.org || 'APHIS';
+  document.getElementById('authError').classList.add('d-none'); document.getElementById('authSuccess').classList.add('d-none');
+  const btn=this.querySelector('button[type="submit"]'); const orig=btn.innerHTML; btn.disabled=true; btn.innerHTML='<i class="bi bi-hourglass"></i> Verificando...';
+  setTimeout(()=>{
+    const result = window.gobmxAuth.authenticate(email,password,organization);
+    if(result.success){
+      document.getElementById('authSuccessMessage').textContent=result.message; document.getElementById('authSuccess').classList.remove('d-none');
+      if (window.firebase && firebase.auth) {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then(()=>{
+            console.log('✅ Firebase auth successful for', email);
+            document.getElementById('authSuccessMessage').textContent = result.message + ' — Sesión iniciada en Firebase.';
+            updateAuthenticationUI();
+            setTimeout(()=>{ const modal=bootstrap.Modal.getInstance(document.getElementById('authModal')); if(modal) modal.hide(); document.getElementById('governmentLoginForm').reset(); },900);
+          })
+          .catch(fbErr=>{
+            console.warn('Firebase signIn failed:', fbErr && fbErr.message);
+            document.getElementById('authSuccessMessage').textContent = result.message + ' — (No se pudo iniciar sesión en Firebase: ' + (fbErr && fbErr.message) + ')';
+            updateAuthenticationUI();
+            setTimeout(()=>{ const modal=bootstrap.Modal.getInstance(document.getElementById('authModal')); if(modal) modal.hide(); document.getElementById('governmentLoginForm').reset(); },1200);
+          });
+      } else {
+        updateAuthenticationUI();
+        setTimeout(()=>{ const modal=bootstrap.Modal.getInstance(document.getElementById('authModal')); if(modal) modal.hide(); document.getElementById('governmentLoginForm').reset(); },1200);
+      }
+    } else { document.getElementById('authErrorMessage').textContent=result.message; document.getElementById('authError').classList.remove('d-none'); }
+    btn.disabled=false; btn.innerHTML=orig;
+  },800);
+});
+function updateAuthenticationUI(){ try{ const user=window.gobmxAuth.getCurrentUser(); if(!user) return; const bar=document.getElementById('authStatusBar'); if(bar) bar.classList.remove('d-none'); }catch(e){console.debug(e);} }
+</script>

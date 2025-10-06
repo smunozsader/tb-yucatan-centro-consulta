@@ -1,0 +1,446 @@
+<!-- (Moved) Original shared auth modal preserved as backup. See auth-modal-ceso.html and auth-modal-aphis.html for org-specific modals. -->
+<!-- NOTE: this file is now a backup and should not be loaded by pages. -->
+<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background: linear-gradient(135deg, var(--color-gobierno-principal), var(--color-gobierno-secundario)); color: white;">
+        <h5 class="modal-title" id="authModalLabel">
+          <span class="bootstrap-icons" aria-hidden="true">
+            <i class="bi bi-shield-check"></i>
+          </span>
+          Acceso Administrativo - Sistema de Acuerdos Sanitarios
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- Organization Selection -->
+        <div class="mb-4">
+          <h6 class="fw-bold mb-3">
+            <span class="bootstrap-icons" aria-hidden="true">
+              <i class="bi bi-building"></i>
+            </span>
+            Seleccionar Organización:
+          </h6>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <input type="radio" class="btn-check" name="orgSelector" id="selectCESO" value="CESO" checked>
+              <label class="btn btn-outline-warning w-100 p-3" for="selectCESO">
+                <div class="d-flex flex-column align-items-center">
+                  <span class="bootstrap-icons mb-2" aria-hidden="true" style="font-size: 2rem;">
+                    <i class="bi bi-building"></i>
+                  </span>
+                  <strong>CESO</strong>
+                  <small class="text-muted">Consejo Estatal de Seguimiento Operativo</small>
+                  <small class="text-muted">
+                    <span class="bootstrap-icons" aria-hidden="true">
+                      <i class="bi bi-people"></i>
+                    </span>
+                    4 usuarios registrados
+                  </small>
+                </div>
+              </label>
+            </div>
+            <div class="col-md-6">
+              <input type="radio" class="btn-check" name="orgSelector" id="selectAPHIS" value="APHIS">
+              <label class="btn btn-outline-success w-100 p-3" for="selectAPHIS">
+                <div class="d-flex flex-column align-items-center">
+                  <span class="bootstrap-icons mb-2" aria-hidden="true" style="font-size: 2rem;">
+                    <i class="bi bi-globe"></i>
+                  </span>
+                  <strong>APHIS-USDA</strong>
+                  <small class="text-muted">Grupo de Trabajo APHIS-USDA/SENASICA</small>
+                  <small class="text-muted">
+                    <span class="bootstrap-icons" aria-hidden="true">
+                      <i class="bi bi-people"></i>
+                    </span>
+                    16 usuarios registrados
+                  </small>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Login Form -->
+        <form id="governmentLoginForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="authEmail" class="form-label fw-bold">
+                  <span class="bootstrap-icons" aria-hidden="true">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                  Correo Electrónico Institucional:
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <span class="bootstrap-icons" aria-hidden="true">
+                      <i class="bi bi-at"></i>
+                    </span>
+                  </span>
+                  <input type="email" 
+                         class="form-control form-control-lg" 
+                         id="authEmail" 
+                         placeholder="usuario@agricultura.gob.mx"
+                         required>
+                </div>
+                <div class="form-text">
+                  <span class="bootstrap-icons" aria-hidden="true">
+                    <i class="bi bi-info-circle"></i>
+                  </span>
+                  Use su correo oficial del gobierno
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="authPassword" class="form-label fw-bold">
+                  <span class="bootstrap-icons" aria-hidden="true">
+                    <i class="bi bi-key"></i>
+                  </span>
+                  Contraseña:
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <span class="bootstrap-icons" aria-hidden="true">
+                      <i class="bi bi-lock"></i>
+                    </span>
+                  </span>
+                  <input type="password" 
+                         class="form-control form-control-lg" 
+                         id="authPassword" 
+                         required>
+                  <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                    <span class="bootstrap-icons" aria-hidden="true">
+                      <i class="bi bi-eye"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="form-text">
+                  <span class="bootstrap-icons" aria-hidden="true">
+                    <i class="bi bi-shield-lock"></i>
+                  </span>
+                  Contraseña del sistema
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Error Display -->
+          <div id="authError" class="alert alert-danger d-none" role="alert">
+            <span class="bootstrap-icons" aria-hidden="true">
+              <i class="bi bi-exclamation-triangle"></i>
+            </span>
+            <span id="authErrorMessage"></span>
+          </div>
+
+          <!-- Success Display -->
+          <div id="authSuccess" class="alert alert-success d-none" role="alert">
+            <span class="bootstrap-icons" aria-hidden="true">
+              <i class="bi bi-check-circle"></i>
+            </span>
+            <span id="authSuccessMessage"></span>
+          </div>
+
+          <!-- Login Button -->
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <span class="bootstrap-icons" aria-hidden="true">
+                <i class="bi bi-box-arrow-in-right"></i>
+              </span>
+              Iniciar Sesión Administrativa
+            </button>
+          </div>
+        </form>
+
+        <!-- Role Information -->
+        <div class="mt-4 p-3" style="background-color: #f8f9fa; border-radius: 8px;">
+          <h6 class="fw-bold mb-3">
+            <span class="bootstrap-icons" aria-hidden="true">
+              <i class="bi bi-info-circle"></i>
+            </span>
+            Niveles de Acceso:
+          </h6>
+          <div class="row">
+            <div class="col-md-6">
+              <ul class="list-unstyled mb-0 small">
+                <li class="mb-2">
+                  <span class="bootstrap-icons" aria-hidden="true">
+                    <i class="bi bi-people"></i>
+                  </span>
+                  <strong>Comité/Siiniiga:</strong> Consulta y descarga
+                </li>
+                <li class="mb-2">
+                  <span class="bootstrap-icons" aria-hidden="true">
+                    <i class="bi bi-building"></i>
+                  </span>
+                  <strong>Estatal:</strong> Consulta, descarga y carga
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-unstyled mb-0 small">
+                <li class="mb-2">
+                  <span class="bootstrap-icons" aria-hidden="true">
+                    <i class="bi bi-award"></i>
+                  </span>
+                  <strong>Federal:</strong> Consulta, descarga, carga y edición
+                </li>
+                <li class="mb-2">
+                  <span class="bootstrap-icons" aria-hidden="true">
+                    <i class="bi bi-gear"></i>
+                  </span>
+                  <strong>Administrador:</strong> Control total del sistema
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Authentication Status Display -->
+<div id="authStatusBar" class="d-none position-fixed bottom-0 end-0 m-3" style="z-index: 1050;">
+  <div class="card border-success shadow">
+    <div class="card-body p-3">
+      <div class="d-flex align-items-center">
+        <div class="me-3">
+          <span class="bootstrap-icons text-success" aria-hidden="true" style="font-size: 1.5rem;">
+            <i class="bi bi-person-check" id="authStatusIcon"></i>
+          </span>
+        </div>
+        <div class="flex-grow-1">
+          <div class="fw-bold" id="authUserName"></div>
+          <small class="text-muted">
+            <span class="bootstrap-icons" aria-hidden="true">
+              <i id="authRoleIcon" class="bi bi-person"></i>
+            </span>
+            <span id="authUserRole"></span>
+          </small>
+          <div>
+            <small class="text-muted">
+              <span class="bootstrap-icons" aria-hidden="true">
+                <i id="authOrgIcon" class="bi bi-building"></i>
+              </span>
+              <span id="authUserOrg"></span>
+            </small>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" 
+                  id="authDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="bootstrap-icons" aria-hidden="true">
+              <i class="bi bi-three-dots-vertical"></i>
+            </span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="authDropdown">
+            <li>
+              <a class="dropdown-item" href="#" id="authProfile">
+                <span class="bootstrap-icons" aria-hidden="true">
+                  <i class="bi bi-person"></i>
+                </span>
+                Mi Perfil
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" id="authSettings">
+                <span class="bootstrap-icons" aria-hidden="true">
+                  <i class="bi bi-gear"></i>
+                </span>
+                Configuración
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item text-danger" href="#" id="logoutBtn">
+                <span class="bootstrap-icons" aria-hidden="true">
+                  <i class="bi bi-box-arrow-right"></i>
+                </span>
+                Cerrar Sesión
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Password toggle functionality
+document.getElementById('togglePassword').addEventListener('click', function() {
+  const passwordInput = document.getElementById('authPassword');
+  const icon = this.querySelector('i');
+  
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    icon.className = 'bi bi-eye-slash';
+  } else {
+    passwordInput.type = 'password';
+    icon.className = 'bi bi-eye';
+  }
+});
+
+// Authentication form handler
+document.getElementById('governmentLoginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const organization = document.querySelector('input[name="orgSelector"]:checked').value;
+  
+  // Clear previous messages
+  document.getElementById('authError').classList.add('d-none');
+  document.getElementById('authSuccess').classList.add('d-none');
+  
+  // Show loading state
+  const submitBtn = this.querySelector('button[type="submit"]');
+  const originalHTML = submitBtn.innerHTML;
+  submitBtn.innerHTML = `
+    <span class="bootstrap-icons" aria-hidden="true">
+      <i class="bi bi-hourglass"></i>
+    </span>
+    Verificando...
+  `;
+  submitBtn.disabled = true;
+  
+  // Simulate loading delay for better UX
+  setTimeout(() => {
+    // Attempt authentication
+    console.log('[auth-modal] Attempting login for', email, 'organization:', organization);
+    const result = window.gobmxAuth.authenticate(email, password, organization);
+    
+    if (result.success) {
+  // Show success
+  const successMsgEl = document.getElementById('authSuccessMessage');
+  const successEl = document.getElementById('authSuccess');
+  if (successMsgEl) successMsgEl.textContent = result.message;
+  if (successEl) successEl.classList.remove('d-none');
+      
+      // Update UI
+      updateAuthenticationUI();
+      
+      // Close modal after 1.5 seconds
+      setTimeout(() => {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
+        modal.hide();
+        
+        // Reset form
+        document.getElementById('governmentLoginForm').reset();
+        document.querySelector('input[name="orgSelector"][value="CESO"]').checked = true;
+      }, 1500);
+      
+    } else {
+  // Show error
+  console.warn('[auth-modal] Login failed for', email, 'organization:', organization, 'message:', result.message);
+  const errMsgEl = document.getElementById('authErrorMessage');
+  const errEl = document.getElementById('authError');
+  if (errMsgEl) errMsgEl.textContent = result.message;
+  if (errEl) errEl.classList.remove('d-none');
+    }
+    
+    // Reset button
+    submitBtn.innerHTML = originalHTML;
+    submitBtn.disabled = false;
+  }, 1000);
+});
+
+// Update UI based on authentication status
+function updateAuthenticationUI() {
+  const user = window.gobmxAuth?.getCurrentUser();
+  
+  if (user) {
+    // Show authenticated status
+    document.getElementById('authUserName').textContent = user.nombre;
+    document.getElementById('authUserRole').textContent = window.gobmxAuth.getRoleDisplayName();
+    document.getElementById('authUserOrg').textContent = user.organization;
+    
+    // Update icons based on role and organization
+    document.getElementById('authRoleIcon').className = `bi ${window.gobmxAuth.getRoleIcon()}`;
+    document.getElementById('authOrgIcon').className = `bi ${window.gobmxAuth.getOrganizationIcon()}`;
+    document.getElementById('authStatusIcon').className = 'bi bi-person-check';
+    
+    document.getElementById('authStatusBar').classList.remove('d-none');
+    
+    // Update page elements based on permissions
+    updatePagePermissions();
+    
+  } else {
+    // Hide authenticated status
+    document.getElementById('authStatusBar').classList.add('d-none');
+  }
+}
+
+// Update page permissions
+function updatePagePermissions() {
+  const user = window.gobmxAuth?.getCurrentUser();
+  if (!user) return;
+  
+  // Show/hide upload buttons based on permissions
+  const uploadButtons = document.querySelectorAll('.upload-evidence-btn');
+  uploadButtons.forEach(btn => {
+    if (window.gobmxAuth.hasPermission('upload')) {
+      btn.classList.remove('d-none');
+    } else {
+      btn.classList.add('d-none');
+    }
+  });
+  
+  // Show/hide admin functions
+  const adminElements = document.querySelectorAll('.admin-only');
+  adminElements.forEach(el => {
+    if (window.gobmxAuth.hasRole('Administrador')) {
+      el.classList.remove('d-none');
+    } else {
+      el.classList.add('d-none');
+    }
+  });
+  
+  // Show/hide edit functions
+  const editElements = document.querySelectorAll('.edit-only');
+  editElements.forEach(el => {
+    if (window.gobmxAuth.hasPermission('edit')) {
+      el.classList.remove('d-none');
+    } else {
+      el.classList.add('d-none');
+    }
+  });
+}
+
+// Logout handler
+document.getElementById('logoutBtn').addEventListener('click', function() {
+  window.gobmxAuth.logout();
+  updateAuthenticationUI();
+  
+  // Show logout notification
+  const toast = document.createElement('div');
+  toast.className = 'toast position-fixed bottom-0 start-50 translate-middle-x mb-3';
+  toast.innerHTML = `
+    <div class="toast-body bg-info text-white">
+      <span class="bootstrap-icons" aria-hidden="true">
+        <i class="bi bi-check-circle"></i>
+      </span>
+      Sesión cerrada correctamente
+    </div>
+  `;
+  document.body.appendChild(toast);
+  const bsToast = new bootstrap.Toast(toast);
+  bsToast.show();
+  
+  setTimeout(() => {
+    document.body.removeChild(toast);
+  }, 3000);
+});
+
+// Initialize authentication UI on page load
+document.addEventListener('DOMContentLoaded', function() {
+  updateAuthenticationUI();
+});
+
+console.log('🔐 Authentication Modal Initialized with Government Icons');
+</script>
