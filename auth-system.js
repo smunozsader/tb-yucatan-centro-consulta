@@ -7,36 +7,93 @@ class GobMXAuthSystem {
   constructor() {
     this.currentUser = null;
     this.sessionKey = 'gobmx_session_ceso_aphis';
-    this.initializeUserDatabases();
+    this.cesoUsers = [];
+    this.aphisUsers = [];
+    this.usersLoaded = false;
+    this.initializeFirebase();
     this.checkExistingSession();
   }
 
-  initializeUserDatabases() {
-    // NOTE: This in-memory user database is for local development and testing ONLY.
-    // Do NOT store real credentials here. Replace entries with placeholder accounts
-    // or configure the Firebase Auth emulator for safe E2E tests.
+  async initializeFirebase() {
+    // Wait for Firebase to be available
+    if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+      this.db = firebase.firestore();
+      await this.loadUsersFromFirebase();
+    } else {
+      console.warn('[auth-system] Firebase not available, using placeholder users');
+      this.initializePlaceholderUsers();
+    }
+  }
 
-    // CESO Users (development placeholders)
+  initializePlaceholderUsers() {
+    // Fallback placeholder users for development
     this.cesoUsers = [
       { nombre: "Usuario CESO 1", correo: "ceso.user1@example.local", rol: "Administrador", contrasena: "dev-pass-ceso-1", organization: "CESO", permissions: ["view","download","upload","edit"] },
       { nombre: "Usuario CESO 2", correo: "ceso.user2@example.local", rol: "Federal", contrasena: "dev-pass-ceso-2", organization: "CESO", permissions: ["view","download","upload"] }
     ];
 
-    // APHIS Users (development placeholders)
     this.aphisUsers = [
       { nombre: "Usuario APHIS 1", correo: "aphis.user1@example.local", rol: "Administrador", contrasena: "dev-pass-aphis-1", organization: "APHIS", permissions: ["view","download","upload","edit"] },
       { nombre: "Usuario APHIS 2", correo: "aphis.user2@example.local", rol: "Comite", contrasena: "dev-pass-aphis-2", organization: "APHIS", permissions: ["view","download"] }
     ];
+    this.usersLoaded = true;
+  }
+
+  async loadUsersFromFirebase() {
+    try {
+      console.log('[auth-system] Loading users from Firebase...');
+
+      // Load CESO users
+      const cesoSnapshot = await this.db.collection('users_ceso').get();
+      this.cesoUsers = cesoSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      // Load APHIS users
+      const aphisSnapshot = await this.db.collection('users_aphis').get();
+      this.aphisUsers = aphisSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      this.usersLoaded = true;
+      console.log(`[auth-system] Loaded ${this.cesoUsers.length} CESO users and ${this.aphisUsers.length} APHIS users from Firebase`);
+
+    } catch (error) {
+      console.error('[auth-system] Error loading users from Firebase:', error);
+      console.warn('[auth-system] Falling back to placeholder users');
+      this.initializePlaceholderUsers();
+    }
   }
 
   // Authentication method
-  authenticate(email, password, organization) {
+  async authenticate(email, password, organization) {
+    // Wait for users to be loaded if not already loaded
+    if (!this.usersLoaded) {
+      console.log('[auth-system] Waiting for users to load...');
+      let attempts = 0;
+      while (!this.usersLoaded && attempts < 50) { // Wait up to 5 seconds
+        await new Promise(resolve => setTimeout(resolve, 100));
+        attempts++;
+      }
+      if (!this.usersLoaded) {
+        console.error('[auth-system] Users failed to load, authentication unavailable');
+        return {
+          success: false,
+          message: 'Sistema de autenticación no disponible. Intente nuevamente.'
+        };
+      }
+    }
+
     const userDatabase = organization === 'CESO' ? this.cesoUsers : this.aphisUsers;
     const normalizedEmail = (email || '').toLowerCase();
-    console.debug('[auth-system] authenticate() called for', { email: normalizedEmail, organization });
+    console.debug('[auth-system] authenticate() called for', { email: normalizedEmail, organization, userCount: userDatabase.length });
 
     const user = userDatabase.find(u => {
-      const match = (u.correo || '').toLowerCase() === normalizedEmail && u.contrasena === password;
+      const userEmail = (u.correo || '').toLowerCase();
+      const userPassword = u.contrasena || '';
+      const match = userEmail === normalizedEmail && userPassword === password;
       if (match) console.debug('[auth-system] user matched in database:', { correo: u.correo, nombre: u.nombre, rol: u.rol });
       return match;
     });
@@ -175,5 +232,4 @@ window.gobmxAuth = new GobMXAuthSystem();
 
 // Console log for debugging
 console.log('🔐 GobMX Authentication System Initialized');
-console.log('📊 CESO Users:', window.gobmxAuth.cesoUsers.length);
-console.log('🇺🇸 APHIS Users:', window.gobmxAuth.aphisUsers.length);
+console.log('📊 Will load users from Firebase Firestore on initialization');
