@@ -517,5 +517,43 @@ Hoy se avanzó en la implementación cliente de los flujos de autenticación y d
 
 ---
 
+## Session Date: October 7, 2025 (Part 3)
+
+### Critical Landing Page Layout Fix
+
+**Systemic Problem Identified:**
+- **Broken layout**: Landing pages had inline styles centering ALL content (header, card, footer) with flexbox
+- **Floating header**: Header appeared in center of page instead of fixed at top
+- **Overlapping content**: Login card hidden behind centered header
+- **Missing footer**: Footer not displaying properly due to global centering
+
+**Architectural Solution Implemented:**
+- **Complete layout restructure**: Changed from global centering to structured layout
+- **Fixed header**: Positioned fixed at top with proper z-index
+- **Centered content**: Only main card centered vertically/horizontally
+- **Footer at bottom**: Using margin-top: auto for positioning
+- **Modular CSS**: Moved critical styles to styles.css for consistency
+
+**Technical Changes:**
+- Removed problematic inline body styles
+- Implemented flex-direction: column on body
+- Added .main-content wrapper with padding-top for fixed header
+- Header now fixed with box-shadow for visual separation
+- Footer with margin-top: auto for sticky bottom behavior
+
+**Files Fixed:**
+- `ceso.html`: Restructured layout, fixed header, centered content
+- `aphis.html`: Restructured layout, fixed header, centered content
+- `styles.css`: Header-gobierno now with position: fixed and visual properties
+
+**Result:**
+- Header fixed at top with correct branding
+- Login card perfectly centered and visible
+- Footer at bottom as appropriate
+- Fully functional gob.mx v3 design
+- Consistent layout between CESO and APHIS
+
+---
+
 *Session completed: October 7, 2025*
 

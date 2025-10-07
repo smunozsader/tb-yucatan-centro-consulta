@@ -236,5 +236,43 @@ Indica qué quieres que haga a continuación y lo ejecuto.
 
 ---
 
+## Sesión: 7 de octubre de 2025 (Parte 3)
+
+### Corrección Crítica de Layout en Páginas de Aterrizaje
+
+**Problema Sistémico Identificado:**
+- **Layout dañado**: Las páginas de aterrizaje tenían estilos inline que centraban TODO el contenido (header, card, footer) con flexbox
+- **Header flotante**: El header aparecía en el centro de la página en lugar de estar fijo en la parte superior
+- **Contenido superpuesto**: La card de login quedaba oculta detrás del header centrado
+- **Footer ausente**: El footer no se mostraba correctamente debido al centrado global
+
+**Solución Arquitectónica Implementada:**
+- **Reestructuración completa del layout**: Cambió de centrado global a layout estructurado
+- **Header fijo**: Posicionado fixed en la parte superior con z-index apropiado
+- **Contenido centrado**: Solo la card principal se centra vertical/horizontalmente
+- **Footer en bottom**: Usando margin-top: auto para posicionar al final
+- **CSS modular**: Movió estilos críticos a styles.css para consistencia
+
+**Cambios Técnicos:**
+- Eliminó estilos inline problemáticos del body
+- Implementó flex-direction: column en body
+- Agregó .main-content wrapper con padding-top para header fijo
+- Header ahora fixed con box-shadow para separación visual
+- Footer con margin-top: auto para sticky bottom behavior
+
+**Archivos Corregidos:**
+- `ceso.html`: Layout reestructurado, header fijo, contenido centrado
+- `aphis.html`: Layout reestructurado, header fijo, contenido centrado  
+- `styles.css`: Header-gobierno ahora con position: fixed y propiedades visuales
+
+**Resultado:**
+- Header fijo en la parte superior con branding correcto
+- Card de login perfectamente centrada y visible
+- Footer en la parte inferior como corresponde
+- Diseño gob.mx v3 completamente funcional
+- Layout consistente entre CESO y APHIS
+
+---
+
 *Sesión completada: 7 de octubre de 2025*
 
