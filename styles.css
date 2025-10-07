@@ -264,6 +264,12 @@
   background-color: var(--color-gobierno-principal);
   color: white;
   padding: 1rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .header-gobierno .navbar-brand {
@@ -276,7 +282,7 @@
   background-color: var(--color-gobierno-verde);
   color: white;
   padding: 2rem 0;
-  margin-top: 2rem;
+  margin-top: auto;
 }
 
 .footer-gobierno a {
