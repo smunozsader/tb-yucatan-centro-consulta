@@ -488,3 +488,34 @@ Hoy se avanzó en la implementación cliente de los flujos de autenticación y d
 
 *Session completed: October 7, 2025*
 
+---
+
+## Session Date: October 7, 2025 (Part 2)
+
+### APHIS and CESO Landing Page Fixes
+
+**Issues Identified:**
+- **Duplicated content**: Both landing pages (aphis.html and ceso.html) had duplicate `<div class="card">` elements after the footer
+- **Broken layout**: Duplicated content caused broken layout with overlapping buttons and visual bars hiding elements
+- **Inconsistency**: Pages didn't follow the clean design pattern established
+
+**Solution Implemented:**
+- Removed duplicated content after footer in both pages
+- Maintained correct structure: header → centered card → footer
+- Preserved all authentication functionality and redirection
+- Maintained gob.mx v3 compliance
+
+**Files Fixed:**
+- `aphis.html`: Removed duplicated content, clean layout
+- `ceso.html`: Removed duplicated content, clean layout
+
+**Result:**
+- Landing pages now have consistent, functional design
+- Authentication buttons properly positioned and visible
+- No overlapping bars or hidden content
+- Improved user experience
+
+---
+
+*Session completed: October 7, 2025*
+

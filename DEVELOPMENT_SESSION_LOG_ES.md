@@ -207,3 +207,34 @@ Indica qué quieres que haga a continuación y lo ejecuto.
 
 *Sesión completada: 7 de octubre de 2025*
 
+---
+
+## Sesión: 7 de octubre de 2025 (Parte 2)
+
+### Corrección de Páginas de Aterrizaje APHIS y CESO
+
+**Problemas Identificados:**
+- **Contenido duplicado**: Ambas páginas de aterrizaje (aphis.html y ceso.html) tenían elementos `<div class="card">` duplicados después del footer
+- **Diseño dañado**: El contenido duplicado causaba layout roto con botones superpuestos y barras visuales que ocultaban elementos
+- **Inconsistencia**: Las páginas no seguían el patrón de diseño limpio establecido
+
+**Solución Implementada:**
+- Eliminé el contenido duplicado después del footer en ambas páginas
+- Mantuve la estructura correcta: header → card centrado → footer
+- Preservé toda la funcionalidad de autenticación y redireccionamiento
+- Mantuve el cumplimiento con gob.mx v3
+
+**Archivos Corregidos:**
+- `aphis.html`: Eliminado contenido duplicado, layout limpio
+- `ceso.html`: Eliminado contenido duplicado, layout limpio
+
+**Resultado:**
+- Páginas de aterrizaje ahora tienen diseño consistente y funcional
+- Botones de autenticación correctamente posicionados y visibles
+- Sin barras superpuestas ni contenido oculto
+- Experiencia de usuario mejorada
+
+---
+
+*Sesión completada: 7 de octubre de 2025*
+
