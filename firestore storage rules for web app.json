@@ -1,0 +1,51 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o { // This matches the main storage bucket for your project
+
+    // This rule defines permissions for files stored within the 'Repositorio CESO'
+    // and 'Repositorio APHIS-USDA' main folders, and their specific subfolders.
+    match /{repositoryName}/{folderName}/{fileName} {
+
+      // Allow any authenticated user to read (download, view metadata, list) files
+      // within these two top-level repositories.
+      allow read: if request.auth != null &&
+                     (repositoryName == 'Repositorio CESO' || repositoryName == 'Repositorio APHIS-USDA');
+
+      // Allow any authenticated user to write (upload, overwrite, update metadata) files
+      // only if they meet all the specified conditions:
+      allow write: if request.auth != null && // User must be logged in
+                      request.resource.size < 5 * 1024 * 1024 && // Max 5MB file size (you can adjust this)
+                      (
+                          // Validate allowed content types for uploads: PDF, Word (doc/docx), JPG, TXT
+                          request.resource.contentType == 'application/pdf' ||
+                          request.resource.contentType == 'application/msword' || // .doc files
+                          request.resource.contentType == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || // .docx files
+                          request.resource.contentType == 'image/jpeg' || // .jpg, .jpeg files
+                          request.resource.contentType == 'text/plain' // .txt files
+                      ) &&
+                      (
+                          // Validate that the file is being uploaded to one of the two authorized repositories
+                          repositoryName == 'Repositorio CESO' ||
+                          repositoryName == 'Repositorio APHIS-USDA'
+                      ) &&
+                      (
+                          // Validate that the file is being uploaded to one of the five authorized subfolders
+                          folderName == 'Actas de Reuniones' ||
+                          folderName == 'Normativas Sanitarias' ||
+                          folderName == 'Manuales de Procedimientos' ||
+                          folderName == 'Formatos Oficiales' ||
+                          folderName == 'Reportes de Seguimiento'
+                      );
+
+      // Delete operations are implicitly denied by default since no 'allow delete' rule is present.
+      // If you wish to allow authenticated users to delete:
+      // allow delete: if request.auth != null;
+    }
+
+    // This catch-all rule explicitly denies any read or write access to paths
+    // that don't match the specific structure defined above. This is a crucial security measure.
+    match /{allOtherPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
