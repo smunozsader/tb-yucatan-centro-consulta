@@ -16,60 +16,88 @@
       display: flex;
       flex-direction: column;
     }
-    .header-gobierno {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1030;
-    }
     .main-content {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 28px;
-      padding-top: 100px; /* Account for fixed header */
-    }
-    .card {
-      max-width: 720px;
-      width: 100%;
-      padding: 28px;
-      border-radius: 10px;
-      box-shadow: 0 6px 24px rgba(0,0,0,.08);
-      background: #fff;
-    }
-    .footer-gobierno {
-      margin-top: auto;
     }
   </style>
 </head>
 <body>
-  <header class="header-gobierno">
-    <nav class="navbar navbar-expand-lg">
+  <!-- Header oficial del Gobierno de México -->
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-light navbar-inverse navbar-fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="index.html">
-          <img src="logo.png" alt="Gobierno de México" height="40" class="me-2">
-          Centro de Consulta de Acuerdos Sanitarios
+        <a href="https://www.gob.mx/" target="_blank" class="navbar-brand">
+          <img src="https://framework-gb.cdn.gob.mx/gobmx/img/logo_blanco.svg" alt="Página de inicio, Gobierno de México" class="logos" style="height: 46px;width: auto;">
         </a>
+        <button class="navbar-toggler navbar-toggler-button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor03">
+          <div class="navbar-nav nav-pills margen">
+            <a class="nav-item nav-link" href="https://www.gob.mx/tramites" target="_self" title="Ir a trámites del gobierno">Trámites</a>
+            <a class="nav-item nav-link" href="https://www.gob.mx/gobierno" target="_self" title="Ir a gobierno">Gobierno</a>
+            <a class="nav-item nav-link" href="https://www.gob.mx/busqueda" target="_self" title="Haz búsquedas en gobierno">
+              <i class="icon-search"></i>
+            </a>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
 
-  <div class="main-content">
-    <div class="card">
-      <h1 class="h4">CESO - Acceso administrativo</h1>
-      <p class="text-muted">Pulse "Autenticar" para ingresar al Centro de Consulta de Acuerdos.</p>
-        <div class="mt-3">
-        <button class="btn btn-gobierno-principal" id="cesoAuthBtn">Autenticar</button>
-        <a href="index.html" class="btn btn-light ms-2" aria-label="Volver al sitio principal">Volver</a>
+  <!-- Header oficial del Gobierno de México -->
+  <header>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <h2>CESO - Acceso Administrativo</h2>
+          <p>Centro de Consulta de Acuerdos Sanitarios - Secretaría de Agricultura y Desarrollo Rural</p>
+        </div>
+        <div class="col-md-4 text-end">
+          <img src="logo.png" alt="Gobierno de México" height="50">
+        </div>
       </div>
-      <p class="small text-muted mt-2">Acceso al Centro de Consulta disponible solo para usuarios autenticados.</p>
-      <div id="authModalContainer"></div>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+          <h1 class="h3 text-center mb-4">CESO - Acceso administrativo</h1>
+          <p class="text-muted text-center mb-4">Acceso al Centro de Consulta disponible solo para usuarios autenticados.</p>
+
+          <form role="form" id="cesoLoginForm">
+            <div class="form-group">
+              <label class="control-label" for="cesoEmail">Correo electrónico institucional:</label>
+              <input class="form-control" id="cesoEmail" placeholder="usuario@organizacion.gob.mx" type="email" required="">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="cesoPassword">Contraseña:</label>
+              <input class="form-control" id="cesoPassword" placeholder="Contraseña" type="password" required="">
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="cesoRemember">
+                Recordarme
+              </label>
+            </div>
+            <div id="cesoAuthError" class="alert alert-danger d-none" role="alert"><span id="cesoAuthErrorMessage"></span></div>
+            <div id="cesoAuthSuccess" class="alert alert-success d-none" role="alert"><span id="cesoAuthSuccessMessage"></span></div>
+            <button class="btn btn-primary pull-right" type="submit">Autenticar</button>
+            <a href="index.html" class="btn btn-light ms-2" aria-label="Volver al sitio principal">Volver</a>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 
-  <footer class="footer-gobierno">
+  <!-- Footer oficial del Gobierno de México -->
+  <footer>
     <div class="container">
       <div class="row">
         <div class="col-md-6">
@@ -78,45 +106,62 @@
         </div>
         <div class="col-md-6">
           <p>Contacto: <a href="mailto:contacto@yucatan.gob.mx">contacto@yucatan.gob.mx</a></p>
-          <p>&copy; 2025 Gobierno de México</p>
+          <p>© 2025 Gobierno de México</p>
         </div>
       </div>
     </div>
   </footer>
 
   <script src="auth-system.js"></script>
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
   <script>
-    (function(){
-      let modalLoaded = false;
-      function executeInjectedScripts(container){
-        const scripts = Array.from(container.querySelectorAll('script'));
-        scripts.forEach(oldScript => {
-          try {
-            const newScript = document.createElement('script');
-            if (oldScript.src) { newScript.src = oldScript.src; newScript.async = false; }
-            else { newScript.textContent = oldScript.textContent; }
-            document.body.appendChild(newScript);
-            oldScript.parentNode && oldScript.parentNode.removeChild(oldScript);
-          } catch (err) { console.error('Error executing injected auth-modal script:', err); }
-        });
-      }
+    $gmx(document).ready(function() {
+      document.getElementById('cesoLoginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('cesoEmail').value.trim();
+        const password = document.getElementById('cesoPassword').value;
+        const remember = document.getElementById('cesoRemember').checked;
 
-      function loadAuthModal(){
-        return fetch('auth-modal-ceso.html').then(r=>r.text()).then(html=>{ const c=document.getElementById('authModalContainer'); c.innerHTML=html; executeInjectedScripts(c); modalLoaded=true; return true; }).catch(err=>{ console.error('Failed to load auth-modal for CESO:', err); modalLoaded=false; });
-      }
+        // Clear messages
+        document.getElementById('cesoAuthError').classList.add('d-none');
+        document.getElementById('cesoAuthSuccess').classList.add('d-none');
 
-      loadAuthModal();
-      const btn = document.getElementById('cesoAuthBtn');
-      if (btn) btn.addEventListener('click', function(){ if (!modalLoaded){ loadAuthModal().then(()=>{ const modalEl=document.getElementById('authModal'); if(modalEl) new bootstrap.Modal(modalEl).show(); }); } else { const modalEl=document.getElementById('authModal'); if(modalEl) new bootstrap.Modal(modalEl).show(); } });
+        const btn = this.querySelector('button[type="submit"]');
+        const orig = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = 'Verificando...';
 
-      // Redirect to the CESO Centro de Consulta after successful login
-      const redirectTarget = 'acuerdos-ceso.html';
-      const checkAuthAndRedirect = function(){ try{ if (window.gobmxAuth && typeof window.gobmxAuth.isAuthenticated === 'function' && window.gobmxAuth.isAuthenticated()){ window.location.href = redirectTarget; } }catch(e){}
-      };
-      const pollId = setInterval(checkAuthAndRedirect, 600);
-      window.addEventListener('focus', checkAuthAndRedirect);
-      setTimeout(()=>{ clearInterval(pollId); }, 30000);
-    })();
+        setTimeout(() => {
+          const result = window.gobmxAuth.authenticate(email, password, 'CESO');
+          if (result.success) {
+            document.getElementById('cesoAuthSuccessMessage').textContent = result.message;
+            document.getElementById('cesoAuthSuccess').classList.remove('d-none');
+            // Try to sign in to Firebase Auth
+            if (window.firebase && firebase.auth) {
+              firebase.auth().signInWithEmailAndPassword(email, password)
+                .then(() => {
+                  console.log('✅ Firebase auth successful for', email);
+                  // Redirect to acuerdos-ceso.html
+                  window.location.href = 'acuerdos-ceso.html';
+                })
+                .catch((fbErr) => {
+                  console.warn('Firebase signIn failed:', fbErr && fbErr.message);
+                  // Still redirect even if Firebase fails
+                  window.location.href = 'acuerdos-ceso.html';
+                });
+            } else {
+              // No firebase SDK available; redirect anyway
+              window.location.href = 'acuerdos-ceso.html';
+            }
+          } else {
+            document.getElementById('cesoAuthErrorMessage').textContent = result.message;
+            document.getElementById('cesoAuthError').classList.remove('d-none');
+          }
+          btn.disabled = false;
+          btn.innerHTML = orig;
+        }, 800);
+      });
+    });
   </script>
 </body>
 </html>
