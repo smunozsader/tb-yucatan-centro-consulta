@@ -211,13 +211,6 @@
 <body>
   <!-- Minimal official header to satisfy framework expectations (visually hidden on landing). -->
   <header class="header-gobierno">
-    <nav class="navbar navbar-expand-lg">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">
-          <img src="logo.png" alt="Gobierno de México" height="40" class="me-2">
-        </a>
-      </div>
-    </nav>
   </header>
   <!-- Landing buttons now act as redirects to CESO / APHIS secondary pages. No top-right auth button. -->
 
@@ -232,19 +225,19 @@
             <!-- Botones principales únicos con marco -->
             <div class="buttons-frame">
               <div class="d-flex justify-content-center gap-4 flex-wrap">
-                <a href="ceso.html" class="btn btn-lg btn-gobierno-dorado d-flex align-items-center justify-content-center" onclick="console.debug('Landing -> CESO clicked');" style="min-width: 200px;">
+                <button type="button" class="btn btn-lg btn-gobierno-dorado d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#cesoModal" style="min-width: 200px;">
                   <span class="bootstrap-icons me-2" aria-hidden="true">
                     <i class="bi bi-building"></i>
                   </span>
                   <span class="text-center">CESO</span>
-                </a>
+                </button>
                 
-                <a href="aphis.html" class="btn btn-lg btn-gobierno-verde d-flex align-items-center justify-content-center" onclick="console.debug('Landing -> APHIS clicked');" style="min-width: 200px;">
+                <button type="button" class="btn btn-lg btn-gobierno-verde d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#aphisModal" style="min-width: 200px;">
                   <span class="bootstrap-icons me-2" aria-hidden="true">
                     <i class="bi bi-globe"></i>
                   </span>
                   <span class="text-center">APHIS-USDA</span>
-                </a>
+                </button>
               </div>
             </div>
             
@@ -264,6 +257,101 @@
     <!-- Dashboard and evidence UI moved to organization pages (ceso.html / aphis.html).
          The landing page should remain minimal: hero + two buttons. -->
   </main>
+
+  <!-- Modals for CESO and APHIS login -->
+  <!-- CESO Login Modal -->
+  <div class="modal fade" id="cesoModal" tabindex="-1" aria-labelledby="cesoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cesoModalLabel">
+            <span class="bootstrap-icons me-2" aria-hidden="true">
+              <i class="bi bi-building"></i>
+            </span>
+            CESO - Acceso Administrativo
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-4">
+            <img src="logo.png" alt="Gobierno de México" height="50" class="mb-3">
+            <h4 class="h5">Centro de Consulta de Acuerdos Sanitarios</h4>
+            <p class="text-muted">Secretaría de Agricultura y Desarrollo Rural - Representación en Yucatán</p>
+          </div>
+
+          <form role="form" id="cesoLoginForm">
+            <div class="form-group mb-3">
+              <label class="control-label" for="cesoEmail">Correo electrónico institucional:</label>
+              <input class="form-control" id="cesoEmail" placeholder="usuario@organizacion.gob.mx" type="email" required="">
+            </div>
+            <div class="form-group mb-3">
+              <label class="control-label" for="cesoPassword">Contraseña:</label>
+              <input class="form-control" id="cesoPassword" placeholder="Contraseña" type="password" required="">
+            </div>
+            <div class="checkbox mb-3">
+              <label>
+                <input type="checkbox" id="cesoRemember">
+                Recordarme
+              </label>
+            </div>
+            <div id="cesoAuthError" class="alert alert-danger d-none" role="alert"><span id="cesoAuthErrorMessage"></span></div>
+            <div id="cesoAuthSuccess" class="alert alert-success d-none" role="alert"><span id="cesoAuthSuccessMessage"></span></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" form="cesoLoginForm" class="btn btn-primary">Autenticar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APHIS Login Modal -->
+  <div class="modal fade" id="aphisModal" tabindex="-1" aria-labelledby="aphisModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="aphisModalLabel">
+            <span class="bootstrap-icons me-2" aria-hidden="true">
+              <i class="bi bi-globe"></i>
+            </span>
+            APHIS - Acceso Administrativo
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-4">
+            <img src="logo.png" alt="Gobierno de México" height="50" class="mb-3">
+            <h4 class="h5">Centro de Consulta de Acuerdos Sanitarios</h4>
+            <p class="text-muted">Secretaría de Agricultura y Desarrollo Rural - Representación en Yucatán</p>
+          </div>
+
+          <form role="form" id="aphisLoginForm">
+            <div class="form-group mb-3">
+              <label class="control-label" for="aphisEmail">Correo electrónico institucional:</label>
+              <input class="form-control" id="aphisEmail" placeholder="usuario@organizacion.gob.mx" type="email" required="">
+            </div>
+            <div class="form-group mb-3">
+              <label class="control-label" for="aphisPassword">Contraseña:</label>
+              <input class="form-control" id="aphisPassword" placeholder="Contraseña" type="password" required="">
+            </div>
+            <div class="checkbox mb-3">
+              <label>
+                <input type="checkbox" id="aphisRemember">
+                Recordarme
+              </label>
+            </div>
+            <div id="aphisAuthError" class="alert alert-danger d-none" role="alert"><span id="aphisAuthErrorMessage"></span></div>
+            <div id="aphisAuthSuccess" class="alert alert-success d-none" role="alert"><span id="aphisAuthSuccessMessage"></span></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" form="aphisLoginForm" class="btn btn-primary">Autenticar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <footer class="footer-gobierno">
     <div class="container">
@@ -286,13 +374,126 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
   
+  <!-- Firebase SDKs for authentication -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="__/firebase/init.js"></script>
+  <script src="auth-system.js"></script>
+  
   <!-- Inicialización: keep simple ready handler for landing page behavior -->
   <script>
     $gmx(document).ready(function() {
       // Tooltips (if present)
       try { $('[data-bs-toggle="tooltip"]').tooltip(); } catch (e) {}
       console.log('🏛️ Centro de Consulta de Acuerdos Sanitarios - Gobierno de México');
-      console.log('🌐 Landing page: CESO and APHIS buttons redirect to their secondary pages');
+      console.log('🌐 Landing page: CESO and APHIS modals for authentication');
+
+      // Handle CESO login form
+      document.getElementById('cesoLoginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('cesoEmail').value.trim();
+        const password = document.getElementById('cesoPassword').value;
+        const remember = document.getElementById('cesoRemember').checked;
+
+        // Clear messages
+        document.getElementById('cesoAuthError').classList.add('d-none');
+        document.getElementById('cesoAuthSuccess').classList.add('d-none');
+
+        const btn = e.target.querySelector('button[type="submit"]');
+        const orig = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = 'Verificando...';
+
+        setTimeout(() => {
+          const result = window.gobmxAuth.authenticate(email, password, 'CESO');
+          if (result.success) {
+            document.getElementById('cesoAuthSuccessMessage').textContent = result.message;
+            document.getElementById('cesoAuthSuccess').classList.remove('d-none');
+            // Try to sign in to Firebase Auth
+            if (window.firebase && firebase.auth) {
+              firebase.auth().signInWithEmailAndPassword(email, password)
+                .then(() => {
+                  console.log('✅ Firebase auth successful for', email);
+                  // Close modal and redirect
+                  const modal = bootstrap.Modal.getInstance(document.getElementById('cesoModal'));
+                  modal.hide();
+                  window.location.href = 'acuerdos-ceso.html';
+                })
+                .catch((fbErr) => {
+                  console.warn('Firebase signIn failed:', fbErr && fbErr.message);
+                  // Still redirect even if Firebase fails
+                  const modal = bootstrap.Modal.getInstance(document.getElementById('cesoModal'));
+                  modal.hide();
+                  window.location.href = 'acuerdos-ceso.html';
+                });
+            } else {
+              // No firebase SDK available; redirect anyway
+              const modal = bootstrap.Modal.getInstance(document.getElementById('cesoModal'));
+              modal.hide();
+              window.location.href = 'acuerdos-ceso.html';
+            }
+          } else {
+            document.getElementById('cesoAuthErrorMessage').textContent = result.message;
+            document.getElementById('cesoAuthError').classList.remove('d-none');
+          }
+          btn.disabled = false;
+          btn.innerHTML = orig;
+        }, 800);
+      });
+
+      // Handle APHIS login form
+      document.getElementById('aphisLoginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('aphisEmail').value.trim();
+        const password = document.getElementById('aphisPassword').value;
+        const remember = document.getElementById('aphisRemember').checked;
+
+        // Clear messages
+        document.getElementById('aphisAuthError').classList.add('d-none');
+        document.getElementById('aphisAuthSuccess').classList.add('d-none');
+
+        const btn = e.target.querySelector('button[type="submit"]');
+        const orig = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = 'Verificando...';
+
+        setTimeout(() => {
+          const result = window.gobmxAuth.authenticate(email, password, 'APHIS');
+          if (result.success) {
+            document.getElementById('aphisAuthSuccessMessage').textContent = result.message;
+            document.getElementById('aphisAuthSuccess').classList.remove('d-none');
+            // Try to sign in to Firebase Auth
+            if (window.firebase && firebase.auth) {
+              firebase.auth().signInWithEmailAndPassword(email, password)
+                .then(() => {
+                  console.log('✅ Firebase auth successful for', email);
+                  // Close modal and redirect
+                  const modal = bootstrap.Modal.getInstance(document.getElementById('aphisModal'));
+                  modal.hide();
+                  window.location.href = 'acuerdos-aphis.html';
+                })
+                .catch((fbErr) => {
+                  console.warn('Firebase signIn failed:', fbErr && fbErr.message);
+                  // Still redirect even if Firebase fails
+                  const modal = bootstrap.Modal.getInstance(document.getElementById('aphisModal'));
+                  modal.hide();
+                  window.location.href = 'acuerdos-aphis.html';
+                });
+            } else {
+              // No firebase SDK available; redirect anyway
+              const modal = bootstrap.Modal.getInstance(document.getElementById('aphisModal'));
+              modal.hide();
+              window.location.href = 'acuerdos-aphis.html';
+            }
+          } else {
+            document.getElementById('aphisAuthErrorMessage').textContent = result.message;
+            document.getElementById('aphisAuthError').classList.remove('d-none');
+          }
+          btn.disabled = false;
+          btn.innerHTML = orig;
+        }, 800);
+      });
     });
   </script>
 </body>
