@@ -28,13 +28,48 @@ Centro de gestión para dos grupos colegiados especializados en sanidad pecuaria
 - 📧 Meeting notification system
 - 📋 Institutional templates (CESO & APHIS-USDA)
 
-## 🛠 Technology Stack
+## � Security & Service Account Setup
 
-- **Frontend**: React with React Router v7.8.0
-- **Hosting**: Firebase (project: tb-yucatan)
-- **Styling**: Government design system (gob.mx v3) + Custom CSS
-- **Data**: Excel databases (APHIS USDA, CESO)
-- **Framework**: Official Mexican Government framework integration
+### ⚠️ IMPORTANT: Never commit service account keys to Git!
+
+### Service Account Key Storage
+
+1. **Create dedicated directory:**
+   ```bash
+   mkdir C:\Users\%USERNAME%\FirebaseKeys
+   ```
+
+2. **Download new service account key from Google Cloud Console:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - IAM & Admin → Service Accounts
+   - Select your service account → Keys → Add Key → Create new key
+   - Save as: `C:\Users\%USERNAME%\FirebaseKeys\ceso-aphis-yuc-service-account.json`
+
+3. **Environment Configuration:**
+   ```bash
+   # Copy the example environment file
+   cp .env.example .env
+
+   # Edit .env with your actual paths/keys
+   # FIREBASE_SERVICE_ACCOUNT_KEY=C:\Users\%USERNAME%\FirebaseKeys\ceso-aphis-yuc-service-account.json
+   ```
+
+### 🔑 Key Management Best Practices
+
+- ✅ Store keys outside project directory
+- ✅ Use environment variables, never hardcode
+- ✅ Rotate keys regularly (every 90 days)
+- ✅ Use different keys for different environments
+- ✅ Enable key restrictions in Google Cloud Console
+- ❌ Never commit `.env` files or key files to Git
+
+### 🚨 Security Incident Response
+
+If keys are accidentally committed:
+1. **Immediately revoke** the key in Google Cloud Console
+2. **Remove from Git history** using `git filter-branch` or `git filter-repo`
+3. **Force push** cleaned history to GitHub
+4. **Create new key** and update configurations
 
 ## 🏗 Project Structure
 

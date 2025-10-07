@@ -8,6 +8,15 @@ serviceAccountKey.json.local-backup
 
 repo.git/
 
+# Firebase Keys Directory (outside project)
+../FirebaseKeys/
+FirebaseKeys/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
 repo.git.bfg-report/
 
 .tmp.driveupload/
