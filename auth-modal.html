@@ -1,6 +1,6 @@
 <!-- (Moved) Original shared auth modal preserved as backup. See auth-modal-ceso.html and auth-modal-aphis.html for org-specific modals. -->
 <!-- NOTE: this file is now a backup and should not be loaded by pages. -->
-<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+<div class="modal fade modal-gobierno" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header" style="background: linear-gradient(135deg, var(--color-gobierno-principal), var(--color-gobierno-secundario)); color: white;">
@@ -65,7 +65,7 @@
         <hr class="my-4">
 
         <!-- Login Form -->
-        <form id="governmentLoginForm">
+        <form id="governmentLoginForm" class="form-gobierno">
           <div class="row">
             <div class="col-md-6">
               <div class="mb-3">
@@ -130,7 +130,7 @@
           </div>
           
           <!-- Error Display -->
-          <div id="authError" class="alert alert-danger d-none" role="alert">
+          <div id="authError" class="alert alert-gobierno alert-danger d-none" role="alert">
             <span class="bootstrap-icons" aria-hidden="true">
               <i class="bi bi-exclamation-triangle"></i>
             </span>
@@ -138,7 +138,7 @@
           </div>
 
           <!-- Success Display -->
-          <div id="authSuccess" class="alert alert-success d-none" role="alert">
+          <div id="authSuccess" class="alert alert-gobierno alert-success d-none" role="alert">
             <span class="bootstrap-icons" aria-hidden="true">
               <i class="bi bi-check-circle"></i>
             </span>

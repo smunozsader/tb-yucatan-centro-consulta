@@ -1,5 +1,5 @@
 <!-- Organization-specific Authentication Modal for CESO -->
-<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" data-org="CESO">
+<div class="modal fade modal-gobierno" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" data-org="CESO">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header" style="background: linear-gradient(135deg, var(--color-gobierno-principal), var(--color-gobierno-secundario)); color: white;">
@@ -24,7 +24,7 @@
         <hr class="my-3">
 
         <!-- Login Form (organization fixed to CESO) -->
-        <form id="governmentLoginForm">
+        <form id="governmentLoginForm" class="form-gobierno">
           <div class="row">
             <div class="col-md-6">
               <div class="mb-3">
@@ -49,8 +49,8 @@
             </div>
           </div>
 
-          <div id="authError" class="alert alert-danger d-none" role="alert"><span id="authErrorMessage"></span></div>
-          <div id="authSuccess" class="alert alert-success d-none" role="alert"><span id="authSuccessMessage"></span></div>
+          <div id="authError" class="alert alert-gobierno alert-danger d-none" role="alert"><span id="authErrorMessage"></span></div>
+          <div id="authSuccess" class="alert alert-gobierno alert-success d-none" role="alert"><span id="authSuccessMessage"></span></div>
 
           <div class="d-grid gap-2">
             <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión Administrativa</button>

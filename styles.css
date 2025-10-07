@@ -69,3 +69,222 @@
 
 /* Small accessibility helpers */
 .sr-only{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+
+/* Additional gob.mx v3 compliant styles */
+
+/* Tables */
+.table-gobierno {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.table-gobierno th,
+.table-gobierno td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+  text-align: left;
+}
+
+.table-gobierno thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  background-color: var(--color-gobierno-principal);
+  color: white;
+  font-weight: 600;
+}
+
+.table-gobierno tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+
+/* Alerts */
+.alert-gobierno {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+}
+
+.alert-gobierno-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.alert-gobierno-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.alert-gobierno-warning {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeaa7;
+}
+
+.alert-gobierno-info {
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+}
+
+/* Modals */
+.modal-gobierno .modal-content {
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.modal-gobierno .modal-header {
+  background-color: var(--color-gobierno-principal);
+  color: white;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.modal-gobierno .modal-footer {
+  border-top: 1px solid #dee2e6;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+/* Breadcrumbs */
+.breadcrumb-gobierno {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  list-style: none;
+  background-color: #e9ecef;
+  border-radius: 0.375rem;
+}
+
+.breadcrumb-gobierno-item + .breadcrumb-gobierno-item::before {
+  display: inline-block;
+  padding-right: 0.5rem;
+  color: #6c757d;
+  content: "/";
+}
+
+.breadcrumb-gobierno-item.active {
+  color: #6c757d;
+}
+
+/* Tooltips */
+.tooltip-gobierno {
+  position: absolute;
+  z-index: 1070;
+  display: block;
+  margin: 0;
+  font-family: "Noto Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  text-align: start;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  word-break: normal;
+  word-spacing: normal;
+  white-space: normal;
+  line-break: auto;
+  font-size: 0.875rem;
+  word-wrap: break-word;
+  opacity: 0;
+}
+
+.tooltip-gobierno .tooltip-arrow {
+  position: absolute;
+  display: block;
+  width: 0.8rem;
+  height: 0.4rem;
+}
+
+.tooltip-gobierno .tooltip-arrow::before {
+  position: absolute;
+  content: "";
+  border-color: transparent;
+  border-style: solid;
+}
+
+.tooltip-gobierno.show {
+  opacity: 0.9;
+}
+
+.tooltip-gobierno .tooltip-inner {
+  max-width: 200px;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  text-align: center;
+  background-color: var(--color-gobierno-principal);
+  border-radius: 0.375rem;
+}
+
+/* Forms */
+.form-gobierno .form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  appearance: none;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-gobierno .form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: var(--color-gobierno-principal);
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(97, 18, 50, 0.25);
+}
+
+.form-gobierno .form-label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--color-texto-principal);
+}
+
+/* Official Header and Footer */
+.header-gobierno {
+  background-color: var(--color-gobierno-principal);
+  color: white;
+  padding: 1rem 0;
+}
+
+.header-gobierno .navbar-brand {
+  font-family: 'Patria', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.footer-gobierno {
+  background-color: var(--color-gobierno-verde);
+  color: white;
+  padding: 2rem 0;
+  margin-top: 2rem;
+}
+
+.footer-gobierno a {
+  color: #ddc9a3;
+  text-decoration: none;
+}
+
+.footer-gobierno a:hover {
+  color: white;
+  text-decoration: underline;
+}

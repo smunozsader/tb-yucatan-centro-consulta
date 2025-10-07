@@ -6,12 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Repositorio - Centro de Consulta</title>
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
   <style>
     body { padding: 24px; }
     .card-repo { margin-bottom: 12px; }
   </style>
 </head>
 <body>
+  <header class="header-gobierno">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="logo.png" alt="Gobierno de México" height="40" class="me-2">
+          Centro de Consulta de Acuerdos Sanitarios
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -67,13 +80,44 @@
     function fmtDate(v){ try{ if(!v) return ''; if(v.toDate) return v.toDate().toLocaleDateString(); const d=new Date(v); return isNaN(d)? String(v): d.toLocaleDateString(); }catch(e){return String(v);} }
 
     function loadRepo(){ const list = document.getElementById('repoList'); list.innerHTML = '<em>Cargando...</em>'; db.collection('repositorio').orderBy('createdAt','desc').get().then(snap=>{
-      if(!snap.size){ list.innerHTML = '<div class="alert alert-info">No hay documentos.</div>'; return; }
-      let html = '<div class="list-group">'; snap.forEach(d=>{ const md = d.data(); html += '<a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" href="#" data-path="'+(md.storagePath||'')+'"><div><strong>'+(md.title||md.filename||'Documento')+'</strong><div><small class="text-muted">'+(md.category||'')+' • '+fmtDate(md.createdAt && md.createdAt.toDate ? md.createdAt.toDate() : md.createdAt)+'</small></div></div><div><button class="btn btn-sm btn-outline-primary repo-download" data-path="'+(md.storagePath||'')+'">Abrir</button></div></a>'; }); html += '</div>'; list.innerHTML = html; Array.from(list.querySelectorAll('button.repo-download')).forEach(b=> b.addEventListener('click', function(ev){ ev.preventDefault(); const p=b.getAttribute('data-path'); if(!p) return alert('Ruta faltante'); firebase.storage().ref(p).getDownloadURL().then(u=> window.open(u,'_blank')).catch(err=> alert('Error abriendo: '+err.message)); })); }).catch(err=> list.innerHTML = '<div class="alert alert-danger">Error: '+err.message+'</div>'); }
+      if(!snap.size){ list.innerHTML = '<div class="alert alert-gobierno alert-info">No hay documentos.</div>'; return; }
+      let html = '<div class="list-group">'; snap.forEach(d=>{ const md = d.data(); html += '<a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" href="#" data-path="'+(md.storagePath||'')+'"><div><strong>'+(md.title||md.filename||'Documento')+'</strong><div><small class="text-muted">'+(md.category||'')+' • '+fmtDate(md.createdAt && md.createdAt.toDate ? md.createdAt.toDate() : md.createdAt)+'</small></div></div><div><button class="btn btn-sm btn-outline-primary repo-download" data-path="'+(md.storagePath||'')+'">Abrir</button></div></a>'; }); html += '</div>'; list.innerHTML = html; Array.from(list.querySelectorAll('button.repo-download')).forEach(b=> b.addEventListener('click', function(ev){ ev.preventDefault(); const p=b.getAttribute('data-path'); if(!p) return alert('Ruta faltante'); firebase.storage().ref(p).getDownloadURL().then(u=> window.open(u,'_blank')).catch(err=> alert('Error abriendo: '+err.message)); })); }).catch(err=> list.innerHTML = '<div class="alert alert-gobierno alert-danger">Error: '+err.message+'</div>'); }
 
     document.getElementById('repoUploadBtn').addEventListener('click', function(){ const fileEl = document.getElementById('repoFile'); const cat = document.getElementById('repoCategory').value || 'otros'; const title = document.getElementById('repoTitle').value || ''; const files = fileEl.files||[]; if(!files.length) return alert('Seleccione un archivo'); const user = (firebase.auth && firebase.auth().currentUser) || null; if(!user) return alert('Debe autenticarse como Administrador para subir documentos.'); const file = files[0]; const storagePath = 'repositorio/'+cat+'/'+Date.now()+'_'+file.name; const ref = firebase.storage().ref(storagePath); ref.put(file).then(()=> ref.getMetadata()).then(()=> db.collection('repositorio').add({ category: cat, title: title||file.name, filename: file.name, storagePath: storagePath, uploader: user.email||user.uid, createdAt: firebase.firestore.FieldValue.serverTimestamp() })).then(()=>{ alert('Documento subido'); document.getElementById('repoFile').value = ''; document.getElementById('repoTitle').value = ''; loadRepo(); }).catch(err=> alert('Error subiendo: '+err.message)); });
 
     // initial
     loadRepo();
   </script>
+
+  <footer class="footer-gobierno">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>Centro de Consulta de Acuerdos Sanitarios</h5>
+          <p>Plataforma oficial para consulta de acuerdos sanitarios entre CESO y APHIS USDA.</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Enlaces</h5>
+          <ul class="list-unstyled">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="ceso.html">CESO</a></li>
+            <li><a href="aphis.html">APHIS USDA</a></li>
+            <li><a href="acuerdos-ceso.html">Acuerdos CESO</a></li>
+            <li><a href="acuerdos-aphis.html">Acuerdos APHIS</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5>Contacto</h5>
+          <p>Dirección General de Sanidad Vegetal<br>
+          Secretaría de Agricultura y Desarrollo Rural<br>
+          Yucatán, México</p>
+        </div>
+      </div>
+      <hr>
+      <div class="text-center">
+        <p>&copy; 2024 Gobierno de México. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

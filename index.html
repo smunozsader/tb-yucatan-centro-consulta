@@ -206,8 +206,15 @@
 </head>
 <body>
   <!-- Minimal official header to satisfy framework expectations (visually hidden on landing). -->
-  <header aria-hidden="true" style="height:0;overflow:hidden;">
-    <nav class="navbar" style="display:none;" aria-hidden="true"></nav>
+  <header class="header-gobierno">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="logo.png" alt="Gobierno de México" height="40" class="me-2">
+          Centro de Consulta de Acuerdos Sanitarios
+        </a>
+      </div>
+    </nav>
   </header>
   <!-- Landing buttons now act as redirects to CESO / APHIS secondary pages. No top-right auth button. -->
 
@@ -261,6 +268,21 @@
     <!-- Dashboard and evidence UI moved to organization pages (ceso.html / aphis.html).
          The landing page should remain minimal: hero + two buttons. -->
   </main>
+
+  <footer class="footer-gobierno">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Secretaría de Agricultura y Desarrollo Rural</h5>
+          <p>Representación en Yucatán</p>
+        </div>
+        <div class="col-md-6">
+          <p>Contacto: <a href="mailto:contacto@yucatan.gob.mx">contacto@yucatan.gob.mx</a></p>
+          <p>&copy; 2025 Gobierno de México</p>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <!-- Framework gob.mx JavaScript -->
   <!-- jQuery and Bootstrap (required by some legacy scripts) -->

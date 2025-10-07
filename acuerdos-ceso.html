@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Acuerdos CESO - Consulta</title>
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
   <style>
     body { padding: 24px; }
     .table-wrap { margin-top: 18px; }
@@ -13,6 +14,18 @@
   </style>
 </head>
 <body>
+  <header class="header-gobierno">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="logo.png" alt="Gobierno de México" height="40" class="me-2">
+          Centro de Consulta de Acuerdos Sanitarios
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -53,7 +66,7 @@
   </div>
 
   <!-- Evidence modal and detail modal reused from main pages -->
-  <div class="modal fade" id="evidenceModal" tabindex="-1" aria-hidden="true">
+  <div class="modal fade modal-gobierno" id="evidenceModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -75,7 +88,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="agreementDetailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal fade modal-gobierno" id="agreementDetailModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -111,7 +124,7 @@
 
     let pendingStatusChange = null; // { coll, docId, newStatus, prevStatus, selectEl }
 
-    function renderTable(snapshot, collName){ let html='<div class="table-responsive"><table class="table table-striped table-bordered"><thead><tr><th>Numero</th><th>Acuerdo</th><th>Fecha</th><th>Estatus</th><th>Responsable</th><th>Acciones</th></tr></thead><tbody>'; snapshot.forEach(doc=>{ const d=doc.data(); const num=d.numero||d.id_acuerdo||''; const txt=d.acuerdo||d.descripcion||d.texto||''; const fecha=fmtDate(d.fecha_cumplimiento||d.fecha_reunion||d.fecha); const est=(d.estatus||d.Estatus||d.status||'')+''; const resp=d.responsable||d.email_responsable||''; const normalized = (est||'').toLowerCase(); const completedValues = ['completado','cumplido','completed']; const statusOptions = ['Pendiente','En Progreso','Parcialmente Cumplido','Vencido','Completado']; let estCell=''; if (completedValues.includes(normalized) || !est) { estCell = '<span class="badge bg-success">'+ (est || '') +'</span>'; } else { let opts = '<option value="">-- Seleccione --</option>'; statusOptions.forEach(opt=>{ opts += '<option value="'+opt+'"'+(opt===est? ' selected':'')+'>'+opt+'</option>'; }); estCell = '<select class="form-select form-select-sm status-select" data-doc="'+doc.id+'" data-coll="'+collName+'" data-prev="'+(est||'')+'">'+opts+'</select>'; }
+    function renderTable(snapshot, collName){ let html='<div class="table-responsive"><table class="table-gobierno"><thead><tr><th>Numero</th><th>Acuerdo</th><th>Fecha</th><th>Estatus</th><th>Responsable</th><th>Acciones</th></tr></thead><tbody>'; snapshot.forEach(doc=>{ const d=doc.data(); const num=d.numero||d.id_acuerdo||''; const txt=d.acuerdo||d.descripcion||d.texto||''; const fecha=fmtDate(d.fecha_cumplimiento||d.fecha_reunion||d.fecha); const est=(d.estatus||d.Estatus||d.status||'')+''; const resp=d.responsable||d.email_responsable||''; const normalized = (est||'').toLowerCase(); const completedValues = ['completado','cumplido','completed']; const statusOptions = ['Pendiente','En Progreso','Parcialmente Cumplido','Vencido','Completado']; let estCell=''; if (completedValues.includes(normalized) || !est) { estCell = '<span class="badge badge-gobierno bg-success">'+ (est || '') +'</span>'; } else { let opts = '<option value="">-- Seleccione --</option>'; statusOptions.forEach(opt=>{ opts += '<option value="'+opt+'"'+(opt===est? ' selected':'')+'>'+opt+'</option>'; }); estCell = '<select class="form-select form-select-sm status-select" data-doc="'+doc.id+'" data-coll="'+collName+'" data-prev="'+(est||'')+'">'+opts+'</select>'; }
       html+='<tr>' + '<td><a href="#" class="link-num" data-doc="'+doc.id+'" data-coll="'+collName+'">'+num+'</a></td>' + '<td style="max-width:40ch; white-space:normal;">'+ (txt? '<div>'+txt+'</div>':'') +'</td>' + '<td>'+fecha+'</td>' + '<td>'+estCell+'</td>' + '<td>'+resp+'</td>' + '<td>' + '<button class="btn btn-sm btn-outline-primary view-evidence" data-doc="'+doc.id+'" data-coll="'+collName+'">Ver Evidencias</button>' + '</td>' + '</tr>'; }); html+='</tbody></table></div>'; document.getElementById('acuerdosContainer').innerHTML=html; attachActions(); }
 
     function attachActions(){ const container=document.getElementById('acuerdosContainer'); Array.from(container.querySelectorAll('button.view-evidence')).forEach(btn=>{ btn.addEventListener('click', function(){ const coll=btn.getAttribute('data-coll'); const docId=btn.getAttribute('data-doc'); db.collection(coll).doc(docId).get().then(d=> openEvidenceModal(coll, docId, d.data())).catch(err=> alert('Error: '+err.message)); }); }); Array.from(container.querySelectorAll('a.link-num')).forEach(a=>{ a.addEventListener('click', function(ev){ ev.preventDefault(); const coll=a.getAttribute('data-coll'); const docId=a.getAttribute('data-doc'); db.collection(coll).doc(docId).get().then(d=>{ const data=d.data()||{}; document.getElementById('detail_numero').textContent=data.numero||data.id_acuerdo||docId; document.getElementById('detail_acuerdo').textContent=data.acuerdo||data.descripcion||data.texto||''; document.getElementById('detail_fecha').textContent=fmtDate(data.fecha_cumplimiento||data.fecha_reunion||data.fecha); document.getElementById('detail_estatus').textContent=data.estatus||data.Estatus||data.status||''; document.getElementById('detail_responsable').textContent=data.responsable||data.email_responsable||''; new bootstrap.Modal(document.getElementById('agreementDetailModal')).show(); }).catch(err=> alert('No se pudo cargar detalle: '+err.message)); }); });
@@ -127,11 +140,11 @@
       }); });
     }
 
-  function openEvidenceModal(coll, docId, docData){ const evidenceList=document.getElementById('evidenceList'); const filesEl=document.getElementById('evidenceFiles'); const uploadBtn=document.getElementById('evidenceUploadBtn'); const commentEl=document.getElementById('evidenceComment'); evidenceList.innerHTML='<em>Cargando evidencias...</em>'; db.collection(coll).doc(docId).collection('evidencias').orderBy('createdAt','desc').get().then(snap=>{ if(!snap.size) evidenceList.innerHTML='<div class="alert alert-info">No hay evidencias registradas.</div>'; else{ let html='<ul class="list-group">'; snap.forEach(d=>{ const md=d.data(); html+='<li class="list-group-item d-flex justify-content-between align-items-start"><div><strong>'+ (md.filename||'archivo') +'</strong><br/><small class="text-muted">'+ (md.uploader||'') + ' • ' + fmtDate(md.createdAt && md.createdAt.toDate ? md.createdAt.toDate() : md.createdAt) + '</small><div>' + (md.comment? '<em>'+md.comment+'</em>':'') + '</div></div><div><a class="btn btn-sm btn-outline-primary" href="#" data-url="'+(md.storagePath||'')+'">Descargar</a></div></li>'; }); html+='</ul>'; evidenceList.innerHTML=html; Array.from(evidenceList.querySelectorAll('a[data-url]')).forEach(a=> a.addEventListener('click', function(ev){ ev.preventDefault(); const path=a.getAttribute('data-url'); if(!path) return alert('Ruta faltante'); firebase.storage().ref(path).getDownloadURL().then(u=> window.open(u,'_blank')).catch(err=> alert('No se pudo obtener archivo: '+err.message)); })); } }).catch(err=> evidenceList.innerHTML='<div class="alert alert-danger">Error: '+err.message+'</div>'); uploadBtn.onclick=function(){ const files=(filesEl && filesEl.files)||[]; if(!files.length) return alert('Seleccione archivos'); const user=(firebase.auth && firebase.auth().currentUser)||null; if(!user) return alert('Debe autenticarse para subir evidencias.'); const promises=[]; Array.from(files).forEach(file=>{ const storagePath=coll+'/'+docId+'/'+Date.now()+'_'+file.name; const ref=firebase.storage().ref(storagePath); const upload=ref.put(file); const p=upload.then(()=> ref.getMetadata().then(()=>({storagePath, filename:file.name}))); promises.push(p.then(info=> db.collection(coll).doc(docId).collection('evidencias').add({ filename: info.filename, storagePath: info.storagePath, uploader: user.email||user.uid, comment: commentEl.value||null, createdAt: firebase.firestore.FieldValue.serverTimestamp() }))); }); Promise.all(promises).then(()=>{ alert('Evidencias subidas'); if (pendingStatusChange && pendingStatusChange.coll===coll && pendingStatusChange.docId===docId){ const newStatus = pendingStatusChange.newStatus; const sel = pendingStatusChange.selectEl; db.collection(coll).doc(docId).update({ estatus: newStatus, lastStatusChangeBy: user.email||user.uid, lastStatusChangeAt: firebase.firestore.FieldValue.serverTimestamp() }).then(()=>{ if (sel){ sel.setAttribute('data-prev', newStatus); sel.value = newStatus; } pendingStatusChange = null; openEvidenceModal(coll, docId, docData); }).catch(err=>{ alert('Error actualizando estatus: '+err.message); }); } else { openEvidenceModal(coll, docId, docData); } }).catch(err=> alert('Error subiendo: '+err.message)); }; document.getElementById('evidenceModalLabel').textContent='Evidencias - '+ (docData && (docData.numero||docData.id_acuerdo||docId)); const modalEl = document.getElementById('evidenceModal'); const modal = new bootstrap.Modal(modalEl); const onHidden = function(){ if (pendingStatusChange && pendingStatusChange.docId===docId){ const sel = pendingStatusChange.selectEl; if (sel){ sel.value = pendingStatusChange.prevStatus || ''; } pendingStatusChange = null; } modalEl.removeEventListener('hidden.bs.modal', onHidden); }; modalEl.addEventListener('hidden.bs.modal', onHidden); modal.show(); }
+  function openEvidenceModal(coll, docId, docData){ const evidenceList=document.getElementById('evidenceList'); const filesEl=document.getElementById('evidenceFiles'); const uploadBtn=document.getElementById('evidenceUploadBtn'); const commentEl=document.getElementById('evidenceComment'); evidenceList.innerHTML='<em>Cargando evidencias...</em>'; db.collection(coll).doc(docId).collection('evidencias').orderBy('createdAt','desc').get().then(snap=>{ if(!snap.size) evidenceList.innerHTML='<div class="alert alert-gobierno alert-info">No hay evidencias registradas.</div>'; else{ let html='<ul class="list-group">'; snap.forEach(d=>{ const md=d.data(); html+='<li class="list-group-item d-flex justify-content-between align-items-start"><div><strong>'+ (md.filename||'archivo') +'</strong><br/><small class="text-muted">'+ (md.uploader||'') + ' • ' + fmtDate(md.createdAt && md.createdAt.toDate ? md.createdAt.toDate() : md.createdAt) + '</small><div>' + (md.comment? '<em>'+md.comment+'</em>':'') + '</div></div><div><a class="btn btn-sm btn-outline-primary" href="#" data-url="'+(md.storagePath||'')+'">Descargar</a></div></li>'; }); html+='</ul>'; evidenceList.innerHTML=html; Array.from(evidenceList.querySelectorAll('a[data-url]')).forEach(a=> a.addEventListener('click', function(ev){ ev.preventDefault(); const path=a.getAttribute('data-url'); if(!path) return alert('Ruta faltante'); firebase.storage().ref(path).getDownloadURL().then(u=> window.open(u,'_blank')).catch(err=> alert('No se pudo obtener archivo: '+err.message)); })); } }).catch(err=> evidenceList.innerHTML='<div class="alert alert-gobierno alert-danger">Error: '+err.message+'</div>'); uploadBtn.onclick=function(){ const files=(filesEl && filesEl.files)||[]; if(!files.length) return alert('Seleccione archivos'); const user=(firebase.auth && firebase.auth().currentUser)||null; if(!user) return alert('Debe autenticarse para subir evidencias.'); const promises=[]; Array.from(files).forEach(file=>{ const storagePath=coll+'/'+docId+'/'+Date.now()+'_'+file.name; const ref=firebase.storage().ref(storagePath); const upload=ref.put(file); const p=upload.then(()=> ref.getMetadata().then(()=>({storagePath, filename:file.name}))); promises.push(p.then(info=> db.collection(coll).doc(docId).collection('evidencias').add({ filename: info.filename, storagePath: info.storagePath, uploader: user.email||user.uid, comment: commentEl.value||null, createdAt: firebase.firestore.FieldValue.serverTimestamp() }))); }); Promise.all(promises).then(()=>{ alert('Evidencias subidas'); if (pendingStatusChange && pendingStatusChange.coll===coll && pendingStatusChange.docId===docId){ const newStatus = pendingStatusChange.newStatus; const sel = pendingStatusChange.selectEl; db.collection(coll).doc(docId).update({ estatus: newStatus, lastStatusChangeBy: user.email||user.uid, lastStatusChangeAt: firebase.firestore.FieldValue.serverTimestamp() }).then(()=>{ if (sel){ sel.setAttribute('data-prev', newStatus); sel.value = newStatus; } pendingStatusChange = null; openEvidenceModal(coll, docId, docData); }).catch(err=>{ alert('Error actualizando estatus: '+err.message); }); } else { openEvidenceModal(coll, docId, docData); } }).catch(err=> alert('Error subiendo: '+err.message)); }; document.getElementById('evidenceModalLabel').textContent='Evidencias - '+ (docData && (docData.numero||docData.id_acuerdo||docId)); const modalEl = document.getElementById('evidenceModal'); const modal = new bootstrap.Modal(modalEl); const onHidden = function(){ if (pendingStatusChange && pendingStatusChange.docId===docId){ const sel = pendingStatusChange.selectEl; if (sel){ sel.value = pendingStatusChange.prevStatus || ''; } pendingStatusChange = null; } modalEl.removeEventListener('hidden.bs.modal', onHidden); }; modalEl.addEventListener('hidden.bs.modal', onHidden); modal.show(); }
 
     document.getElementById('refreshBtn').addEventListener('click', loadAcuerdos);
 
-  function loadAcuerdos(){ document.getElementById('acuerdosContainer').innerHTML='<em>Cargando acuerdos...</em>'; tryCollections(['acuerdos_ceso','acuerdos-ceso','acuerdos']).then(result=>{ if(!result.found){ document.getElementById('acuerdosContainer').innerHTML='<div class="alert alert-info">No se encontraron acuerdos en las colecciones probadas.</div>'; return; } renderTable(result.snapshot, result.name); computeSummaryAndLists(result.name); }).catch(err=>{ document.getElementById('alerts').innerHTML='<div class="alert alert-danger">Error: '+(err && err.message)+'</div>'; }); }
+  function loadAcuerdos(){ document.getElementById('acuerdosContainer').innerHTML='<em>Cargando acuerdos...</em>'; tryCollections(['acuerdos_ceso','acuerdos-ceso','acuerdos']).then(result=>{ if(!result.found){ document.getElementById('acuerdosContainer').innerHTML='<div class="alert alert-gobierno alert-info">No se encontraron acuerdos en las colecciones probadas.</div>'; return; } renderTable(result.snapshot, result.name); computeSummaryAndLists(result.name); }).catch(err=>{ document.getElementById('alerts').innerHTML='<div class="alert alert-gobierno alert-danger">Error: '+(err && err.message)+'</div>'; }); }
 
     // initial load
     loadAcuerdos();
@@ -180,7 +193,7 @@
                             '<div class="card p-2"><strong>Completados</strong><div class="h4">'+completados+'</div><div class="small text-muted">A mi cargo: '+myCompletadosCount+'</div></div>';
 
         function renderList(container, items, emptyMsg){
-          if(!items.length) return container.innerHTML = '<div class="alert alert-info">'+emptyMsg+'</div>';
+          if(!items.length) return container.innerHTML = '<div class="alert alert-gobierno alert-info">'+emptyMsg+'</div>';
           let html='<div class="list-group">';
           items.forEach(it=>{ html += '<div class="list-group-item d-flex justify-content-between align-items-center"><div><strong>'+ (it.title||it.docId) +'</strong><div><small class="text-muted">'+ (it.daysLeft===null? 'Fecha no establecida' : (it.daysLeft>=0? it.daysLeft + ' días restantes' : Math.abs(it.daysLeft) + ' días vencidos')) +'</small></div></div><div><button class="btn btn-sm btn-primary take-action" data-doc="'+it.docId+'">Tomar acción</button></div></div>'; });
           html += '</div>';
@@ -190,10 +203,25 @@
 
         renderList(pendEl, myPendientes, 'No tiene acuerdos pendientes a su cargo.');
         renderList(vencEl, myVencidos, 'No tiene acuerdos vencidos a su cargo.');
-      }).catch(err=>{ summaryEl.innerHTML=''; pendEl.innerHTML = '<div class="alert alert-danger">Error: '+err.message+'</div>'; vencEl.innerHTML = '<div class="alert alert-danger">Error: '+err.message+'</div>'; });
+      }).catch(err=>{ summaryEl.innerHTML=''; pendEl.innerHTML = '<div class="alert alert-gobierno alert-danger">Error: '+err.message+'</div>'; vencEl.innerHTML = '<div class="alert alert-gobierno alert-danger">Error: '+err.message+'</div>'; });
     }
 
     firebase.auth && firebase.auth().onAuthStateChanged(function(){ tryCollections(['acuerdos_ceso','acuerdos-ceso','acuerdos']).then(res=>{ if(res.found) computeSummaryAndLists(res.name); }); });
   </script>
+
+  <footer class="footer-gobierno">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Secretaría de Agricultura y Desarrollo Rural</h5>
+          <p>Representación en Yucatán</p>
+        </div>
+        <div class="col-md-6">
+          <p>Contacto: <a href="mailto:contacto@yucatan.gob.mx">contacto@yucatan.gob.mx</a></p>
+          <p>&copy; 2025 Gobierno de México</p>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
