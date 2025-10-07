@@ -90,6 +90,10 @@
       border-radius: 8px;
       transition: all 0.3s ease;
       min-width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
 
     .btn-lg:hover {
@@ -211,7 +215,6 @@
       <div class="container">
         <a class="navbar-brand" href="index.html">
           <img src="logo.png" alt="Gobierno de México" height="40" class="me-2">
-          Centro de Consulta de Acuerdos Sanitarios
         </a>
       </div>
     </nav>
@@ -225,29 +228,22 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-8 text-center">
-            <h1 class="hero-title mb-4">
-              Centro de Consulta de Acuerdos Sanitarios
-            </h1>
-            <p class="hero-subtitle mb-5">
-              Sistema desarrollado por la Representación de la Secretaría de Agricultura y Desarrollo Rural 
-              (Gobierno Federal Mexicano) en Yucatán, en beneficio de la Ganadería yucateca
-            </p>
             
             <!-- Botones principales únicos con marco -->
             <div class="buttons-frame">
               <div class="d-flex justify-content-center gap-4 flex-wrap">
-                <a href="ceso.html" class="btn btn-lg btn-gobierno-dorado" onclick="console.debug('Landing -> CESO clicked');" style="min-width: 200px;">
-                  <span class="bootstrap-icons" aria-hidden="true">
+                <a href="ceso.html" class="btn btn-lg btn-gobierno-dorado d-flex align-items-center justify-content-center" onclick="console.debug('Landing -> CESO clicked');" style="min-width: 200px;">
+                  <span class="bootstrap-icons me-2" aria-hidden="true">
                     <i class="bi bi-building"></i>
                   </span>
-                  CESO
+                  <span class="text-center">CESO</span>
                 </a>
                 
-                <a href="aphis.html" class="btn btn-lg btn-gobierno-verde" onclick="console.debug('Landing -> APHIS clicked');" style="min-width: 200px;">
-                  <span class="bootstrap-icons" aria-hidden="true">
+                <a href="aphis.html" class="btn btn-lg btn-gobierno-verde d-flex align-items-center justify-content-center" onclick="console.debug('Landing -> APHIS clicked');" style="min-width: 200px;">
+                  <span class="bootstrap-icons me-2" aria-hidden="true">
                     <i class="bi bi-globe"></i>
                   </span>
-                  APHIS-USDA
+                  <span class="text-center">APHIS-USDA</span>
                 </a>
               </div>
             </div>
