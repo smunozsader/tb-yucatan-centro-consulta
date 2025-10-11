@@ -26,17 +26,22 @@ class GobMXAuthSystem {
   }
 
   initializePlaceholderUsers() {
-    // Fallback placeholder users for development
+    // Real users from Firebase database for development/fallback - Updated Oct 2025
     this.cesoUsers = [
-      { nombre: "Usuario CESO 1", correo: "ceso.user1@example.local", rol: "Administrador", contrasena: "dev-pass-ceso-1", organization: "CESO", permissions: ["view","download","upload","edit"] },
-      { nombre: "Usuario CESO 2", correo: "ceso.user2@example.local", rol: "Federal", contrasena: "dev-pass-ceso-2", organization: "CESO", permissions: ["view","download","upload"] }
+      { nombre: "Sergio Muñoz de Alba Medrano", correo: "smunoz.sader@gmail.com", rol: "Administrador", contrasena: "MunozSader#99", organization: "CESO", permissions: ["view","download","upload","edit","admin"] },
+      { nombre: "Jorge Carlos Berlín Montero", correo: "representacion.yuc@agricultura.gob.mx", rol: "Federal", contrasena: "SaderYuc#2025", organization: "CESO", permissions: ["view","download","upload","edit"] },
+      { nombre: "Francis A. Genovés Chanona", correo: "francis.genoves@siniiga.gob.mx", rol: "Siniiga", contrasena: "GenovedChanona#45", organization: "CESO", permissions: ["view","download","upload"] },
+      { nombre: "Luis Martín Flores Martínez", correo: "luis.floresm@yct.agricultura.gob.mx", rol: "Federal", contrasena: "FloresMartinez#78", organization: "CESO", permissions: ["view","download","upload"] }
     ];
 
     this.aphisUsers = [
-      { nombre: "Usuario APHIS 1", correo: "aphis.user1@example.local", rol: "Administrador", contrasena: "dev-pass-aphis-1", organization: "APHIS", permissions: ["view","download","upload","edit"] },
-      { nombre: "Usuario APHIS 2", correo: "aphis.user2@example.local", rol: "Comite", contrasena: "dev-pass-aphis-2", organization: "APHIS", permissions: ["view","download"] }
+      { nombre: "Sergio Muñoz de Alba Medrano", correo: "smunoz.sader@gmail.com", rol: "Administrador", contrasena: "MunozSader#99", organization: "APHIS", permissions: ["view","download","upload","edit","admin"] },
+      { nombre: "Jorge Carlos Berlín Montero", correo: "representacion.yuc@agricultura.gob.mx", rol: "Federal", contrasena: "SaderYuc#2025", organization: "APHIS", permissions: ["view","download","upload","edit"] },
+      { nombre: "Francis A. Genovés Chanona", correo: "francis.genoves@siniiga.gob.mx", rol: "Siiniiga", contrasena: "GenovedChanona#45", organization: "APHIS", permissions: ["view","download","upload"] },
+      { nombre: "C. Noé J. Cepeda Lizama", correo: "noe.cepeda@ugroy.mx", rol: "Comite", contrasena: "APHISComite2025", organization: "APHIS", permissions: ["view","download"] }
     ];
     this.usersLoaded = true;
+    console.log('[auth-system] Loaded fallback users - authentication ready');
   }
 
   async loadUsersFromFirebase() {
@@ -47,18 +52,26 @@ class GobMXAuthSystem {
       const cesoSnapshot = await this.db.collection('users_ceso').get();
       this.cesoUsers = cesoSnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
+        organization: 'CESO'
       }));
 
       // Load APHIS users
       const aphisSnapshot = await this.db.collection('users_aphis').get();
       this.aphisUsers = aphisSnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
+        organization: 'APHIS'
       }));
 
       this.usersLoaded = true;
-      console.log(`[auth-system] Loaded ${this.cesoUsers.length} CESO users and ${this.aphisUsers.length} APHIS users from Firebase`);
+      console.log(`[auth-system] ✅ Loaded ${this.cesoUsers.length} CESO users and ${this.aphisUsers.length} APHIS users from Firebase`);
+      
+      // Log admin users for debugging
+      const cesoAdmins = this.cesoUsers.filter(u => u.rol === 'Administrador');
+      const aphisAdmins = this.aphisUsers.filter(u => u.rol === 'Administrador');
+      console.log(`[auth-system] 👑 CESO Admins: ${cesoAdmins.length}`, cesoAdmins.map(u => u.correo));
+      console.log(`[auth-system] 👑 APHIS Admins: ${aphisAdmins.length}`, aphisAdmins.map(u => u.correo));
 
     } catch (error) {
       console.error('[auth-system] Error loading users from Firebase:', error);
@@ -69,16 +82,18 @@ class GobMXAuthSystem {
 
   // Authentication method
   async authenticate(email, password, organization) {
+    console.log('[auth-system] 🔍 authenticate() called with:', { email, organization, passwordLength: password ? password.length : 0 });
+
     // Wait for users to be loaded if not already loaded
     if (!this.usersLoaded) {
-      console.log('[auth-system] Waiting for users to load...');
+      console.log('[auth-system] ⏳ Waiting for users to load...');
       let attempts = 0;
       while (!this.usersLoaded && attempts < 50) { // Wait up to 5 seconds
         await new Promise(resolve => setTimeout(resolve, 100));
         attempts++;
       }
       if (!this.usersLoaded) {
-        console.error('[auth-system] Users failed to load, authentication unavailable');
+        console.error('[auth-system] ⏰ Users failed to load, authentication unavailable');
         return {
           success: false,
           message: 'Sistema de autenticación no disponible. Intente nuevamente.'
@@ -88,14 +103,20 @@ class GobMXAuthSystem {
 
     const userDatabase = organization === 'CESO' ? this.cesoUsers : this.aphisUsers;
     const normalizedEmail = (email || '').toLowerCase();
-    console.debug('[auth-system] authenticate() called for', { email: normalizedEmail, organization, userCount: userDatabase.length });
+    console.log('[auth-system] 🔍 Searching in', organization, 'database with', userDatabase.length, 'users');
+    console.log('[auth-system] 📧 Looking for email:', normalizedEmail);
 
     const user = userDatabase.find(u => {
       const userEmail = (u.correo || '').toLowerCase();
       const userPassword = u.contrasena || '';
-      const match = userEmail === normalizedEmail && userPassword === password;
-      if (match) console.debug('[auth-system] user matched in database:', { correo: u.correo, nombre: u.nombre, rol: u.rol });
-      return match;
+      const emailMatch = userEmail === normalizedEmail;
+      const passwordMatch = userPassword === password;
+      console.log('[auth-system] 🔍 Checking user:', u.nombre, '- Email match:', emailMatch, '- Password match:', passwordMatch);
+      if (emailMatch && passwordMatch) {
+        console.log('[auth-system] ✅ User matched:', { correo: u.correo, nombre: u.nombre, rol: u.rol });
+        return true;
+      }
+      return false;
     });
 
     if (user) {

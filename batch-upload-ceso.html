@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carga en Lote de Acuerdos - CESO - Gobierno de México</title>
+
+  <!-- Favicon oficial -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
+  
+  <!-- Framework gob.mx v3 -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  
+  <!-- Estilos personalizados -->
+  <link href="gobmx.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+
+  <style>
+    .upload-area {
+      border: 2px dashed #611232;
+      border-radius: 8px;
+      padding: 40px;
+      text-align: center;
+      background: #f8f9fa;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .upload-area:hover {
+      border-color: #9d2449;
+      background: #f1f3f4;
+    }
+    
+    .upload-area.dragover {
+      border-color: #a57f2c;
+      background: #fdf9f0;
+    }
+    
+    .file-input {
+      display: none;
+    }
+    
+    .template-download {
+      background: linear-gradient(135deg, #611232 0%, #9d2449 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-block;
+      margin: 10px;
+    }
+    
+    .template-download:hover {
+      background: linear-gradient(135deg, #9d2449 0%, #611232 100%);
+      color: white;
+      text-decoration: none;
+    }
+    
+    .progress-container {
+      display: none;
+      margin: 20px 0;
+    }
+    
+    .validation-results {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      background: #f8f9fa;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header oficial del gobierno -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #611232;">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/logo-header.svg" alt="Gobierno de México" height="40" class="me-2">
+        <span class="fw-bold">Centro de Consulta de Acuerdos Sanitarios</span>
+      </a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="hall-ceso.html">CESO</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Carga en Lote</li>
+      </ol>
+    </nav>
+
+    <!-- Título principal -->
+    <div class="text-center mb-5">
+      <h1 class="display-4 fw-bold text-gobierno-principal">
+        <i class="bi bi-upload me-3"></i>Carga en Lote de Acuerdos
+      </h1>
+      <p class="lead text-muted">
+        Sistema para cargar múltiples acuerdos desde archivos CSV de sesiones CESO
+      </p>
+    </div>
+
+    <!-- Instrucciones -->
+    <div class="row mb-4">
+      <div class="col-lg-12">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-gobierno-principal text-white">
+            <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Instrucciones de Uso</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="fw-bold text-gobierno-secundario">📋 Paso 1: Descargar Template</h6>
+                <p>Descarga la plantilla CSV y completa los datos de tu sesión:</p>
+                <a href="TEMPLATES/template_acuerdos_ceso.csv" class="template-download" download>
+                  <i class="bi bi-download me-2"></i>Descargar Template CESO
+                </a>
+              </div>
+              <div class="col-md-6">
+                <h6 class="fw-bold text-gobierno-secundario">📊 Paso 2: Completar Datos</h6>
+                <p>Campos requeridos:</p>
+                <ul class="small">
+                  <li><strong>Numero_de_Acuerdo:</strong> CE-YUC-DDMMYY-NNN</li>
+                  <li><strong>Descripcion_del_Acuerdo:</strong> Texto completo</li>
+                  <li><strong>Responsable_del_Seguimiento:</strong> Persona encargada</li>
+                  <li><strong>Fecha_de_Reunion:</strong> YYYY-MM-DD</li>
+                  <li><strong>Fecha_de_Cumplimiento:</strong> YYYY-MM-DD</li>
+                  <li><strong>Estado:</strong> Pendiente/Completado/Vencidos</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Área de carga -->
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="card border-0 shadow">
+          <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="bi bi-cloud-upload me-2"></i>Subir Archivo CSV</h5>
+          </div>
+          <div class="card-body">
+            
+            <!-- Área de arrastrar y soltar -->
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('csvFile').click()">
+              <i class="bi bi-cloud-upload display-1 text-gobierno-principal mb-3"></i>
+              <h5>Arrastra tu archivo CSV aquí</h5>
+              <p class="text-muted">o haz clic para seleccionar un archivo</p>
+              <small class="text-muted">Formatos soportados: .csv (máximo 10MB)</small>
+              <input type="file" id="csvFile" class="file-input" accept=".csv" />
+            </div>
+
+            <!-- Información del archivo -->
+            <div id="fileInfo" class="mt-3" style="display: none;">
+              <div class="alert alert-info">
+                <i class="bi bi-file-earmark-text me-2"></i>
+                <span id="fileName"></span>
+                <span class="badge bg-secondary ms-2" id="fileSize"></span>
+              </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="text-center mt-4">
+              <button id="validateBtn" class="btn btn-outline-primary me-2" style="display: none;" onclick="validateFile()">
+                <i class="bi bi-check-circle me-2"></i>Validar Archivo
+              </button>
+              <button id="uploadBtn" class="btn btn-success" style="display: none;" onclick="uploadFile()">
+                <i class="bi bi-upload me-2"></i>Cargar Acuerdos
+              </button>
+              <button id="clearBtn" class="btn btn-outline-secondary" style="display: none;" onclick="clearFile()">
+                <i class="bi bi-x-circle me-2"></i>Limpiar
+              </button>
+            </div>
+
+            <!-- Barra de progreso -->
+            <div class="progress-container" id="progressContainer">
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                     role="progressbar" id="progressBar" style="width: 0%"></div>
+              </div>
+              <small class="text-muted mt-2" id="progressText">Preparando carga...</small>
+            </div>
+
+            <!-- Resultados de validación -->
+            <div id="validationResults" class="mt-4" style="display: none;">
+              <h6 class="fw-bold">Resultados de Validación:</h6>
+              <div class="validation-results" id="validationContent"></div>
+            </div>
+
+            <!-- Resultados de carga -->
+            <div id="uploadResults" class="mt-4" style="display: none;">
+              <div class="alert alert-success">
+                <h6 class="fw-bold mb-2">
+                  <i class="bi bi-check-circle me-2"></i>Carga Completada Exitosamente
+                </h6>
+                <div id="uploadSummary"></div>
+                <div class="mt-3">
+                  <a href="acuerdos-ceso.html" class="btn btn-primary">
+                    <i class="bi bi-eye me-2"></i>Ver Acuerdos Cargados
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ejemplos -->
+    <div class="row mt-5">
+      <div class="col-lg-12">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="bi bi-lightbulb me-2"></i>Ejemplos y Recursos</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="fw-bold">📁 Archivos de Ejemplo</h6>
+                <p>Descarga ejemplos con datos reales para referencia:</p>
+                <a href="TEMPLATES/ceso_sesion_091025.csv" class="btn btn-outline-primary btn-sm" download>
+                  <i class="bi bi-download me-2"></i>Ejemplo CESO
+                </a>
+              </div>
+              <div class="col-md-6">
+                <h6 class="fw-bold">📖 Documentación</h6>
+                <p>Guías completas para el uso del sistema:</p>
+                <a href="TEMPLATES/README_CARGA_LOTE.md" class="btn btn-outline-primary btn-sm" target="_blank">
+                  <i class="bi bi-book me-2"></i>Manual Completo
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    let selectedFile = null;
+    let validationResults = null;
+
+    // Configurar eventos de drag and drop
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('csvFile');
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight() {
+      uploadArea.classList.add('dragover');
+    }
+
+    function unhighlight() {
+      uploadArea.classList.remove('dragover');
+    }
+
+    uploadArea.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      handleFiles(files);
+    }
+
+    fileInput.addEventListener('change', function(e) {
+      handleFiles(e.target.files);
+    });
+
+    function handleFiles(files) {
+      if (files.length > 0) {
+        const file = files[0];
+        
+        // Validar tipo de archivo
+        if (!file.name.toLowerCase().endsWith('.csv')) {
+          alert('Por favor selecciona un archivo CSV válido.');
+          return;
+        }
+        
+        // Validar tamaño (10MB max)
+        if (file.size > 10 * 1024 * 1024) {
+          alert('El archivo es demasiado grande. Máximo 10MB permitido.');
+          return;
+        }
+        
+        selectedFile = file;
+        showFileInfo(file);
+      }
+    }
+
+    function showFileInfo(file) {
+      document.getElementById('fileName').textContent = file.name;
+      document.getElementById('fileSize').textContent = formatBytes(file.size);
+      document.getElementById('fileInfo').style.display = 'block';
+      document.getElementById('validateBtn').style.display = 'inline-block';
+      document.getElementById('clearBtn').style.display = 'inline-block';
+    }
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function clearFile() {
+      selectedFile = null;
+      fileInput.value = '';
+      document.getElementById('fileInfo').style.display = 'none';
+      document.getElementById('validateBtn').style.display = 'none';
+      document.getElementById('uploadBtn').style.display = 'none';
+      document.getElementById('clearBtn').style.display = 'none';
+      document.getElementById('validationResults').style.display = 'none';
+      document.getElementById('uploadResults').style.display = 'none';
+    }
+
+    function validateFile() {
+      if (!selectedFile) {
+        alert('Por favor selecciona un archivo primero.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const csv = e.target.result;
+        const results = validateCSV(csv);
+        showValidationResults(results);
+        
+        if (results.isValid) {
+          document.getElementById('uploadBtn').style.display = 'inline-block';
+        }
+      };
+      reader.readAsText(selectedFile);
+    }
+
+    function validateCSV(csvContent) {
+      const lines = csvContent.split('\n').filter(line => line.trim());
+      const results = {
+        isValid: true,
+        errors: [],
+        warnings: [],
+        records: lines.length - 1, // -1 for header
+        summary: {}
+      };
+
+      if (lines.length < 2) {
+        results.isValid = false;
+        results.errors.push('El archivo debe contener al menos una fila de datos además del encabezado.');
+        return results;
+      }
+
+      // Validar encabezado
+      const header = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+      const requiredFields = [
+        'Numero_de_Acuerdo',
+        'Descripcion_del_Acuerdo', 
+        'Responsable_del_Seguimiento',
+        'Fecha_de_Reunion',
+        'Fecha_de_Cumplimiento',
+        'Estado'
+      ];
+
+      const missingFields = requiredFields.filter(field => !header.includes(field));
+      if (missingFields.length > 0) {
+        results.isValid = false;
+        results.errors.push(`Campos faltantes en el encabezado: ${missingFields.join(', ')}`);
+      }
+
+      // Validar algunas filas de muestra
+      const sampleSize = Math.min(5, lines.length - 1);
+      for (let i = 1; i <= sampleSize; i++) {
+        const row = lines[i].split(',').map(cell => cell.trim().replace(/"/g, ''));
+        
+        // Validar número de acuerdo CESO
+        const agreementNumber = row[header.indexOf('Numero_de_Acuerdo')];
+        if (agreementNumber && !agreementNumber.match(/^CE-YUC-\d{6}-\d{3}$/)) {
+          results.warnings.push(`Fila ${i}: Formato de número de acuerdo inusual: ${agreementNumber}`);
+        }
+      }
+
+      results.summary = {
+        totalRecords: results.records,
+        estimatedTime: Math.ceil(results.records / 10), // segundos estimados
+        organization: 'CESO'
+      };
+
+      return results;
+    }
+
+    function showValidationResults(results) {
+      const container = document.getElementById('validationContent');
+      let html = '';
+
+      html += `<div class="mb-3">
+        <h6 class="text-success"><i class="bi bi-info-circle me-2"></i>Resumen</h6>
+        <ul class="mb-0">
+          <li>Registros encontrados: <strong>${results.summary.totalRecords}</strong></li>
+          <li>Organización: <strong>${results.summary.organization}</strong></li>
+          <li>Tiempo estimado: <strong>~${results.summary.estimatedTime} segundos</strong></li>
+        </ul>
+      </div>`;
+
+      if (results.errors.length > 0) {
+        html += `<div class="mb-3">
+          <h6 class="text-danger"><i class="bi bi-exclamation-triangle me-2"></i>Errores</h6>
+          <ul class="text-danger mb-0">`;
+        results.errors.forEach(error => {
+          html += `<li>${error}</li>`;
+        });
+        html += '</ul></div>';
+      }
+
+      if (results.warnings.length > 0) {
+        html += `<div class="mb-3">
+          <h6 class="text-warning"><i class="bi bi-exclamation-circle me-2"></i>Advertencias</h6>
+          <ul class="text-warning mb-0">`;
+        results.warnings.forEach(warning => {
+          html += `<li>${warning}</li>`;
+        });
+        html += '</ul></div>';
+      }
+
+      if (results.isValid) {
+        html += `<div class="alert alert-success mb-0">
+          <i class="bi bi-check-circle me-2"></i>
+          <strong>¡Archivo válido!</strong> Listo para cargar.
+        </div>`;
+      } else {
+        html += `<div class="alert alert-danger mb-0">
+          <i class="bi bi-x-circle me-2"></i>
+          <strong>Archivo inválido.</strong> Corrige los errores antes de continuar.
+        </div>`;
+      }
+
+      container.innerHTML = html;
+      document.getElementById('validationResults').style.display = 'block';
+      validationResults = results;
+    }
+
+    function uploadFile() {
+      if (!selectedFile || !validationResults || !validationResults.isValid) {
+        alert('Por favor valida el archivo primero.');
+        return;
+      }
+
+      // Mostrar progreso
+      document.getElementById('progressContainer').style.display = 'block';
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+
+      // Simular progreso (en implementación real, usar llamadas AJAX)
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress > 95) progress = 95;
+        
+        progressBar.style.width = progress + '%';
+        progressText.textContent = `Procesando... ${Math.round(progress)}%`;
+        
+        if (progress >= 95) {
+          clearInterval(interval);
+          setTimeout(completeUpload, 1000);
+        }
+      }, 200);
+    }
+
+    function completeUpload() {
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      
+      progressBar.style.width = '100%';
+      progressText.textContent = '¡Completado!';
+      
+      setTimeout(() => {
+        document.getElementById('progressContainer').style.display = 'none';
+        showUploadResults();
+      }, 1000);
+    }
+
+    function showUploadResults() {
+      const summary = `
+        <ul class="mb-0">
+          <li><strong>${validationResults.summary.totalRecords}</strong> acuerdos procesados</li>
+          <li><strong>${validationResults.summary.totalRecords}</strong> registros creados exitosamente</li>
+          <li><strong>0</strong> errores encontrados</li>
+          <li>Organización: <strong>CESO</strong></li>
+        </ul>
+      `;
+      
+      document.getElementById('uploadSummary').innerHTML = summary;
+      document.getElementById('uploadResults').style.display = 'block';
+    }
+
+    // Mostrar información al cargar la página
+    console.log('🚀 Módulo de Carga en Lote CESO cargado');
+    console.log('📋 Para uso completo, integrar con batch-upload-agreements.js backend');
+  </script>
+</body>
+</html>
