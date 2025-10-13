@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Instrucciones de Carga en Lote - CESO - Gobierno de México</title>
+
+  <!-- REQUIRED: Official GOB.mx Framework -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+
+  <style>
+    body {
+      padding-top: 0;
+      margin: 0;
+    }
+    .page {
+      padding-top: 70px;
+    }
+    .instructions-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .section-header {
+      background: linear-gradient(135deg, #611232 0%, #9d2449 100%);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px 8px 0 0;
+      margin: -2rem -2rem 1.5rem -2rem;
+    }
+    .field-card {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .field-name {
+      font-weight: bold;
+      color: #611232;
+    }
+    .pattern-example {
+      background: #e8f4fd;
+      border-left: 4px solid #0d6efd;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .command-block {
+      background: #212529;
+      color: #f8f9fa;
+      padding: 1rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+    .warning-box {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 6px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    .success-box {
+      background: #d1e7dd;
+      border: 1px solid #198754;
+      border-radius: 6px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    .error-box {
+      background: #f8d7da;
+      border: 1px solid #dc3545;
+      border-radius: 6px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    .steps-list {
+      counter-reset: step-counter;
+    }
+    .steps-list li {
+      counter-increment: step-counter;
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+      position: relative;
+    }
+    .steps-list li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: #611232;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="container">
+      <!-- Breadcrumb -->
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="hall-ceso.html" data-es="CESO" data-en="CESO">CESO</a></li>
+          <li class="breadcrumb-item"><a href="batch-upload-ceso.html" data-es="Carga en Lote" data-en="Batch Upload">Carga en Lote</a></li>
+          <li class="breadcrumb-item active" aria-current="page" data-es="Instrucciones" data-en="Instructions">Instrucciones</li>
+        </ol>
+      </nav>
+
+      <!-- Language Toggle -->
+      <div class="text-end mb-3">
+        <div class="btn-group btn-group-sm" role="group" aria-label="Language Toggle">
+          <button type="button" class="btn btn-outline-secondary active" id="btnSpanish" onclick="setLanguage('es')">
+            🇲🇽 ESPAÑOL
+          </button>
+          <button type="button" class="btn btn-outline-secondary" id="btnEnglish" onclick="setLanguage('en')">
+            🇺🇸 ENGLISH
+          </button>
+        </div>
+      </div>
+
+      <!-- Título principal -->
+      <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold text-gobierno-principal">
+          <i class="bi bi-book me-3"></i><span data-es="Guía para Carga en Lote de Acuerdos" data-en="Batch Upload Guide for Agreements">Guía para Carga en Lote de Acuerdos</span>
+        </h1>
+        <p class="lead text-muted" data-es="Manual completo para el sistema de carga masiva de acuerdos CESO" data-en="Complete manual for the CESO agreements batch upload system">
+          Manual completo para el sistema de carga masiva de acuerdos CESO
+        </p>
+      </div>
+
+      <!-- Propósito -->
+      <div class="instructions-container">
+        <div class="section-header">
+          <h2 class="h4 mb-0"><i class="bi bi-bullseye me-2"></i><span data-es="Propósito" data-en="Purpose">Propósito</span></h2>
+        </div>
+        <p data-es="Sistema para cargar múltiples acuerdos de una sesión de manera eficiente usando archivos CSV." data-en="System to efficiently load multiple agreements from a session using CSV files.">
+          Sistema para cargar múltiples acuerdos de una sesión de manera eficiente usando archivos CSV.
+        </p>
+      </div>
+
+      <!-- Templates Disponibles -->
+      <div class="instructions-container">
+        <div class="section-header">
+          <h2 class="h4 mb-0"><i class="bi bi-file-earmark-spreadsheet me-2"></i><span data-es="Templates Disponibles" data-en="Available Templates">Templates Disponibles</span></h2>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="field-card">
+              <div class="field-name">template_acuerdos_ceso.csv</div>
+              <small class="text-muted" data-es="Para acuerdos CESO" data-en="For CESO agreements">Para acuerdos CESO</small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field-card">
+              <div class="field-name">template_acuerdos_aphis.csv</div>
+              <small class="text-muted" data-es="Para acuerdos APHIS-USDA" data-en="For APHIS-USDA agreements">Para acuerdos APHIS-USDA</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estructura de Campos -->
+      <div class="instructions-container">
+        <div class="section-header">
+          <h2 class="h4 mb-0"><i class="bi bi-grid me-2"></i><span data-es="Estructura de Campos" data-en="Field Structure">Estructura de Campos</span></h2>
+        </div>
+        
+        <h5 class="mt-4 mb-3" data-es="Campos Requeridos:" data-en="Required Fields:">Campos Requeridos:</h5>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="field-card">
+              <div class="field-name">Numero_de_Acuerdo</div>
+              <small data-es="Identificador único del acuerdo" data-en="Unique agreement identifier">Identificador único del acuerdo</small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field-card">
+              <div class="field-name">Descripcion_del_Acuerdo</div>
+              <small data-es="Texto completo del acuerdo" data-en="Complete agreement text">Texto completo del acuerdo</small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field-card">
+              <div class="field-name">Responsable_del_Seguimiento</div>
+              <small data-es="Persona encargada del seguimiento" data-en="Person responsible for follow-up">Persona encargada del seguimiento</small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field-card">
+              <div class="field-name">Fecha_de_Reunion</div>
+              <small data-es="Fecha de la reunión (formato: YYYY-MM-DD)" data-en="Meeting date (format: YYYY-MM-DD)">Fecha de la reunión (formato: YYYY-MM-DD)</small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field-card">
+              <div class="field-name">Fecha_de_Cumplimiento</div>
+              <small data-es="Fecha límite de cumplimiento (formato: YYYY-MM-DD)" data-en="Compliance deadline (format: YYYY-MM-DD)">Fecha límite de cumplimiento (formato: YYYY-MM-DD)</small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field-card">
+              <div class="field-name">Estado</div>
+              <small data-es="Estado actual: Pendiente, Completado, Vencidos" data-en="Current status: Pendiente, Completado, Vencidos">Estado actual: Pendiente, Completado, Vencidos</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Patrones de Numeración -->
+      <div class="instructions-container">
+        <div class="section-header">
+          <h2 class="h4 mb-0"><i class="bi bi-hash me-2"></i><span data-es="Patrones de Numeración" data-en="Numbering Patterns">Patrones de Numeración</span></h2>
+        </div>
+        
+        <div class="pattern-example">
+          <strong>CESO:</strong> CE-YUC-DDMMYY-NNN
+          <br><small class="text-muted" data-es="Ejemplo: CE-YUC-091025-001" data-en="Example: CE-YUC-091025-001">Ejemplo: CE-YUC-091025-001</small>
+        </div>
+        
+        <div class="pattern-example">
+          <strong>APHIS:</strong> NN-SESION-DDMMYY
+          <br><small class="text-muted" data-es="Ejemplo: 01-XX-091025" data-en="Example: 01-XX-091025">Ejemplo: 01-XX-091025</small>
+        </div>
+      </div>
+
+      <!-- Estados Válidos -->
+      <div class="instructions-container">
+        <div class="section-header">
+          <h2 class="h4 mb-0"><i class="bi bi-check-circle me-2"></i><span data-es="Estados Válidos" data-en="Valid Statuses">Estados Válidos</span></h2>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-4">
+            <div class="success-box text-center">
+              <i class="bi bi-clock-history fs-4"></i>
+              <div class="fw-bold">Pendiente</div>
+              <small data-es="Acuerdo en proceso" data-en="Agreement in progress">Acuerdo en proceso</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="success-box text-center">
+              <i class="bi bi-check-circle fs-4"></i>
+              <div class="fw-bold">Completado</div>
+              <small data-es="Acuerdo cumplido" data-en="Agreement completed">Acuerdo cumplido</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="error-box text-center">
+              <i class="bi bi-x-circle fs-4"></i>
+              <div class="fw-bold">Vencidos</div>
+              <small data-es="Acuerdo no cumplido en tiempo" data-en="Agreement not completed on time">Acuerdo no cumplido en tiempo</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tipos de Sesión -->
+      <div class="instructions-container">
+        <div class="section-header">
+          <h2 class="h4 mb-0"><i class="bi bi-calendar-event me-2"></i><span data-es="Tipos de Sesión Comunes" data-en="Common Session Types">Tipos de Sesión Comunes</span></h2>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="text-gobierno-principal">CESO:</h6>
+            <ul class="list-unstyled">
+              <li><i class="bi bi-dot"></i> Ordinaria</li>
+              <li><i class="bi bi-dot"></i> Extraordinaria</li>
+              <li><i class="bi bi-dot"></i> Instalación</li>
+              <li><i class="bi bi-dot"></i> Seguimiento</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h6 class="text-warning">APHIS:</h6>
+            <ul class="list-unstyled">
+              <li><i class="bi bi-dot"></i> Primera Ordinaria</li>
+              <li><i class="bi bi-dot"></i> Segunda Ordinaria</li>
+              <li><i class="bi bi-dot"></i> Extraordinaria</li>
+              <li><i class="bi bi-dot"></i> Seguimiento</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Uso del Sistema -->
+      <div class="instructions-container">
+        <div class="section-header">
+          <h2 class="h4 mb-0"><i class="bi bi-play-circle me-2"></i><span data-es="Uso del Sistema" data-en="System Usage">Uso del Sistema</span></h2>
+        </div>
+        
+        <h5 class="mt-4 mb-3" data-es="1. Preparar CSV:" data-en="1. Prepare CSV:">1. Preparar CSV:</h5>
+        <ol class="steps-list">
+          <li data-es="Copiar template correspondiente" data-en="Copy corresponding template">Copiar template correspondiente</li>
+          <li data-es="Completar datos de la sesión" data-en="Fill in session data">Completar datos de la sesión</li>
+          <li data-es="Guardar con nombre descriptivo: ceso_sesion_DDMMYY.csv" data-en="Save with descriptive name: ceso_sesion_DDMMYY.csv">Guardar con nombre descriptivo: <code>ceso_sesion_DDMMYY.csv</code></li>
+        </ol>
+
+        <h5 class="mt-4 mb-3" data-es="2. Cargar Datos:" data-en="2. Load Data:">2. Cargar Datos:</h5>
+        <div class="command-block">
+          # <span data-es="Cargar acuerdos CESO" data-en="Load CESO agreements">Cargar acuerdos CESO</span><br>
+          node batch-upload-agreements.js --file TEMPLATES/ceso_sesion_091025.csv --type ceso<br><br>
+          # <span data-es="Cargar acuerdos APHIS" data-en="Load APHIS agreements">Cargar acuerdos APHIS</span><br>
+          node batch-upload-agreements.js --file TEMPLATES/aphis_sesion_091025.csv --type aphis
+        </div>
+
+        <h5 class="mt-4 mb-3" data-es="3. Verificación:" data-en="3. Verification:">3. Verificación:</h5>
+        <ul>
+          <li data-es="El script validará formato de fechas" data-en="Script will validate date formats">El script validará formato de fechas</li>
+          <li data-es="Verificará unicidad de números de acuerdo" data-en="Will verify uniqueness of agreement numbers">Verificará unicidad de números de acuerdo</li>
+          <li data-es="Creará backup automático" data-en="Will create automatic backup">Creará backup automático</li>
+          <li data-es="Reportará errores y éxitos" data-en="Will report errors and successes">Reportará errores y éxitos</li>
+        </ul>
+      </div>
+
+      <!-- Consideraciones Importantes -->
+      <div class="instructions-container">
+        <div class="section-header">
+          <h2 class="h4 mb-0"><i class="bi bi-exclamation-triangle me-2"></i><span data-es="Consideraciones Importantes" data-en="Important Considerations">Consideraciones Importantes</span></h2>
+        </div>
+        
+        <div class="warning-box">
+          <h6><i class="bi bi-calendar me-2"></i><span data-es="Formato de Fechas:" data-en="Date Format:">Formato de Fechas:</span></h6>
+          <ul class="mb-0">
+            <li data-es="Usar formato ISO: YYYY-MM-DD" data-en="Use ISO format: YYYY-MM-DD">Usar formato ISO: YYYY-MM-DD</li>
+            <li data-es="Ejemplos válidos: 2025-10-09, 2025-12-31" data-en="Valid examples: 2025-10-09, 2025-12-31">Ejemplos válidos: 2025-10-09, 2025-12-31</li>
+          </ul>
+        </div>
+
+        <div class="warning-box">
+          <h6><i class="bi bi-hash me-2"></i><span data-es="Números de Acuerdo:" data-en="Agreement Numbers:">Números de Acuerdo:</span></h6>
+          <ul class="mb-0">
+            <li data-es="Deben ser únicos en todo el sistema" data-en="Must be unique across the entire system">Deben ser únicos en todo el sistema</li>
+            <li data-es="Seguir patrones establecidos por organización" data-en="Follow patterns established by organization">Seguir patrones establecidos por organización</li>
+            <li data-es="No usar caracteres especiales excepto guiones" data-en="Do not use special characters except hyphens">No usar caracteres especiales excepto guiones</li>
+          </ul>
+        </div>
+
+        <div class="warning-box">
+          <h6><i class="bi bi-text-left me-2"></i><span data-es="Texto de Descripción:" data-en="Description Text:">Texto de Descripción:</span></h6>
+          <ul class="mb-0">
+            <li data-es="Evitar comillas dobles dentro del texto" data-en="Avoid double quotes within text">Evitar comillas dobles dentro del texto</li>
+            <li data-es="Para comillas usar comillas simples" data-en="For quotes use single quotes">Para comillas usar comillas simples</li>
+            <li data-es="Máximo 500 caracteres recomendado" data-en="Maximum 500 characters recommended">Máximo 500 caracteres recomendado</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Solución de Problemas -->
+      <div class="instructions-container">
+        <div class="section-header">
+          <h2 class="h4 mb-0"><i class="bi bi-tools me-2"></i><span data-es="Solución de Problemas" data-en="Troubleshooting">Solución de Problemas</span></h2>
+        </div>
+        
+        <div class="error-box">
+          <h6><i class="bi bi-x-circle me-2"></i><span data-es='Error: "Número de acuerdo duplicado"' data-en='Error: "Duplicate agreement number"'>Error: "Número de acuerdo duplicado"</span></h6>
+          <ul class="mb-0">
+            <li data-es="Verificar que el número no exista en la base" data-en="Verify that the number does not exist in the database">Verificar que el número no exista en la base</li>
+            <li data-es="Usar numeración secuencial" data-en="Use sequential numbering">Usar numeración secuencial</li>
+          </ul>
+        </div>
+
+        <div class="error-box">
+          <h6><i class="bi bi-x-circle me-2"></i><span data-es='Error: "Fecha inválida"' data-en='Error: "Invalid date"'>Error: "Fecha inválida"</span></h6>
+          <ul class="mb-0">
+            <li data-es="Verificar formato YYYY-MM-DD" data-en="Verify YYYY-MM-DD format">Verificar formato YYYY-MM-DD</li>
+            <li data-es="Verificar que la fecha sea válida" data-en="Verify that the date is valid">Verificar que la fecha sea válida</li>
+          </ul>
+        </div>
+
+        <div class="error-box">
+          <h6><i class="bi bi-x-circle me-2"></i><span data-es='Error: "Estado inválido"' data-en='Error: "Invalid status"'>Error: "Estado inválido"</span></h6>
+          <ul class="mb-0">
+            <li data-es="Usar solo: Pendiente, Completado, Vencidos" data-en="Use only: Pendiente, Completado, Vencidos">Usar solo: Pendiente, Completado, Vencidos</li>
+            <li data-es="Verificar mayúsculas y minúsculas" data-en="Check upper and lower case">Verificar mayúsculas y minúsculas</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="text-center mt-5 mb-4">
+        <a href="batch-upload-ceso.html" class="btn btn-primary btn-lg me-3">
+          <i class="bi bi-arrow-left me-2"></i><span data-es="Volver a Carga en Lote" data-en="Back to Batch Upload">Volver a Carga en Lote</span>
+        </a>
+        <a href="TEMPLATES/template_acuerdos_ceso.csv" class="btn btn-outline-success btn-lg" download>
+          <i class="bi bi-download me-2"></i><span data-es="Descargar Template" data-en="Download Template">Descargar Template</span>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Language switching functionality -->
+  <script>
+    function getCurrentLanguage() {
+      return localStorage.getItem('preferredLanguage') || 'es';
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('preferredLanguage', lang);
+      
+      // Update button states
+      document.getElementById('btnSpanish').classList.toggle('active', lang === 'es');
+      document.getElementById('btnEnglish').classList.toggle('active', lang === 'en');
+      
+      // Update all translatable elements
+      document.querySelectorAll('[data-es][data-en]').forEach(element => {
+        if (lang === 'es') {
+          element.textContent = element.getAttribute('data-es');
+        } else {
+          element.textContent = element.getAttribute('data-en');
+        }
+      });
+    }
+
+    // Initialize language on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentLang = getCurrentLanguage();
+      setLanguage(currentLang);
+    });
+  </script>
+
+  <!-- Government Framework JavaScript -->
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
+
+</body>
+</html>

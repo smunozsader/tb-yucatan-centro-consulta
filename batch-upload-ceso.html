@@ -84,17 +84,29 @@
       <!-- Breadcrumb -->
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="hall-ceso.html">CESO</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Carga en Lote</li>
+        <li class="breadcrumb-item"><a href="hall-ceso.html" data-es="CESO" data-en="CESO">CESO</a></li>
+        <li class="breadcrumb-item active" aria-current="page" data-es="Carga en Lote" data-en="Batch Upload">Carga en Lote</li>
       </ol>
     </nav>
+
+    <!-- Language Toggle -->
+    <div class="text-end mb-3">
+      <div class="btn-group btn-group-sm" role="group" aria-label="Language Toggle">
+        <button type="button" class="btn btn-outline-secondary active" id="btnSpanish" onclick="setLanguage('es')">
+          🇲🇽 ESPAÑOL
+        </button>
+        <button type="button" class="btn btn-outline-secondary" id="btnEnglish" onclick="setLanguage('en')">
+          🇺🇸 ENGLISH
+        </button>
+      </div>
+    </div>
 
     <!-- Título principal -->
     <div class="text-center mb-5">
       <h1 class="display-4 fw-bold text-gobierno-principal">
-        <i class="bi bi-upload me-3"></i>Carga en Lote de Acuerdos
+        <i class="bi bi-upload me-3"></i><span data-es="Carga en Lote de Acuerdos" data-en="Batch Upload of Agreements">Carga en Lote de Acuerdos</span>
       </h1>
-      <p class="lead text-muted">
+      <p class="lead text-muted" data-es="Sistema para cargar múltiples acuerdos desde archivos CSV de sesiones CESO" data-en="System to load multiple agreements from CESO session CSV files">
         Sistema para cargar múltiples acuerdos desde archivos CSV de sesiones CESO
       </p>
     </div>
@@ -226,7 +238,7 @@
               <div class="col-md-6">
                 <h6 class="fw-bold">📖 Documentación</h6>
                 <p>Guías completas para el uso del sistema:</p>
-                <a href="TEMPLATES/README_CARGA_LOTE.md" class="btn btn-outline-primary btn-sm" target="_blank">
+                <a href="instrucciones-carga-lote.html" class="btn btn-outline-primary btn-sm" target="_blank">
                   <i class="bi bi-book me-2"></i>Manual Completo
                 </a>
               </div>
@@ -513,6 +525,36 @@
     // Mostrar información al cargar la página
     console.log('🚀 Módulo de Carga en Lote CESO cargado');
     console.log('📋 Para uso completo, integrar con batch-upload-agreements.js backend');
+  </script>
+
+  <!-- Language switching functionality -->
+  <script>
+    function getCurrentLanguage() {
+      return localStorage.getItem('preferredLanguage') || 'es';
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('preferredLanguage', lang);
+      
+      // Update button states
+      document.getElementById('btnSpanish').classList.toggle('active', lang === 'es');
+      document.getElementById('btnEnglish').classList.toggle('active', lang === 'en');
+      
+      // Update all translatable elements
+      document.querySelectorAll('[data-es][data-en]').forEach(element => {
+        if (lang === 'es') {
+          element.textContent = element.getAttribute('data-es');
+        } else {
+          element.textContent = element.getAttribute('data-en');
+        }
+      });
+    }
+
+    // Initialize language on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentLang = getCurrentLanguage();
+      setLanguage(currentLang);
+    });
   </script>
 
   <!-- Framework gob.mx v3 Scripts -->
