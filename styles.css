@@ -16,6 +16,40 @@
 	--color-texto-principal: #545454;
 }
 
+/* Background color utilities */
+.bg-gobierno-principal {
+	background-color: var(--color-gobierno-principal) !important;
+}
+
+.bg-gobierno-secundario {
+	background-color: var(--color-gobierno-secundario) !important;
+}
+
+.bg-gobierno-dorado {
+	background-color: var(--color-gobierno-dorado) !important;
+}
+
+.bg-gobierno-verde {
+	background-color: var(--color-gobierno-verde) !important;
+}
+
+/* Text color utilities */
+.text-gobierno-principal {
+	color: var(--color-gobierno-principal) !important;
+}
+
+.text-gobierno-secundario {
+	color: var(--color-gobierno-secundario) !important;
+}
+
+.text-gobierno-dorado {
+	color: var(--color-gobierno-dorado) !important;
+}
+
+.text-gobierno-verde {
+	color: var(--color-gobierno-verde) !important;
+}
+
 /* Form focus states as suggested in gob.mx guidelines */
 .form-control:focus{
 	box-shadow: 0 0 0 0.2rem rgba(97,18,50,0.12) !important;
