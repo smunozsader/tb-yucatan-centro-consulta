@@ -1,7 +1,8 @@
-// Node.js script to upload CESO agreements from Excel to Firestore
+// Node.js script to upload CESO agreements from CSV to Firestore
 const admin = require('firebase-admin');
-const XLSX = require('xlsx');
+const fs = require('fs');
 const path = require('path');
+const { parse } = require('csv-parse/sync');
 
 // Initialize Firebase Admin SDK
 const serviceAccount = require('./serviceAccountKey.json');
@@ -11,14 +12,16 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-// Read Excel file
-const excelPath = path.join(__dirname, 'BASES DATOS', 'base datos CESO.xlsx');
-const workbook = XLSX.readFile(excelPath);
-const sheetName = workbook.SheetNames[0];
-const sheet = workbook.Sheets[sheetName];
-const records = XLSX.utils.sheet_to_json(sheet);
+// Read CSV file
+const csvPath = path.join(__dirname, 'BASES DATOS', 'recuperado_base_datos_CESO.csv');
 
 async function uploadAgreements() {
+  const csvData = fs.readFileSync(csvPath, 'utf8');
+  const records = parse(csvData, {
+    columns: true,
+    skip_empty_lines: true
+  });
+
   for (const agreement of records) {
     // Use agreement number or description as document ID if available
     let docId = agreement.numero || agreement.Numero || agreement.descripcion || agreement.Descripcion || undefined;

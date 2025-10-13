@@ -5,6 +5,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CESO - Acceso</title>
+  
+  <!-- REQUIRED: Official GOB.mx Framework -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
   <style>
@@ -26,43 +29,8 @@
   </style>
 </head>
 <body>
-  <!-- Header oficial del Gobierno de México -->
-  <nav class="navbar navbar-expand-md navbar-dark bg-light navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <a href="https://www.gob.mx/" target="_blank" class="navbar-brand">
-        <img src="https://framework-gb.cdn.gob.mx/gobmx/img/logo_blanco.svg" alt="Página de inicio, Gobierno de México" class="logos" style="height: 46px;width: auto;">
-      </a>
-      <button class="navbar-toggler navbar-toggler-button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarColor03">
-        <div class="navbar-nav nav-pills margen">
-          <a class="nav-item nav-link" href="https://www.gob.mx/tramites" target="_self" title="Ir a trámites del gobierno">Trámites</a>
-          <a class="nav-item nav-link" href="https://www.gob.mx/gobierno" target="_self" title="Ir a gobierno">Gobierno</a>
-          <a class="nav-item nav-link" href="https://www.gob.mx/busqueda" target="_self" title="Haz búsquedas en gobierno">
-            <i class="icon-search"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Header oficial del Gobierno de México -->
-  <header>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8">
-          <h2>CESO - Acceso Administrativo</h2>
-          <p>Centro de Consulta de Acuerdos Sanitarios - Secretaría de Agricultura y Desarrollo Rural</p>
-        </div>
-        <div class="col-md-4 text-end">
-          <img src="logo.png" alt="Gobierno de México" height="50">
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="main-content">
+  <!-- Contenido -->
+  <main class="page" style="padding-top: 60px;">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
@@ -92,23 +60,7 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Footer oficial del Gobierno de México -->
-  <footer>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <h5>Secretaría de Agricultura y Desarrollo Rural</h5>
-          <p>Representación en Yucatán</p>
-        </div>
-        <div class="col-md-6">
-          <p>Contacto: <a href="mailto:contacto@yucatan.gob.mx">contacto@yucatan.gob.mx</a></p>
-          <p>© 2025 Gobierno de México</p>
-        </div>
-      </div>
-    </div>
-  </footer>
+  </main>
 
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -165,5 +117,8 @@
       });
     });
   </script>
+
+  <!-- Framework gob.mx v3 Scripts -->
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
 </body>
 </html>

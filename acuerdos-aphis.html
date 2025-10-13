@@ -8,34 +8,39 @@
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
   <style>
-    body { padding: 24px; }
+    body { 
+      padding-top: 60px; /* Reduced padding for framework header only */
+      padding-left: 24px;
+      padding-right: 24px;
+      padding-bottom: 24px;
+    }
     .table-wrap { margin-top: 18px; }
     .page-title { display:flex; align-items:center; gap:12px; }
   </style>
 </head>
 <body>
-  <header class="header-gobierno">
-    <nav class="navbar navbar-expand-lg">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">
-          <img src="logo.png" alt="Gobierno de México" height="40" class="me-2">
-          Centro de Consulta de Acuerdos Sanitarios
-        </a>
-      </div>
-    </nav>
-  </header>
-
-  <div class="container">
-  <div class="container">
+  <main class="container" style="padding-top: 60px;">
     <div class="row">
       <div class="col-12">
-        <h1 class="page-title">Acuerdos APHIS-USDA</h1>
-        <p class="text-muted">Listado público (vista clara) de acuerdos disponibles para consulta</p>
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+          <div>
+            <h1 class="page-title" data-es="Acuerdos APHIS-USDA" data-en="APHIS-USDA Agreements">Acuerdos APHIS-USDA</h1>
+            <p class="text-muted" data-es="Listado público (vista clara) de acuerdos disponibles para consulta" data-en="Public listing (clear view) of agreements available for consultation">Listado público (vista clara) de acuerdos disponibles para consulta</p>
+          </div>
+          <div class="btn-group btn-group-sm" role="group" aria-label="Language Toggle">
+            <button type="button" class="btn btn-outline-primary active" id="btnSpanish" onclick="setLanguage('es')">
+              🇲🇽 ESPAÑOL
+            </button>
+            <button type="button" class="btn btn-outline-primary" id="btnEnglish" onclick="setLanguage('en')">
+              🇺🇸 ENGLISH
+            </button>
+          </div>
+        </div>
 
-        <div class="mb-3 d-flex flex-wrap align-items-center gap-2">
-          <a href="aphis.html" class="btn btn-light">Volver</a>
-          <button id="refreshBtn" class="btn btn-primary">Refrescar</button>
-          <a href="repositorio.html" class="btn btn-lg btn-gobierno-dorado" aria-label="Ir al Repositorio (Administración)">Repositorio (Admin)</a>
+        <div class="mb-4 d-flex flex-wrap align-items-center justify-content-center gap-4 px-3">
+          <a href="hall-aphis.html" class="btn btn-lg btn-outline-secondary d-flex align-items-center justify-content-center">Volver</a>
+          <button id="refreshBtn" class="btn btn-lg btn-primary d-flex align-items-center justify-content-center">Refrescar</button>
+          <a href="repositorio-aphis.html" class="btn btn-lg btn-primary d-flex align-items-center justify-content-center" aria-label="Ir al Repositorio APHIS">Repositorio APHIS</a>
         </div>
 
         <div id="alerts"></div>
@@ -118,14 +123,54 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
   <script src="__/firebase/init.js"></script>
   <script>
-    function fmtDate(v){ try{ if(!v) return ''; if(v.toDate) return v.toDate().toLocaleDateString(); const d=new Date(v); return isNaN(d)? String(v): d.toLocaleDateString(); }catch(e){return String(v);} }
+    function fmtDate(v){ try{ if(!v) return ''; if(typeof v === 'number'){ const d = new Date((v - 25569) * 86400 * 1000); return d.toLocaleDateString(); } if(v.toDate) return v.toDate().toLocaleDateString(); const d=new Date(v); return isNaN(d)? String(v): d.toLocaleDateString(); }catch(e){return String(v);} }
 
     function tryCollections(names){ return new Promise((resolve)=>{ let i=0; function next(){ if(i>=names.length) return resolve({found:false}); const name=names[i++]; db.collection(name).get().then(snap=>{ if(snap && snap.size) return resolve({found:true,name,snapshot:snap}); next(); }).catch(()=> next()); } next(); }); }
 
     // global helper used when a status change flow is pending
     let pendingStatusChange = null; // { coll, docId, newStatus, prevStatus, selectEl }
 
-    function renderTable(snapshot, collName){ let html='<div class="table-responsive"><table class="table-gobierno"><thead><tr><th>Numero</th><th>Acuerdo</th><th>Fecha</th><th>Estatus</th><th>Responsable</th><th>Acciones</th></tr></thead><tbody>'; snapshot.forEach(doc=>{ const d=doc.data(); const num=d.numero||d.id_acuerdo||''; const txt=d.acuerdo||d.descripcion||d.texto||''; const fecha=fmtDate(d.fecha_cumplimiento||d.fecha_reunion||d.fecha); const est=(d.estatus||d.Estatus||d.status||'')+''; const resp=d.responsable||d.email_responsable||''; // build estatus cell: if completed, show plain text; otherwise show a select to allow changes
+    function renderTable(snapshot, collName){ 
+      // Sort documents: 1) Pending status first, 2) Most recent dates second
+      const docs = [];
+      snapshot.forEach(doc => docs.push(doc));
+      docs.sort((a, b) => {
+        const aData = a.data();
+        const bData = b.data();
+        
+        // Get status for sorting
+        const aStatus = (aData.status||aData['Estado']||aData.estatus||aData.Estatus||'').toLowerCase();
+        const bStatus = (bData.status||bData['Estado']||bData.estatus||bData.Estatus||'').toLowerCase();
+        
+        // Check if status is pending (includes empty status)
+        const isPendingA = aStatus.includes('pendiente') || aStatus === '' || aStatus.includes('pending');
+        const isPendingB = bStatus.includes('pendiente') || bStatus === '' || bStatus.includes('pending');
+        
+        // First priority: Pending status (pending comes first)
+        if (isPendingA && !isPendingB) return -1; // A comes first (pending)
+        if (!isPendingA && isPendingB) return 1;  // B comes first (pending)
+        
+        // Second priority: Date sorting (newest first)
+        const aDate = aData.meetingDate||aData.complianceDate||aData['Fecha de Reunión']||aData['Fecha de Cumplimiento']||aData.fecha_cumplimiento||aData.fecha_reunion||aData.fecha;
+        const bDate = bData.meetingDate||bData.complianceDate||bData['Fecha de Reunión']||bData['Fecha de Cumplimiento']||bData.fecha_cumplimiento||bData.fecha_reunion||bData.fecha;
+        
+        // Convert to comparable values
+        const getDateValue = (dateVal) => {
+          if (!dateVal) return 0;
+          if (typeof dateVal === 'number') return (dateVal - 25569) * 86400 * 1000;
+          if (dateVal.toDate) return dateVal.toDate().getTime();
+          const d = new Date(dateVal);
+          return isNaN(d) ? 0 : d.getTime();
+        };
+        
+        const aVal = getDateValue(aDate);
+        const bVal = getDateValue(bDate);
+        
+        return bVal - aVal; // descending (newest first)
+      });
+      
+      let html='<div class="table-responsive"><table class="table-gobierno"><thead><tr><th>Numero</th><th>Acuerdo</th><th>Fecha</th><th>Estatus</th><th>Responsable</th><th>Acciones</th></tr></thead><tbody>'; 
+      docs.forEach(doc=>{ const d=doc.data(); const num=d.agreementNumber||d['Número de Acuerdo']||d.numero||d.id_acuerdo||''; const txt=d.description||d['Descripción del Acuerdo']||d.acuerdo||d.descripcion||d.texto||''; const fecha=fmtDate(d.meetingDate||d.complianceDate||d['Fecha de Reunión']||d['Fecha de Cumplimiento']||d.fecha_cumplimiento||d.fecha_reunion||d.fecha); const est=(d.status||d['Estado']||d.estatus||d.Estatus||'')+''; const resp=d.responsible||d['Responsable del Seguimiento']||d.responsable||d.email_responsable||''; // build estatus cell: if completed, show plain text; otherwise show a select to allow changes
       let estCell = '';
       const normalized = (est||'').toLowerCase();
       const completedValues = ['completado','cumplido','completed'];
@@ -143,21 +188,33 @@
     function attachActions(){ const container=document.getElementById('acuerdosContainer'); // view evidence buttons
       Array.from(container.querySelectorAll('button.view-evidence')).forEach(btn=>{ btn.addEventListener('click', function(){ const coll=btn.getAttribute('data-coll'); const docId=btn.getAttribute('data-doc'); db.collection(coll).doc(docId).get().then(d=> openEvidenceModal(coll, docId, d.data())).catch(err=> alert('Error: '+err.message)); }); });
       // row number -> detail
-      Array.from(container.querySelectorAll('a.link-num')).forEach(a=>{ a.addEventListener('click', function(ev){ ev.preventDefault(); const coll=a.getAttribute('data-coll'); const docId=a.getAttribute('data-doc'); db.collection(coll).doc(docId).get().then(d=>{ const data=d.data()||{}; document.getElementById('detail_numero').textContent=data.numero||data.id_acuerdo||docId; document.getElementById('detail_acuerdo').textContent=data.acuerdo||data.descripcion||data.texto||''; document.getElementById('detail_fecha').textContent=fmtDate(data.fecha_cumplimiento||data.fecha_reunion||data.fecha); document.getElementById('detail_estatus').textContent=data.estatus||data.Estatus||data.status||''; document.getElementById('detail_responsable').textContent=data.responsable||data.email_responsable||''; new bootstrap.Modal(document.getElementById('agreementDetailModal')).show(); }).catch(err=> alert('No se pudo cargar detalle: '+err.message)); }); });
+      Array.from(container.querySelectorAll('a.link-num')).forEach(a=>{ a.addEventListener('click', function(ev){ ev.preventDefault();             const coll=a.getAttribute('data-coll'); const docId=a.getAttribute('data-doc'); db.collection(coll).doc(docId).get().then(d=>{ const data=d.data()||{}; document.getElementById('detail_numero').textContent=data.agreementNumber||data['Número de Acuerdo']||data.numero||data.id_acuerdo||docId; document.getElementById('detail_acuerdo').textContent=data.description||data['Descripción del Acuerdo']||data.acuerdo||data.descripcion||data.texto||''; document.getElementById('detail_fecha').textContent=fmtDate(data.meetingDate||data.complianceDate||data['Fecha de Reunión']||data['Fecha de Cumplimiento']||data.fecha_cumplimiento||data.fecha_reunion||data.fecha); document.getElementById('detail_estatus').textContent=data.status||data['Estado']||data.estatus||data.Estatus||''; document.getElementById('detail_responsable').textContent=data.responsible||data['Responsable del Seguimiento']||data.responsable||data.email_responsable||''; new bootstrap.Modal(document.getElementById('agreementDetailModal')).show(); }).catch(err=> alert('No se pudo cargar detalle: '+err.message)); }); });
 
       // status select change: require auth and evidence upload
       Array.from(container.querySelectorAll('select.status-select')).forEach(sel=>{
         sel.addEventListener('change', function(ev){ const newVal = sel.value; const docId = sel.getAttribute('data-doc'); const coll = sel.getAttribute('data-coll'); const prev = sel.getAttribute('data-prev')||'';
-          // if user selected same prev or blank, do nothing
           if (!newVal || newVal===prev) { return; }
+          // Check authorization: user must be the responsible person or admin
           const user = (firebase.auth && firebase.auth().currentUser) || null;
           if (!user) { alert('Debe autenticarse para cambiar el estatus.'); sel.value = prev; return; }
-          // mark pending change and open evidence modal
-          pendingStatusChange = { coll, docId, newStatus: newVal, prevStatus: prev, selectEl: sel };
-          // update notice to demand upload
-          const notice = document.getElementById('evidenceUploadNotice'); if (notice) notice.textContent = 'Debe subir al menos una evidencia para confirmar el cambio de estatus a "' + newVal + '".';
-          // load doc data then open modal
-          db.collection(coll).doc(docId).get().then(d=> openEvidenceModal(coll, docId, d.data())).catch(err=>{ alert('Error cargando documento: '+err.message); sel.value = prev; pendingStatusChange = null; });
+          const userEmail = user.email || user.uid;
+          const isAdmin = userEmail.toLowerCase() === 'smunozam@gmail.com';
+          // Get agreement data to check responsible person
+          db.collection(coll).doc(docId).get().then(doc => {
+            if (!doc.exists) { alert('Acuerdo no encontrado.'); sel.value = prev; return; }
+            const data = doc.data();
+                        const responsable = (data.responsible || data.responsable || data['Responsable del Seguimiento'] || '').toLowerCase();
+            const isOwner = responsable.includes(userEmail.toLowerCase()) || responsable.includes('sergio') || responsable.includes('muñoz');
+            if (!isAdmin && !isOwner) { 
+              alert('Solo el responsable del acuerdo o el administrador pueden cambiar el estatus.'); 
+              sel.value = prev; 
+              return; 
+            }
+            // Authorized: proceed with status change
+            pendingStatusChange = { coll, docId, newStatus: newVal, prevStatus: prev, selectEl: sel };
+            const notice = document.getElementById('evidenceUploadNotice'); if (notice) notice.textContent = 'Debe subir al menos una evidencia para confirmar el cambio de estatus a "' + newVal + '".';
+            openEvidenceModal(coll, docId, data);
+          }).catch(err=>{ alert('Error verificando permisos: '+err.message); sel.value = prev; });
       }); });
     }
 
@@ -179,7 +236,7 @@
 
       // set modal title and show
       const modalEl = document.getElementById('evidenceModal');
-      document.getElementById('evidenceModalLabel').textContent='Evidencias - '+ (docData && (docData.numero||docData.id_acuerdo||docId));
+      document.getElementById('evidenceModalLabel').textContent='Evidencias - '+ (docData && (docData.agreementNumber||docData['Número de Acuerdo']||docData.numero||docData.id_acuerdo||docId));
       const modal = new bootstrap.Modal(modalEl);
       // when modal is closed without resolving a pending status change, revert the select
       const onHidden = function(){ if (pendingStatusChange && pendingStatusChange.docId===docId){ const sel = pendingStatusChange.selectEl; if (sel){ sel.value = pendingStatusChange.prevStatus || ''; } pendingStatusChange = null; } modalEl.removeEventListener('hidden.bs.modal', onHidden); };
@@ -211,22 +268,22 @@
 
         snap.forEach(doc=>{
           const d = doc.data()||{};
-          const est = (d.estatus||d.Estatus||d.status||'')+'';
-          const fechaVal = d.fecha_cumplimiento||d.fecha_reunion||d.fecha;
-          const due = fechaVal? new Date(fechaVal): null;
+          const est = (d.status||d['Estado']||d.estatus||d.Estatus||'')+'';
+          const fechaVal = d.meetingDate||d.complianceDate||d['Fecha de Reunión']||d['Fecha de Cumplimiento']||d.fecha_cumplimiento||d.fecha_reunion||d.fecha;
+          const due = fechaVal? (typeof fechaVal === 'number' ? new Date((fechaVal - 25569) * 86400 * 1000) : (fechaVal.toDate ? fechaVal.toDate() : new Date(fechaVal))) : null;
           const daysLeft = due? Math.ceil((due - now)/(1000*60*60*24)) : null;
           const normalized = (est||'').toLowerCase();
 
-          const isMine = userEmail && (String(d.responsable||d.email_responsable||'').toLowerCase() === userEmail.toLowerCase());
+          const isMine = userEmail && (String(d.responsible||d['Responsable del Seguimiento']||d.responsable||d.email_responsable||'').toLowerCase() === userEmail.toLowerCase());
 
           if (/completado|cumplido|completed/.test(normalized)) {
             completados++; if (isMine) myCompletadosCount++;
           } else if (/vencido|expired/.test(normalized) || (due && daysLeft<0)) {
-            vencidos++; if (isMine){ myVencidos.push({ docId: doc.id, title: d.numero||d.id_acuerdo||d.descripcion||'', daysLeft }); myVencidosCount++; }
+            vencidos++; if (isMine){ myVencidos.push({ docId: doc.id, title: d.agreementNumber||d['Número de Acuerdo']||d.numero||d.id_acuerdo||d.description||d.descripcion||'', daysLeft }); myVencidosCount++; }
           } else if (/en progreso/.test(normalized) || (due && daysLeft>=0 && daysLeft<=30)) {
-            enprogreso++; if (isMine){ myPendientes.push({ docId: doc.id, title: d.numero||d.id_acuerdo||d.descripcion||'', daysLeft }); myEnprogresoCount++; }
+            enprogreso++; if (isMine){ myPendientes.push({ docId: doc.id, title: d.agreementNumber||d['Número de Acuerdo']||d.numero||d.id_acuerdo||d.description||d.descripcion||'', daysLeft }); myEnprogresoCount++; }
           } else {
-            pendientes++; if (isMine){ myPendientes.push({ docId: doc.id, title: d.numero||d.id_acuerdo||d.descripcion||'', daysLeft }); myPendientesCount++; }
+            pendientes++; if (isMine){ myPendientes.push({ docId: doc.id, title: d.agreementNumber||d['Número de Acuerdo']||d.numero||d.id_acuerdo||d.description||d.descripcion||'', daysLeft }); myPendientesCount++; }
           }
         });
 
@@ -252,21 +309,37 @@
 
     // compute summary after initial load and when auth state changes
     firebase.auth && firebase.auth().onAuthStateChanged(function(){ tryCollections(['acuerdos_aphis','acuerdos-aphis','acuerdos']).then(res=>{ if(res.found) computeSummaryAndLists(res.name); }); });
+
+    // Language switching functionality
+    function getCurrentLanguage() {
+      return localStorage.getItem('preferredLanguage') || 'es';
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('preferredLanguage', lang);
+      
+      // Update button states
+      document.getElementById('btnSpanish').classList.toggle('active', lang === 'es');
+      document.getElementById('btnEnglish').classList.toggle('active', lang === 'en');
+      
+      // Update all translatable elements
+      document.querySelectorAll('[data-es][data-en]').forEach(element => {
+        if (lang === 'es') {
+          element.textContent = element.getAttribute('data-es');
+        } else {
+          element.textContent = element.getAttribute('data-en');
+        }
+      });
+    }
+
+    // Initialize language on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentLang = getCurrentLanguage();
+      setLanguage(currentLang);
+    });
   </script>
 
-  <footer class="footer-gobierno">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <h5>Secretaría de Agricultura y Desarrollo Rural</h5>
-          <p>Representación en Yucatán</p>
-        </div>
-        <div class="col-md-6">
-          <p>Contacto: <a href="mailto:contacto@yucatan.gob.mx">contacto@yucatan.gob.mx</a></p>
-          <p>&copy; 2025 Gobierno de México</p>
-        </div>
-      </div>
-    </div>
-  </footer>
+  <!-- Government Framework JavaScript -->
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
 </body>
 </html>

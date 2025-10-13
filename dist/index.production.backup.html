@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es" class="js svg">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <title>Centro de Consulta de Acuerdos Sanitarios - Gobierno de México</title>
+  
+  <!-- Framework gob.mx v3 -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon" />
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet" />
+  
+  <!-- jQuery UI para datepicker -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css" />
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+  
+  <!-- Meta información -->
+  <meta name="description" content="Centro de consulta especializado para acuerdos sanitarios entre CESO y APHIS-USDA en Yucatán. Gobierno de México." />
+  <meta name="keywords" content="acuerdos sanitarios, CESO, APHIS-USDA, Yucatán, gobierno, México" />
+  <meta name="author" content="Gobierno de México" />
+  
+  <!-- Fonts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js" type="text/javascript" async></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300italic,400italic,400,300,600,700&subset=latin" media="all" />
+  
+  <!-- Fuentes gubernamentales oficiales -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Patria:wght@300;400;600;700&display=swap');
+    
+    /* Variables CSS gubernamentales */
+    :root {
+      --color-gobierno-principal: #611232;
+      --color-gobierno-secundario: #9d2449;
+      --color-gobierno-dorado: #a57f2c;
+      --color-gobierno-verde: #13322e;
+      --fuente-titulos: "Patria", serif;
+      --fuente-contenido: "Nunito Sans", sans-serif;
+    }
+    
+    /* Aplicar fuentes gubernamentales */
+    .gm-font-patria {
+      font-family: var(--fuente-titulos) !important;
+    }
+    
+    .gm-font-nunito {
+      font-family: var(--fuente-contenido) !important;
+    }
+    
+    /* Estilos por defecto */
+    body {
+      font-family: var(--fuente-contenido) !important;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--fuente-titulos) !important;
+    }
+  </style>
+  
+  <!-- Framework scripts -->
+  <script type="text/javascript" src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/vendor/modernizr.js"></script>
+  <script type="text/javascript" src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/vendor/pace.min.js"></script>
+  
+  <!-- Analytics -->
+  <script src="https://www.googletagmanager.com/gtag/js?l=dataLayer&id=G-EDDNCEYL8Y" async></script>
+  
+  <!-- jQuery UI Datepicker -->
+  <script type="text/javascript" src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/jquery-ui-datepicker.js"></script>
+</head>
+<body class="pace-done">
+  <!-- Pace loader -->
+  <div class="pace pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+      <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div>
+  </div>
+
+  <!-- Header oficial gob.mx -->
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-light navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <a href="https://www.gob.mx/" target="_blank" class="navbar-brand">
+          <img src="https://framework-gb.cdn.gob.mx/gobmx/img/logo_blanco.svg" 
+               alt="Página de inicio, Gobierno de México" 
+               class="logos" 
+               style="height: 46px;width: auto;" />
+        </a>
+        
+        <button class="navbar-toggler navbar-toggler-button" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#navbarColor03" 
+                aria-controls="navbarColor03" 
+                aria-expanded="false" 
+                aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarColor03">
+          <div class="navbar-nav nav-pills margen">
+            <a class="nav-item nav-link" href="https://www.gob.mx/tramites" target="_self" title="Ir a trámites del gobierno">Trámites</a>
+            <a class="nav-item nav-link" href="https://www.gob.mx/gobierno" target="_self" title="Ir a gobierno">Gobierno</a>
+            <a class="nav-item nav-link" href="https://www.gob.mx/busqueda" target="_self" title="Haz búsquedas en gobierno">
+              <i class="icon-search"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Contenido principal de React -->
+  <main class="page">
+    <div id="root"></div>
+  </main>
+
+  <!-- Footer oficial gob.mx -->
+  <footer class="main-footer">
+    <div class="">
+      <div class="container">
+        <div class="bottom-buffer-footer row">
+          <div class="col-sm-3 logo-footer">
+            <img src="https://framework-gb.cdn.gob.mx/gobmx/img/logo_blanco.svg" 
+                 href="/" 
+                 alt="logo gobierno de méxico" 
+                 class="logo_footer" 
+                 style="max-width: 50%;" />
+          </div>
+          
+          <div class="accordion col-sm-3">
+            <input id="toggle1" type="checkbox" class="accordion-toggle" name="toggle" />
+            <label for="toggle1">
+              <h5>Enlaces</h5>
+            </label>
+            <section>
+              <div class="" style="padding-left: 0px;">
+                <ul class="nav-list">
+                  <li><a href="https://participa.gob.mx" target="_blank" rel="noopener" title="Enlace abre en ventana nueva">Participa</a></li>
+                  <li><a href="http://www.ordenjuridico.gob.mx" target="_blank" rel="noopener" title="Enlace abre en ventana nueva">Marco Jurídico</a></li>
+                  <li><a href="https://consultapublicamx.inai.org.mx/vut-web/" target="_blank" rel="noopener" title="Enlace abre en ventana nueva">Plataforma Nacional de Transparencia</a></li>
+                  <li><a href="https://transparencia.gob.mx" target="_blank" rel="noopener" title="Enlace abre en ventana nueva">Transparencia para el pueblo</a></li>
+                  <li><a href="https://alertadores.funcionpublica.gob.mx/" target="_blank" rel="noopener" title="Enlace abre en ventana nueva">Alerta</a></li>
+                </ul>
+              </div>
+            </section>
+          </div>
+          
+          <div class="accordion col-sm-3">
+            <input id="toggle2" type="checkbox" class="accordion-toggle" name="toggle" />
+            <label for="toggle2">
+              <h5>¿Qué es gob.mx?</h5>
+            </label>
+            <section>
+              <div class="">
+                <p>Es el portal único de trámites, información y participación ciudadana. <a href="https://www.gob.mx/que-es-gobmx">Leer más</a></p>
+                <ul class="nav-list">
+                  <li><a href="https://datos.gob.mx" target="_blank">Portal de datos abiertos</a></li>
+                  <li><a href="https://www.gob.mx/accesibilidad" target="_blank">Declaración de accesibilidad</a></li>
+                  <li><a href="https://www.gob.mx/terminos" target="_blank">Términos y Condiciones</a></li>
+                </ul>
+              </div>
+            </section>
+          </div>
+          
+          <div class="title col-sm-3">
+            <h5 class="link-a">
+              <a class="footer" id="SIDEC" href="https://sidec.buengobierno.gob.mx/#!/" target="_blank" rel="sidec">
+                Denuncia contra servidores públicos
+              </a>
+            </h5>
+            
+            <span class="col-xs-5 col-sm-12 col-md-11 social-media">Síguenos en</span>
+            <ul class="col-xs-7 col-sm-12 col-md-11 list-inline social-media">
+              <li>
+                <a id="Facebook" href="https://www.facebook.com/gobmexico" target="_blank" rel="noopener" 
+                   title="enlace a facebook abre en una nueva ventana" class="sendEst share-info footer">
+                  <img alt="Facebook" src="https://framework-gb.cdn.gob.mx/landing/img/facebook.png" />
+                </a>
+              </li>
+              <li style="margin-left: 2px; margin-right: 2px;">
+                <a id="Twitter" href="https://twitter.com/GobiernoMX" target="_blank" rel="noopener" 
+                   title="Enlace a twitter abre en una nueva ventana" class="sendEst share-info footer">
+                  <img alt="Twitter" src="https://framework-gb.cdn.gob.mx/landing/img/twitter.png" />
+                </a>
+              </li>
+              <li style="margin-left: 2px; margin-right: 5px;">
+                <a id="Instagram" href="https://www.instagram.com/gobmexico/" target="_blank" rel="noopener" 
+                   title="Enlace a instagram abre en una nueva ventana" class="sendEst share-info footer">
+                  <img alt="Instagram" src="https://framework-gb.cdn.gob.mx/landing/img/instagram.png" />
+                </a>
+              </li>
+              <li style="margin-left: 2px; margin-right: 2px;">
+                <a id="Youtube" href="https://www.youtube.com/@gobiernodemexico" target="_blank" rel="noopener" 
+                   title="Enlace a youtube abre en una nueva ventana" class="sendEst share-info footer">
+                  <img alt="Youtube" src="https://framework-gb.cdn.gob.mx/landing/img/youtube.png" />
+                </a>
+              </li>
+            </ul>
+            
+            <ul class="list-inline">
+              <li>
+                <div class="logo-079">
+                  <a href="tel:+079" target="_blank">
+                    <img src="https://framework-gb.cdn.gob.mx/gobmx/img/079.png" 
+                         href="/" 
+                         alt="logo 079" 
+                         class="logo-079" />
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts del framework gob.mx -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  
+  <!-- Estilos customizados para datepicker gubernamental -->
+  <style>
+    .ui-datepicker {
+      font-family: 'Nunito Sans', sans-serif !important;
+      border-radius: 8px !important;
+      border: 2px solid #e9ecef !important;
+      box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+      background: #fff !important;
+      padding: 12px !important;
+    }
+    
+    .ui-datepicker-header {
+      background: linear-gradient(135deg, #721c24 0, #9a2128 100%) !important;
+      color: #fff !important;
+      border-radius: 6px !important;
+      border: none !important;
+      font-weight: 600 !important;
+      padding: 8px !important;
+    }
+    
+    .ui-datepicker-next, .ui-datepicker-prev {
+      background: rgba(255,255,255,.2) !important;
+      border-radius: 4px !important;
+      color: #fff !important;
+    }
+    
+    .ui-datepicker-calendar td a {
+      border-radius: 6px !important;
+      padding: 8px !important;
+      color: #495057 !important;
+      transition: all .3s ease !important;
+    }
+    
+    .ui-datepicker-calendar td a:hover {
+      background: #f8f9fa !important;
+      color: #721c24 !important;
+      border: 1px solid #721c24 !important;
+    }
+    
+    .ui-datepicker-calendar .ui-state-active {
+      background: #721c24 !important;
+      color: #fff !important;
+      border: none !important;
+    }
+    
+    .ui-datepicker-today a {
+      background: #e3f2fd !important;
+      border: 1px solid #2196f3 !important;
+      color: #1976d2 !important;
+    }
+    
+    .input-group .form-control.hasDatepicker {
+      border-left: none !important;
+    }
+    
+    .input-group .input-group-text {
+      background: linear-gradient(135deg, #f8f9fa 0, #e9ecef 100%) !important;
+      color: #721c24 !important;
+      border-right: none !important;
+      font-weight: 600 !important;
+    }
+  </style>
+
+  <!-- Script de inicialización del framework -->
+  <script>
+    // Inicialización del framework gob.mx
+    if (typeof $gmx !== 'undefined') {
+      $gmx(document).ready(function() {
+        console.log('🏛️ Framework gob.mx v3 cargado correctamente');
+        console.log('🚀 Centro de Consulta de Acuerdos Sanitarios inicializado');
+        
+        // Inicializar tooltips si están disponibles
+        if (typeof $gmx.fn !== 'undefined' && $gmx.fn.tooltip) {
+          $gmx('[data-bs-toggle="tooltip"]').tooltip();
+        }
+        
+        console.log('📄 Header y footer oficiales de gob.mx activados');
+        console.log('🎯 Sistema: Centro de Consulta de Acuerdos Sanitarios CESO-APHIS');
+      });
+    }
+
+    // Manejo de errores de overflow detection
+    window.addEventListener('error', function(event) {
+      if (event.message && event.message.includes('detectOverflow')) {
+        event.preventDefault();
+        return false;
+      }
+    });
+  </script>
+
+  <!-- Scripts adicionales del framework -->
+  <script type="text/javascript" src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/vendor/bootstrap.bundle.js"></script>
+  <script type="text/javascript" src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.9"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.13"></script>
+</body>
+</html>

@@ -14,6 +14,18 @@ service firebase.storage {
         && request.resource.size < 20 * 1024 * 1024;
     }
 
+    // Repository files - CESO specific
+    match /repositorio-ceso/{category}/{fileName} {
+      allow write: if request.auth != null
+        && request.resource.size < 50 * 1024 * 1024; // 50MB limit for repository files
+    }
+
+    // Repository files - APHIS specific  
+    match /repositorio-aphis/{category}/{fileName} {
+      allow write: if request.auth != null
+        && request.resource.size < 50 * 1024 * 1024; // 50MB limit for repository files
+    }
+
     // Deny all other client write attempts by default
     match /{allPaths=**} {
       allow write: if false;

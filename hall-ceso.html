@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CESO - Centro de Control | TB-Yucatán</title>
+  
+  <!-- REQUIRED: Official GOB.mx Framework -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
@@ -105,14 +108,6 @@
       font-size: 0.9rem;
     }
     
-    .breadcrumb-custom {
-      background: rgba(255,255,255,0.9);
-      border-radius: 25px;
-      padding: 0.75rem 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    
     .organization-badge {
       background: var(--color-gobierno-principal);
       color: white;
@@ -138,41 +133,9 @@
   </style>
 </head>
 <body>
-  <!-- Header gubernamental -->
-  <header class="header-gobierno">
-    <nav style="display: none;"></nav>
-    <div class="container-fluid bg-white border-bottom py-2">
-      <div class="row align-items-center">
-        <div class="col-auto">
-          <img src="logo.png" alt="Gobierno de México" height="40">
-        </div>
-        <div class="col">
-          <div class="d-flex flex-column">
-            <span class="fw-bold text-primary small">Gobierno de México</span>
-            <span class="text-muted small">Secretaría de Agricultura y Desarrollo Rural</span>
-          </div>
-        </div>
-        <div class="col-auto">
-          <button class="btn btn-outline-danger btn-sm" onclick="logout()">
-            <i class="bi bi-box-arrow-right"></i> Salir
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main class="hall-container">
-    <div class="container py-4">
+  <main class="page">
+    <div class="container py-4 hall-container" style="padding-top: 60px;">
       
-      <!-- Breadcrumb personalizado -->
-      <nav class="breadcrumb-custom">
-        <span class="text-muted">
-          <i class="bi bi-house-door"></i> 
-          <a href="index.html" class="text-decoration-none">Inicio</a> 
-          → <strong>Centro CESO</strong>
-        </span>
-      </nav>
-
       <!-- Header de bienvenida -->
       <div class="welcome-header">
         <div class="row align-items-center">
@@ -180,15 +143,26 @@
             <div class="organization-badge">
               <i class="bi bi-building"></i> CESO
             </div>
-            <h1 class="h2 mb-2">Centro de Control CESO</h1>
-            <p class="user-greeting mb-0" id="userGreeting">
+            <h1 class="h2 mb-2" data-es="Centro de Control CESO" data-en="CESO Control Center">Centro de Control CESO</h1>
+            <p class="user-greeting mb-0" id="userGreeting" data-es="Consejo Estatal de Seguimiento Operativo del SINIDA" data-en="State Council for SINIDA Operational Monitoring">
               Consejo Estatal de Seguimiento Operativo del SINIDA
             </p>
             <p class="small mb-0 mt-2 opacity-75">
-              <i class="bi bi-geo-alt"></i> Sistema Nacional de Identificación y Registro de la Movilización de Animales
+              <i class="bi bi-geo-alt"></i> <span data-es="Sistema Nacional de Identificación y Registro de la Movilización de Animales" data-en="National System for Identification and Registration of Animal Movement">Sistema Nacional de Identificación y Registro de la Movilización de Animales</span>
             </p>
           </div>
           <div class="col-md-4 text-end">
+            <!-- Language Toggle -->
+            <div class="mb-3">
+              <div class="btn-group btn-group-sm" role="group" aria-label="Language Toggle">
+                <button type="button" class="btn btn-outline-light active" id="btnSpanish" onclick="setLanguage('es')">
+                  🇲🇽 ESPAÑOL
+                </button>
+                <button type="button" class="btn btn-outline-light" id="btnEnglish" onclick="setLanguage('en')">
+                  🇺🇸 ENGLISH
+                </button>
+              </div>
+            </div>
             <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white" 
                  style="width: 80px; height: 80px;">
               <i class="bi bi-building text-primary" style="font-size: 2.5rem;"></i>
@@ -199,7 +173,7 @@
 
       <!-- Alertas críticas (si las hay) -->
       <div id="criticalAlerts" class="critical-alerts d-none">
-        <h6><i class="bi bi-exclamation-triangle text-warning"></i> Atención Requerida</h6>
+        <h6><i class="bi bi-exclamation-triangle text-warning"></i> <span data-es="Atención Requerida" data-en="Attention Required">Atención Requerida</span></h6>
         <div id="alertsList"></div>
       </div>
 
@@ -207,26 +181,26 @@
       <div class="stats-grid">
         <div class="stat-card">
           <span class="stat-number" id="totalAgreements">...</span>
-          <div class="stat-label">Acuerdos Totales</div>
+          <div class="stat-label" data-es="Acuerdos Totales" data-en="Total Agreements">Acuerdos Totales</div>
         </div>
         <div class="stat-card">
           <span class="stat-number text-warning" id="pendingAgreements">...</span>
-          <div class="stat-label">Pendientes</div>
+          <div class="stat-label" data-es="Pendientes" data-en="Pending">Pendientes</div>
           <small class="text-muted" id="myPendingCount"></small>
         </div>
         <div class="stat-card">
           <span class="stat-number text-danger" id="overdueAgreements">...</span>
-          <div class="stat-label">Vencidos</div>
+          <div class="stat-label" data-es="Vencidos" data-en="Overdue">Vencidos</div>
           <small class="text-muted" id="myOverdueCount"></small>
         </div>
         <div class="stat-card">
           <span class="stat-number text-info" id="inProgressAgreements">...</span>
-          <div class="stat-label">En Progreso</div>
+          <div class="stat-label" data-es="En Progreso" data-en="In Progress">En Progreso</div>
           <small class="text-muted" id="myInProgressCount"></small>
         </div>
         <div class="stat-card">
           <span class="stat-number text-success" id="completedAgreements">...</span>
-          <div class="stat-label">Completados</div>
+          <div class="stat-label" data-es="Completados" data-en="Completed">Completados</div>
           <small class="text-muted" id="myCompletedCount"></small>
         </div>
       </div>
@@ -252,15 +226,15 @@
             </a>
           </div>
 
-          <!-- Repositorio -->
+          <!-- Repositorio CESO -->
           <div class="col-md-4">
-            <a href="repositorio.html" class="door-card text-decoration-none">
+            <a href="repositorio-ceso.html" class="door-card text-decoration-none">
               <div class="door-icon">
                 <i class="bi bi-archive"></i>
               </div>
-              <div class="door-title">Repositorio</div>
+              <div class="door-title">Repositorio CESO</div>
               <div class="door-description">
-                Biblioteca de documentos, manuales y recursos administrativos
+                Biblioteca de documentos SINIDA, manuales operativos y recursos administrativos
               </div>
             </a>
           </div>
@@ -322,23 +296,41 @@
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer-gobierno">
+  <!-- Footer gubernamental oficial -->
+  <!-- Footer removed for government framework compliance -->
+  <!--
     <div class="container">
       <div class="row">
-        <div class="col-md-6">
-          <h5>CESO - Centro de Control</h5>
-          <p>Consejo Estatal de Seguimiento Operativo del SINIDA</p>
+        <div class="col-md-4">
+          <h5><span data-es="CESO - Centro de Control" data-en="CESO - Control Center">CESO - Centro de Control</span></h5>
+          <p><span data-es="Consejo Estatal de Seguimiento Operativo del SINIDA" data-en="State Council for SINIDA Operational Monitoring">Consejo Estatal de Seguimiento Operativo del SINIDA</span></p>
+          <img src="https://framework-gb.cdn.gob.mx/gobmx/img/logo_blanco.svg" alt="Gobierno de México" height="30" class="my-2">
         </div>
-        <div class="col-md-6 text-end">
-          <p class="small">
-            <i class="bi bi-shield-check"></i> 
-            Sistema Oficial del Gobierno de México
-          </p>
+        <div class="col-md-4">
+          <h5><span data-es="Enlaces CESO" data-en="CESO Links">Enlaces CESO</span></h5>
+          <ul class="list-unstyled">
+            <li><a href="index.html" class="text-white"><span data-es="Inicio" data-en="Home">Inicio</span></a></li>
+            <li><a href="hall-ceso.html" class="text-white"><span data-es="Panel CESO" data-en="CESO Panel">Panel CESO</span></a></li>
+            <li><a href="acuerdos-ceso.html" class="text-white"><span data-es="Acuerdos CESO" data-en="CESO Agreements">Acuerdos CESO</span></a></li>
+            <li><a href="repositorio-ceso.html" class="text-white"><span data-es="Repositorio CESO" data-en="CESO Repository">Repositorio CESO</span></a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5><span data-es="Contacto" data-en="Contact">Contacto</span></h5>
+          <p><span data-es="CESO - Yucatán<br>Consejo Estatal de Seguimiento Operativo<br>SINIDA - México" data-en="CESO - Yucatan<br>State Council for Operational Monitoring<br>SINIDA - Mexico">CESO - Yucatán<br>Consejo Estatal de Seguimiento Operativo<br>SINIDA - México</span></p>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p><span data-es="&copy; 2024 Gobierno de México. Todos los derechos reservados." data-en="&copy; 2024 Government of Mexico. All rights reserved.">&copy; 2024 Gobierno de México. Todos los derechos reservados.</span></p>
+        <div class="d-flex justify-content-center gap-3 mt-2">
+          <a href="https://www.gob.mx/" target="_blank" class="text-white">gob.mx</a>
+          <a href="https://www.gob.mx/agricultura" target="_blank" class="text-white">AGRICULTURA</a>
+          <a href="https://www.gob.mx/senasica" target="_blank" class="text-white">SENASICA</a>
         </div>
       </div>
     </div>
-  </footer>
+  -->
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -348,6 +340,15 @@
   <script src="auth-system.js"></script>
   
   <script>
+    // Prevenir interferencia de navegación hash legacy
+    window.addEventListener('load', function() {
+      // Si hay hash #landing-ceso, limpiarlo y mantener la página limpia
+      if (window.location.hash === '#landing-ceso') {
+        console.log('🧹 Cleaning legacy hash navigation');
+        window.history.replaceState(null, null, window.location.pathname);
+      }
+    });
+    
     // Verificar autenticación
     document.addEventListener('DOMContentLoaded', function() {
       // Verificar si el usuario está autenticado
@@ -358,12 +359,16 @@
         return;
       }
       
+      console.log('🔍 Debug - Current user object:', currentUser);
+      
       // Personalizar saludo
       const userGreeting = document.getElementById('userGreeting');
       if (userGreeting) {
+        // Try multiple possible name fields
+        const userName = currentUser.nombre || currentUser.name || currentUser.email || 'Usuario';
         userGreeting.innerHTML = `
           <i class="bi bi-person-check"></i> 
-          Bienvenido/a, <strong>${currentUser.name || currentUser.email}</strong><br>
+          Bienvenido/a, <strong>${userName}</strong><br>
           <small>Consejo Estatal de Seguimiento Operativo del SINIDA</small>
         `;
       }
@@ -481,12 +486,50 @@
     }
     
     function showComingSoon(feature) {
-      alert(`${feature} estará disponible próximamente.`);
+      const msg = getCurrentLanguage() === 'es' ? 
+        `${feature} estará disponible próximamente.` : 
+        `${feature} will be available soon.`;
+      alert(msg);
     }
     
     function showBatchUpload() {
-      alert('Módulo de Carga en Lote: Disponible vía línea de comandos.\n\nUsar: node batch-upload-agreements.js --file archivo.csv --type ceso');
+      const msg = getCurrentLanguage() === 'es' ?
+        'Módulo de Carga en Lote: Disponible vía línea de comandos.\n\nUsar: node batch-upload-agreements.js --file archivo.csv --type ceso' :
+        'Batch Upload Module: Available via command line.\n\nUse: node batch-upload-agreements.js --file file.csv --type ceso';
+      alert(msg);
     }
+
+    // Language switching functionality
+    function getCurrentLanguage() {
+      return localStorage.getItem('preferredLanguage') || 'es';
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('preferredLanguage', lang);
+      
+      // Update button states
+      document.getElementById('btnSpanish').classList.toggle('active', lang === 'es');
+      document.getElementById('btnEnglish').classList.toggle('active', lang === 'en');
+      
+      // Update all translatable elements
+      document.querySelectorAll('[data-es][data-en]').forEach(element => {
+        if (lang === 'es') {
+          element.textContent = element.getAttribute('data-es');
+        } else {
+          element.textContent = element.getAttribute('data-en');
+        }
+      });
+    }
+
+    // Initialize language on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentLang = getCurrentLanguage();
+      setLanguage(currentLang);
+    });
   </script>
+
+  <!-- Government Framework JavaScript -->
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
+
 </body>
 </html>

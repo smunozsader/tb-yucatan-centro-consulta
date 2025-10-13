@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APHIS-USDA - Centro de Control | TB-Yucatán</title>
+  
+  <!-- REQUIRED: Official GOB.mx Framework -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
@@ -105,14 +108,6 @@
       font-size: 0.9rem;
     }
     
-    .breadcrumb-custom {
-      background: rgba(255,255,255,0.9);
-      border-radius: 25px;
-      padding: 0.75rem 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    
     .organization-badge {
       background: var(--color-gobierno-dorado);
       color: white;
@@ -145,41 +140,9 @@
   </style>
 </head>
 <body>
-  <!-- Header gubernamental -->
-  <header class="header-gobierno">
-    <nav style="display: none;"></nav>
-    <div class="container-fluid bg-white border-bottom py-2">
-      <div class="row align-items-center">
-        <div class="col-auto">
-          <img src="logo.png" alt="Gobierno de México" height="40">
-        </div>
-        <div class="col">
-          <div class="d-flex flex-column">
-            <span class="fw-bold text-primary small">Gobierno de México</span>
-            <span class="text-muted small">Secretaría de Agricultura y Desarrollo Rural</span>
-          </div>
-        </div>
-        <div class="col-auto">
-          <button class="btn btn-outline-danger btn-sm" onclick="logout()">
-            <i class="bi bi-box-arrow-right"></i> Salir
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main class="hall-container">
-    <div class="container py-4">
+  <main class="page">
+    <div class="container py-4 hall-container" style="padding-top: 60px;">
       
-      <!-- Breadcrumb personalizado -->
-      <nav class="breadcrumb-custom">
-        <span class="text-muted">
-          <i class="bi bi-house-door"></i> 
-          <a href="index.html" class="text-decoration-none">Inicio</a> 
-          → <strong>Centro APHIS-USDA</strong>
-        </span>
-      </nav>
-
       <!-- Header de bienvenida -->
       <div class="welcome-header">
         <div class="row align-items-center">
@@ -187,15 +150,26 @@
             <div class="organization-badge">
               <span class="international-flag">🇺🇸</span> APHIS-USDA
             </div>
-            <h1 class="h2 mb-2">Centro de Control APHIS-USDA</h1>
+            <h1 class="h2 mb-2" data-es="Centro de Control APHIS-USDA" data-en="APHIS-USDA Control Center">Centro de Control APHIS-USDA</h1>
             <p class="user-greeting mb-0" id="userGreeting">
               Grupo de Trabajo de Seguimiento a Recomendaciones Críticas
             </p>
             <p class="small mb-0 mt-2 opacity-75">
-              <i class="bi bi-globe-americas"></i> Animal and Plant Health Inspection Service - SENASICA Collaboration
+              <i class="bi bi-globe-americas"></i> <span data-es="Servicio de Inspección de Sanidad Animal y Vegetal - Colaboración SENASICA" data-en="Animal and Plant Health Inspection Service - SENASICA Collaboration">Servicio de Inspección de Sanidad Animal y Vegetal - Colaboración SENASICA</span>
             </p>
           </div>
           <div class="col-md-4 text-end">
+            <!-- Language Toggle -->
+            <div class="mb-3">
+              <div class="btn-group btn-group-sm" role="group" aria-label="Language Toggle">
+                <button type="button" class="btn btn-outline-light active" id="btnSpanish" onclick="setLanguage('es')">
+                  🇲🇽 ESPAÑOL
+                </button>
+                <button type="button" class="btn btn-outline-light" id="btnEnglish" onclick="setLanguage('en')">
+                  🇺🇸 ENGLISH
+                </button>
+              </div>
+            </div>
             <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white" 
                  style="width: 80px; height: 80px;">
               <i class="bi bi-globe-americas text-warning" style="font-size: 2.5rem;"></i>
@@ -206,7 +180,7 @@
 
       <!-- Alertas críticas (si las hay) -->
       <div id="criticalAlerts" class="critical-alerts d-none">
-        <h6><i class="bi bi-exclamation-triangle text-warning"></i> Critical Attention Required</h6>
+        <h6><i class="bi bi-exclamation-triangle text-warning"></i> <span data-es="Atención Crítica Requerida" data-en="Critical Attention Required">Atención Crítica Requerida</span></h6>
         <div id="alertsList"></div>
       </div>
 
@@ -214,26 +188,26 @@
       <div class="stats-grid">
         <div class="stat-card">
           <span class="stat-number" id="totalAgreements">...</span>
-          <div class="stat-label">Total Agreements</div>
+          <div class="stat-label" data-es="Total de Acuerdos" data-en="Total Agreements">Total de Acuerdos</div>
         </div>
         <div class="stat-card">
           <span class="stat-number text-warning" id="pendingAgreements">...</span>
-          <div class="stat-label">Pending</div>
+          <div class="stat-label" data-es="Pendientes" data-en="Pending">Pendientes</div>
           <small class="text-muted" id="myPendingCount"></small>
         </div>
         <div class="stat-card">
           <span class="stat-number text-danger" id="overdueAgreements">...</span>
-          <div class="stat-label">Overdue</div>
+          <div class="stat-label" data-es="Vencidos" data-en="Overdue">Vencidos</div>
           <small class="text-muted" id="myOverdueCount"></small>
         </div>
         <div class="stat-card">
           <span class="stat-number text-info" id="inProgressAgreements">...</span>
-          <div class="stat-label">In Progress</div>
+          <div class="stat-label" data-es="En Progreso" data-en="In Progress">En Progreso</div>
           <small class="text-muted" id="myInProgressCount"></small>
         </div>
         <div class="stat-card">
           <span class="stat-number text-success" id="completedAgreements">...</span>
-          <div class="stat-label">Completed</div>
+          <div class="stat-label" data-es="Completados" data-en="Completed">Completados</div>
           <small class="text-muted" id="myCompletedCount"></small>
         </div>
       </div>
@@ -242,7 +216,7 @@
       <div class="doors-section">
         <h3 class="mb-4 text-center">
           <i class="bi bi-door-open text-warning"></i> 
-          Select Your Destination
+          <span data-es="Seleccione su Destino" data-en="Select Your Destination">Seleccione su Destino</span>
         </h3>
         
         <div class="row g-4">
@@ -252,22 +226,22 @@
               <div class="door-icon">
                 <i class="bi bi-clipboard-data"></i>
               </div>
-              <div class="door-title">Agreements Dashboard</div>
-              <div class="door-description">
-                Complete view of all agreements, filters and evidence management
+              <div class="door-title" data-es="Panel de Acuerdos" data-en="Agreements Dashboard">Panel de Acuerdos</div>
+              <div class="door-description" data-es="Vista completa de todos los acuerdos, filtros y gestión de evidencias" data-en="Complete view of all agreements, filters and evidence management">
+                Vista completa de todos los acuerdos, filtros y gestión de evidencias
               </div>
             </a>
           </div>
 
-          <!-- Repositorio -->
+          <!-- Repositorio APHIS -->
           <div class="col-md-4">
-            <a href="repositorio.html" class="door-card text-decoration-none">
+            <a href="repositorio-aphis.html" class="door-card text-decoration-none">
               <div class="door-icon">
-                <i class="bi bi-archive"></i>
+                <i class="bi bi-globe-americas"></i>
               </div>
-              <div class="door-title">Repository</div>
-              <div class="door-description">
-                Document library, manuals and administrative resources
+              <div class="door-title" data-es="Repositorio APHIS" data-en="APHIS Repository">Repositorio APHIS</div>
+              <div class="door-description" data-es="Documentos de cooperación USDA, protocolos y recursos de certificación" data-en="USDA cooperation documents, protocols and certification resources">
+                Documentos de cooperación USDA, protocolos y recursos de certificación
               </div>
             </a>
           </div>
@@ -329,24 +303,6 @@
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer-gobierno">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <h5>APHIS-USDA - Control Center</h5>
-          <p>Animal and Plant Health Inspection Service Working Group</p>
-        </div>
-        <div class="col-md-6 text-end">
-          <p class="small">
-            <i class="bi bi-shield-check"></i> 
-            Official Mexican Government System
-          </p>
-        </div>
-      </div>
-    </div>
-  </footer>
-
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -355,6 +311,15 @@
   <script src="auth-system.js"></script>
   
   <script>
+    // Prevenir interferencia de navegación hash legacy
+    window.addEventListener('load', function() {
+      // Si hay hash #landing-aphis, limpiarlo y mantener la página limpia
+      if (window.location.hash === '#landing-aphis') {
+        console.log('🧹 Cleaning legacy hash navigation');
+        window.history.replaceState(null, null, window.location.pathname);
+      }
+    });
+    
     // Verificar autenticación
     document.addEventListener('DOMContentLoaded', function() {
       // Verificar si el usuario está autenticado
@@ -365,12 +330,16 @@
         return;
       }
       
+      console.log('🔍 Debug - Current user object:', currentUser);
+      
       // Personalizar saludo
       const userGreeting = document.getElementById('userGreeting');
       if (userGreeting) {
+        // Try multiple possible name fields
+        const userName = currentUser.nombre || currentUser.name || currentUser.email || 'User';
         userGreeting.innerHTML = `
           <i class="bi bi-person-check"></i> 
-          Welcome, <strong>${currentUser.name || currentUser.email}</strong><br>
+          Welcome, <strong>${userName}</strong><br>
           <small>Animal and Plant Health Inspection Service Working Group</small>
         `;
       }
@@ -488,12 +457,49 @@
     }
     
     function showComingSoon(feature) {
-      alert(`${feature} will be available soon.`);
+      const msg = getCurrentLanguage() === 'es' ? 
+        `${feature} estará disponible próximamente.` : 
+        `${feature} will be available soon.`;
+      alert(msg);
     }
     
     function showBatchUpload() {
-      alert('Batch Upload Module: Available via command line.\n\nUse: node batch-upload-agreements.js --file file.csv --type aphis');
+      const msg = getCurrentLanguage() === 'es' ?
+        'Módulo de Carga en Lote: Disponible vía línea de comandos.\n\nUsar: node batch-upload-agreements.js --file archivo.csv --type aphis' :
+        'Batch Upload Module: Available via command line.\n\nUse: node batch-upload-agreements.js --file file.csv --type aphis';
+      alert(msg);
     }
+
+    // Language switching functionality
+    function getCurrentLanguage() {
+      return localStorage.getItem('preferredLanguage') || 'es';
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('preferredLanguage', lang);
+      
+      // Update button states
+      document.getElementById('btnSpanish').classList.toggle('active', lang === 'es');
+      document.getElementById('btnEnglish').classList.toggle('active', lang === 'en');
+      
+      // Update all translatable elements
+      document.querySelectorAll('[data-es][data-en]').forEach(element => {
+        if (lang === 'es') {
+          element.textContent = element.getAttribute('data-es');
+        } else {
+          element.textContent = element.getAttribute('data-en');
+        }
+      });
+    }
+
+    // Initialize language on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentLang = getCurrentLanguage();
+      setLanguage(currentLang);
+    });
   </script>
+
+  <!-- Government Framework JavaScript -->
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
 </body>
 </html>

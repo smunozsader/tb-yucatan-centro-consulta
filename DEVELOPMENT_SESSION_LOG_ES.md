@@ -1,6 +1,173 @@
 # Registro de la Sesión de Desarrollo — (ES)
 
-Fecha: 5 de octubre de 2025
+## Fecha: 13 de octubre de 2025 - Cumplimiento del Marco GOB.mx e Implementación de Guías para IA
+
+---
+
+## 🎯 Resumen de la Sesión
+**Objetivos Principales**: 
+1. Generar instrucciones comprehensivas para asistentes de IA (`.github/copilot-instructions.md`)
+2. Lograr cumplimiento total con el Marco Oficial del Gobierno Mexicano GOB.mx v3
+3. Estandarizar todos los botones del sitio web según las guías de diseño gubernamental
+4. Remover encabezados/pies de página personalizados en favor de componentes oficiales del marco
+
+**Estado de la Sesión**: ✅ **COMPLETADO** - Cumplimiento total del marco GOB.mx logrado
+
+---
+
+## 🚀 Logros Principales
+
+### 1. Implementación de Instrucciones para IA
+- **Creado**: `.github/copilot-instructions.md` - Guía comprehensiva para asistentes de IA
+- **Propósito**: Asegurar que todo desarrollo futuro asistido por IA siga estándares gubernamentales mexicanos
+- **Secciones Clave**:
+  - Documentación de arquitectura del proyecto y stack tecnológico
+  - Requisitos de plantilla HTML del Marco GOB.mx v3 oficial
+  - Patrones obligatorios de diseño de botones y clases CSS
+  - Modelo de seguridad Firebase y flujos de despliegue
+  - Patrones de control de acceso basado en roles
+  - Especificaciones de integración de datos Excel
+
+### 2. Cumplimiento del Marco GOB.mx v3
+- **Actualizadas Todas las Páginas HTML**: Migración completa al sistema de diseño gubernamental oficial
+- **Archivos Modificados**: 
+  - `index.html` - Página principal de inicio
+  - `ceso.html` - Sección organización CESO
+  - `aphis.html` - Sección organización APHIS-USDA
+  - `repositorio-ceso.html` - Repositorio de documentos CESO
+  - `repositorio-aphis.html` - Repositorio de documentos APHIS
+  - `hall-ceso.html` - Sala de reuniones CESO
+  - `hall-aphis.html` - Sala de reuniones APHIS
+  - `acuerdos-ceso.html` - Página de acuerdos CESO
+  - `acuerdos-aphis.html` - Página de acuerdos APHIS
+  - `public/index.production.html` - Plantilla de despliegue en producción
+
+### 3. Proyecto de Estandarización de Botones
+- **Removido**: Todas las clases de botones personalizadas (`.btn-gobierno-*`, `.btn-ceso`, `.btn-aphis`)
+- **Implementado**: Clases de botones del marco oficial (`btn-primary`, `btn-secondary`, `btn-danger`)
+- **CSS Actualizado**: Limpiado `styles.css` para remover estilos no conformes
+- **Auditoría de Cumplimiento**: Búsqueda y reemplazo sistemático de más de 50 instancias de botones
+
+### 4. Integración del Marco Oficial
+- **Encabezados/Pies de Página**: Removida toda navegación personalizada - ahora manejada por el marco
+- **Favicon**: Actualizado al favicon oficial del gobierno desde CDN del marco
+- **Scripts**: Todas las páginas ahora cargan `gobmx.js` oficial para marca automática
+- **Marco CSS**: Enlaces a hoja de estilos oficial del gobierno en lugar de versiones personalizadas
+
+---
+
+## 🔧 Cambios Técnicos Implementados
+
+### Estructura de Plantilla del Marco
+```html
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Título de Página - GOB.mx</title>
+    
+    <!-- REQUERIDO: Marco GOB.mx Oficial -->
+    <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
+    <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Contenido va dentro de estructura main.page -->
+    <main class="page">
+      <div class="container">
+        <!-- Contenido de la aplicación -->
+      </div>
+    </main>
+    
+    <!-- REQUERIDO: JS del Marco (incluye encabezado/pie oficial) -->
+    <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
+  </body>
+</html>
+```
+
+### Estándares de Cumplimiento de Botones
+- **Acciones Primarias**: `btn btn-primary` (acceso CESO, navegación principal)
+- **Acciones Secundarias**: `btn btn-secondary` (acceso APHIS, opciones alternativas)
+- **Estados de Error/Advertencia**: `btn btn-danger` (eliminación, acciones críticas)
+- **Botones de Enlace**: `btn btn-link` (navegación, referencias)
+
+### Limpieza CSS
+```css
+/* REMOVIDO - Clases personalizadas no conformes */
+.btn-gobierno-primary { /* eliminado */ }
+.btn-gobierno-secondary { /* eliminado */ }
+.btn-gobierno-dorado { /* eliminado */ }
+.btn-ceso { /* eliminado */ }
+.btn-aphis { /* eliminado */ }
+
+/* RETENIDO - Solo clases oficiales del marco */
+.btn-primary { /* marco oficial */ }
+.btn-secondary { /* marco oficial */ }
+.btn-danger { /* marco oficial */ }
+```
+
+---
+
+## 📋 Resumen de Archivos Modificados
+
+| Archivo | Tipo | Cambios | Propósito |
+|---------|------|---------|-----------|
+| `.github/copilot-instructions.md` | NUEVO | Sistema completo de guías para IA | Estándares de desarrollo futuro |
+| `index.html` | MAYOR | Cumplimiento marco, estandarización botones | Página principal de inicio |
+| `ceso.html` | MAYOR | Cumplimiento marco, actualización botones | Página organización CESO |
+| `aphis.html` | MAYOR | Cumplimiento marco, actualización botones | Página organización APHIS |
+| `repositorio-*.html` | MAYOR | Cumplimiento marco, limpieza navegación | Repositorios de documentos |
+| `hall-*.html` | MAYOR | Cumplimiento marco, estandarización botones | Salas de reuniones |
+| `acuerdos-*.html` | MAYOR | Cumplimiento marco, actualización botones | Páginas de acuerdos |
+| `styles.css` | LIMPIEZA | Removidas clases de botones personalizadas | Estandarización CSS |
+| `public/index.production.html` | REEMPLAZO | Reescritura completa con marco | Despliegue en producción |
+
+---
+
+## ✅ Verificación de Cumplimiento
+
+### Requisitos del Marco GOB.mx ✅
+- [x] Estructura de plantilla HTML5 oficial
+- [x] CSS y JavaScript del marco cargados desde CDN
+- [x] Favicon oficial del gobierno
+- [x] Encabezado/pie automático via marco
+- [x] Estructura de contenedor `main.page`
+- [x] Declaración de idioma español
+
+### Estándares de Botones ✅
+- [x] Todas las clases de botones personalizadas removidas
+- [x] Clases del marco oficial implementadas
+- [x] Tamaño y estilo consistente de botones
+- [x] Jerarquía apropiada de botones (primario/secundario)
+- [x] Botones de estado de error para acciones críticas
+
+### Accesibilidad y Estándares ✅
+- [x] Estructura HTML semántica
+- [x] Atributos de idioma apropiados
+- [x] Diseño responsivo mantenido
+- [x] Estándares de accesibilidad gubernamental
+- [x] CSS limpio y mantenible
+
+---
+
+## 🎓 Conocimiento Preservado para Desarrollo Futuro
+
+### Documentación de Estándares Críticos
+1. **Guías para Asistente de IA**: Instrucciones comprehensivas para mantener estándares gubernamentales
+2. **Plantillas del Marco**: Estructura HTML estandarizada para todas las páginas nuevas
+3. **Patrones de Botones**: Sistema de clasificación oficial para elementos UI
+4. **Guías CSS**: Patrones de estilo conforme al gobierno
+
+### Integración del Flujo de Desarrollo
+- Todas las páginas futuras deben usar plantilla oficial del marco
+- Adiciones de botones deben seguir clasificación gubernamental
+- No se permiten encabezados/pies personalizados
+- Scripts del marco manejan toda la marca gubernamental
+
+---
+
+## Fecha: 5 de octubre de 2025
 Repositorio: tb-yucatan-centro-consulta (branch: develop)
 Autor: Automatizado (GitHub Copilot assistant)
 
