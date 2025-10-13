@@ -52,6 +52,15 @@
       box-shadow: 0 8px 30px rgba(0,0,0,0.15);
     }
     
+    .clickable-stat {
+      cursor: pointer;
+    }
+    
+    .clickable-stat:hover {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-left-color: var(--color-gobierno-verde);
+    }
+    
     .stat-number {
       font-size: 2.5rem;
       font-weight: bold;
@@ -228,29 +237,29 @@
 
       <!-- Estadísticas del grupo -->
       <div class="stats-grid">
-        <div class="stat-card">
-          <span class="stat-number" id="totalAgreements">...</span>
-          <div class="stat-label" data-es="Total de Acuerdos" data-en="Total Agreements">Total de Acuerdos</div>
-        </div>
-        <div class="stat-card">
-          <span class="stat-number text-warning" id="pendingAgreements">...</span>
-          <div class="stat-label" data-es="Pendientes" data-en="Pending">Pendientes</div>
-          <small class="text-muted" id="myPendingCount"></small>
-        </div>
-        <div class="stat-card">
+        <div class="stat-card clickable-stat" onclick="showAgreementsByStatus('Vencidos')">
           <span class="stat-number text-danger" id="overdueAgreements">...</span>
           <div class="stat-label" data-es="Vencidos" data-en="Overdue">Vencidos</div>
           <small class="text-muted" id="myOverdueCount"></small>
         </div>
-        <div class="stat-card">
+        <div class="stat-card clickable-stat" onclick="showAgreementsByStatus('Pendiente')">
+          <span class="stat-number text-warning" id="pendingAgreements">...</span>
+          <div class="stat-label" data-es="Pendientes" data-en="Pending">Pendientes</div>
+          <small class="text-muted" id="myPendingCount"></small>
+        </div>
+        <div class="stat-card clickable-stat" onclick="showAgreementsByStatus('En Progreso')">
           <span class="stat-number text-info" id="inProgressAgreements">...</span>
           <div class="stat-label" data-es="En Progreso" data-en="In Progress">En Progreso</div>
           <small class="text-muted" id="myInProgressCount"></small>
         </div>
-        <div class="stat-card">
+        <div class="stat-card clickable-stat" onclick="showAgreementsByStatus('Completado')">
           <span class="stat-number text-success" id="completedAgreements">...</span>
           <div class="stat-label" data-es="Completados" data-en="Completed">Completados</div>
           <small class="text-muted" id="myCompletedCount"></small>
+        </div>
+        <div class="stat-card" onclick="showAgreementsByStatus('all')">
+          <span class="stat-number" id="totalAgreements">...</span>
+          <div class="stat-label" data-es="Total de Acuerdos" data-en="Total Agreements">Total de Acuerdos</div>
         </div>
       </div>
 
@@ -344,6 +353,59 @@
 
     </div>
   </main>
+
+  <!-- Modal para mostrar acuerdos filtrados -->
+  <div class="modal fade" id="agreementsModal" tabindex="-1" aria-labelledby="agreementsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-gobierno-dorado text-white">
+          <h5 class="modal-title" id="agreementsModalLabel">
+            <i class="bi bi-list-ul me-2"></i>
+            <span id="modalTitle" data-es="Acuerdos" data-en="Agreements">Acuerdos</span>
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Filtros de búsqueda -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="searchAgreements" placeholder="Buscar por número o descripción...">
+            </div>
+            <div class="col-md-6">
+              <select class="form-select" id="filterResponsible">
+                <option value="" data-es="Todos los responsables" data-en="All responsible parties">Todos los responsables</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Loading indicator -->
+          <div id="loadingIndicator" class="text-center py-4" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2" data-es="Cargando acuerdos..." data-en="Loading agreements...">Cargando acuerdos...</p>
+          </div>
+
+          <!-- Lista de acuerdos -->
+          <div id="agreementsList">
+            <!-- Los acuerdos se cargarán aquí dinámicamente -->
+          </div>
+
+          <!-- Paginación -->
+          <nav aria-label="Paginación" id="paginationContainer" style="display: none;">
+            <ul class="pagination justify-content-center" id="pagination">
+              <!-- La paginación se generará dinámicamente -->
+            </ul>
+          </nav>
+        </div>
+        <div class="modal-footer">
+          <span class="text-muted me-auto" id="agreementsCount">0 acuerdos encontrados</span>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-es="Cerrar" data-en="Close">Cerrar</button>
+          <a href="acuerdos-aphis.html" class="btn btn-primary" data-es="Ver Todos los Acuerdos" data-en="View All Agreements">Ver Todos los Acuerdos</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -510,6 +572,164 @@
         'Módulo de Carga en Lote: Disponible vía línea de comandos.\n\nUsar: node batch-upload-agreements.js --file archivo.csv --type aphis' :
         'Batch Upload Module: Available via command line.\n\nUse: node batch-upload-agreements.js --file file.csv --type aphis';
       alert(msg);
+    }
+
+    // Función para mostrar acuerdos filtrados por estado
+    function showAgreementsByStatus(status) {
+      const modal = new bootstrap.Modal(document.getElementById('agreementsModal'));
+      const modalTitle = document.getElementById('modalTitle');
+      const loadingIndicator = document.getElementById('loadingIndicator');
+      const agreementsList = document.getElementById('agreementsList');
+      const agreementsCount = document.getElementById('agreementsCount');
+      
+      // Configurar título del modal
+      const titles = {
+        'all': { es: 'Todos los Acuerdos', en: 'All Agreements' },
+        'Pendiente': { es: 'Acuerdos Pendientes', en: 'Pending Agreements' },
+        'Vencidos': { es: 'Acuerdos Vencidos', en: 'Overdue Agreements' },
+        'En Progreso': { es: 'Acuerdos en Progreso', en: 'In Progress Agreements' },
+        'Completado': { es: 'Acuerdos Completados', en: 'Completed Agreements' }
+      };
+      
+      const currentLang = getCurrentLanguage();
+      modalTitle.textContent = titles[status] ? titles[status][currentLang] : titles['all'][currentLang];
+      
+      // Mostrar modal y loading
+      modal.show();
+      loadingIndicator.style.display = 'block';
+      agreementsList.innerHTML = '';
+      agreementsCount.textContent = currentLang === 'es' ? 'Cargando...' : 'Loading...';
+      
+      // Obtener acuerdos de Firestore
+      fetchAgreementsByStatus(status);
+    }
+
+    // Función para obtener acuerdos de Firestore
+    async function fetchAgreementsByStatus(status) {
+      try {
+        const db = firebase.firestore();
+        const collection = db.collection('acuerdos-aphis');
+        
+        let query = collection;
+        if (status !== 'all') {
+          // Filtrar por estado
+          query = collection.where('status', '==', status)
+                    .orderBy('agreementNumber', 'desc')
+                    .limit(50);
+        } else {
+          query = collection.orderBy('agreementNumber', 'desc').limit(50);
+        }
+        
+        const snapshot = await query.get();
+        displayAgreements(snapshot, status);
+        
+      } catch (error) {
+        console.error('Error fetching agreements:', error);
+        document.getElementById('loadingIndicator').style.display = 'none';
+        document.getElementById('agreementsList').innerHTML = `
+          <div class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Error al cargar los acuerdos. Por favor, inténtelo nuevamente.
+          </div>
+        `;
+      }
+    }
+
+    // Función para mostrar los acuerdos en el modal
+    function displayAgreements(snapshot, status) {
+      const loadingIndicator = document.getElementById('loadingIndicator');
+      const agreementsList = document.getElementById('agreementsList');
+      const agreementsCount = document.getElementById('agreementsCount');
+      const currentLang = getCurrentLanguage();
+      
+      loadingIndicator.style.display = 'none';
+      
+      if (snapshot.empty) {
+        agreementsList.innerHTML = `
+          <div class="text-center py-4">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <h5 class="mt-3 text-muted">${currentLang === 'es' ? 'No se encontraron acuerdos' : 'No agreements found'}</h5>
+            <p class="text-muted">${currentLang === 'es' ? 'No hay acuerdos con este estado' : 'No agreements with this status'}</p>
+          </div>
+        `;
+        agreementsCount.textContent = currentLang === 'es' ? '0 acuerdos encontrados' : '0 agreements found';
+        return;
+      }
+      
+      const agreements = [];
+      snapshot.forEach(doc => {
+        agreements.push({ id: doc.id, ...doc.data() });
+      });
+      
+      // Generar HTML para la lista de acuerdos
+      let html = '<div class="list-group">';
+      
+      agreements.forEach(agreement => {
+        const statusBadge = getStatusBadge(agreement.status || agreement.Estado);
+        const agreementNumber = agreement.agreementNumber || agreement.numero || agreement['Numero de Acuerdo'] || 'N/A';
+        const description = agreement.description || agreement.descripcion || agreement['Descripcion del Acuerdo'] || 'Sin descripción';
+        const responsible = agreement.responsible || agreement.responsable || agreement['Responsable del Seguimiento'] || 'No asignado';
+        const dueDate = agreement.complianceDate || agreement.fecha_cumplimiento || agreement['Fecha de Cumplimiento'] || '';
+        
+        html += `
+          <div class="list-group-item list-group-item-action" onclick="viewAgreementDetail('${agreement.id}')">
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="flex-grow-1">
+                <h6 class="mb-1 text-primary fw-bold">
+                  <i class="bi bi-file-text me-1"></i>
+                  ${agreementNumber}
+                </h6>
+                <p class="mb-1">${description.substring(0, 150)}${description.length > 150 ? '...' : ''}</p>
+                <small class="text-muted">
+                  <i class="bi bi-person me-1"></i>${responsible}
+                  ${dueDate ? `<i class="bi bi-calendar ms-3 me-1"></i>${formatDate(dueDate)}` : ''}
+                </small>
+              </div>
+              <div class="ms-3">
+                ${statusBadge}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      html += '</div>';
+      agreementsList.innerHTML = html;
+      
+      const count = agreements.length;
+      agreementsCount.textContent = currentLang === 'es' ? 
+        `${count} acuerdo${count !== 1 ? 's' : ''} encontrado${count !== 1 ? 's' : ''}` :
+        `${count} agreement${count !== 1 ? 's' : ''} found`;
+    }
+
+    // Función para obtener el badge del estado
+    function getStatusBadge(status) {
+      const statusMap = {
+        'Pendiente': { class: 'bg-warning text-dark', icon: 'clock' },
+        'Completado': { class: 'bg-success', icon: 'check-circle' },
+        'Vencidos': { class: 'bg-danger', icon: 'x-circle' },
+        'En Progreso': { class: 'bg-info', icon: 'arrow-clockwise' }
+      };
+      
+      const statusInfo = statusMap[status] || { class: 'bg-secondary', icon: 'question-circle' };
+      return `<span class="badge ${statusInfo.class}"><i class="bi bi-${statusInfo.icon} me-1"></i>${status}</span>`;
+    }
+
+    // Función para formatear fechas
+    function formatDate(dateString) {
+      if (!dateString) return '';
+      try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('es-ES');
+      } catch (error) {
+        return dateString;
+      }
+    }
+
+    // Función para ver el detalle de un acuerdo
+    function viewAgreementDetail(agreementId) {
+      // Redirigir a la página de acuerdos con el ID específico
+      window.location.href = `acuerdos-aphis.html?id=${agreementId}`;
     }
 
     // Language switching functionality
