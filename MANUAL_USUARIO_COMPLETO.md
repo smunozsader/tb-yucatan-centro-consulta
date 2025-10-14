@@ -29,7 +29,7 @@ El **Centro de Consulta de Acuerdos Sanitarios** es una plataforma web gubername
 Facilitar la consulta, seguimiento y gestión de acuerdos sanitarios entre dos grupos de trabajo especializados que colaboran en la protección de la salud animal y la certificación de ganado en Yucatán:
 
 - **CESO** (Consejo Estatal de Seguimiento Operativo del SINIDA)
-- **APHIS-USDA** (Grupo de trabajo de cooperación México-Estados Unidos)
+- **Grupo de Trabajo para el Seguimiento a las Recomendaciones Críticas Emitidas por el APHIS - USDA en Materia de Tuberculosis Bovina (*Mycobacterium bovis*) y al Reporte de SENASICA con Observaciones en el Estado de Yucatán**
 
 ### Importancia Estratégica
 
@@ -66,7 +66,7 @@ Este sistema centraliza información crítica para:
 - Protocolos de movilización de semovientes
 - Verificación de cumplimiento sanitario
 
-### 🦬 APHIS-USDA - Grupo de Trabajo de Cooperación Internacional
+### 🦬 Grupo de Trabajo para el Seguimiento a las Recomendaciones Críticas Emitidas por el APHIS - USDA en Materia de Tuberculosis Bovina (*Mycobacterium bovis*) y al Reporte de SENASICA con Observaciones en el Estado de Yucatán
 
 **Descripción**: Grupo de trabajo bilateral México-Estados Unidos enfocado en el control de tuberculosis bovina y facilitación del comercio de ganado entre ambos países.
 
@@ -81,7 +81,7 @@ Este sistema centraliza información crítica para:
 - Legal: Tratados comerciales y acuerdos sanitarios binacionales
 - Coordinación: SENASICA, SADER (Representación Estatal), USDA-APHIS, organismos certificadores
 
-**Tipos de Acuerdos APHIS-USDA**:
+**Tipos de Acuerdos del Grupo de Trabajo APHIS-USDA**:
 - Protocolos de certificación para exportación
 - Programas de control de tuberculosis bovina
 - Estándares de inspección sanitaria
@@ -150,12 +150,12 @@ Este sistema centraliza información crítica para:
 
 **Elementos Principales**:
 - **Header Oficial**: Branding del Gobierno de México
-- **Selector de Organización**: CESO o APHIS-USDA
+- **Selector de Organización**: CESO o Grupo de Trabajo APHIS-USDA
 - **Información Institucional**: Descripción de cada grupo de trabajo
 - **Acceso Directo**: Enlaces a funciones principales
 
 **Navegación Inicial**:
-1. Seleccionar organización (CESO o APHIS-USDA)
+1. Seleccionar organización (CESO o Grupo de Trabajo APHIS-USDA)
 2. Iniciar sesión (si se requiere acceso administrativo)
 3. Acceder al panel de control correspondiente
 
@@ -182,10 +182,10 @@ Este sistema centraliza información crítica para:
 #### Panel APHIS (`hall-aphis.html`)
 **Características**:
 - **Estadísticas Equivalentes** al panel CESO
-- **Colores Distintivos**: Esquema dorado/amarillo para APHIS-USDA
+- **Colores Distintivos**: Esquema dorado/amarillo para el Grupo de Trabajo APHIS-USDA
 - **Funciones Específicas**:
-  - 📊 Panel de Acuerdos APHIS
-  - 🌎 Repositorio APHIS (*en desarrollo*)
+  - 📊 Panel de Acuerdos del Grupo de Trabajo APHIS-USDA
+  - 🌎 Repositorio del Grupo de Trabajo APHIS-USDA (*en desarrollo*)
   - ⚙️ Panel de Configuración (*en desarrollo*)
   - 📈 Reportes y Métricas (*próximamente*)
   - 📤 Carga en Lote
@@ -274,7 +274,7 @@ Este sistema centraliza información crítica para:
 
 **Patrones de Numeración**:
 - **CESO**: `CE-YUC-DDMMYY-NNN` (ejemplo: CE-YUC-091025-001)
-- **APHIS**: `NN-SESION-DDMMYY` (ejemplo: 01-XX-091025)
+- **Grupo de Trabajo APHIS-USDA**: `NN-SESION-DDMMYY` (ejemplo: 01-XX-091025)
 
 ---
 
@@ -346,7 +346,7 @@ Este sistema centraliza información crítica para:
 
 **Tipos de Documentos**:
 - 📋 Manuales operativos SINIDA
-- 📊 Protocolos de certificación APHIS
+- 📊 Protocolos de certificación del Grupo de Trabajo APHIS-USDA
 - 📑 Normativas y regulaciones actualizadas
 - 🎓 Material de capacitación
 - 📈 Reportes técnicos especializados
@@ -368,7 +368,7 @@ Este sistema centraliza información crítica para:
   - Ajustes de interfaz personalizables
   
 - **Gestión de Organizaciones**:
-  - Configuración CESO y APHIS
+  - Configuración CESO y Grupo de Trabajo APHIS-USDA
   - Plantillas de acuerdos personalizables
   - Flujos de trabajo configurables
 
