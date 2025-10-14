@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>APHIS-USDA - Centro de Control | TB-Yucatán</title>
+  <title>APHIS-USDA/SENASICA - Centro de Control | TB-Yucatán</title>
   
   <!-- REQUIRED: Official GOB.mx Framework -->
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
@@ -199,31 +199,39 @@
         <div class="row align-items-center">
           <div class="col-md-8">
             <div class="organization-badge">
-              <span class="international-flag">🇺🇸</span> APHIS-USDA
+              <span class="international-flag">🇺🇸</span> APHIS-USDA/SENASICA
             </div>
-            <h1 class="h2 mb-2" data-es="Centro de Control APHIS-USDA" data-en="APHIS-USDA Control Center">Centro de Control APHIS-USDA</h1>
+            <h1 class="h2 mb-2" data-es="Centro de Control APHIS-USDA/SENASICA" data-en="APHIS-USDA/SENASICA Control Center">Centro de Control APHIS-USDA/SENASICA</h1>
             <p class="user-greeting mb-0" id="userGreeting">
               Grupo de Trabajo de Seguimiento a Recomendaciones Críticas
             </p>
             <p class="small mb-0 mt-2 opacity-75">
-              <i class="bi bi-globe-americas"></i> <span data-es="Servicio de Inspección de Sanidad Animal y Vegetal - Colaboración SENASICA" data-en="Animal and Plant Health Inspection Service - SENASICA Collaboration">Servicio de Inspección de Sanidad Animal y Vegetal - Colaboración SENASICA</span>
+              <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-globe-americas"></i></span> <span data-es="Servicio de Inspección de Sanidad Animal y Vegetal - Colaboración SENASICA" data-en="Animal and Plant Health Inspection Service - SENASICA Collaboration">Servicio de Inspección de Sanidad Animal y Vegetal - Colaboración SENASICA</span>
             </p>
           </div>
           <div class="col-md-4 text-end">
             <!-- Language Toggle -->
             <div class="mb-3">
-              <div class="btn-group btn-group-sm" role="group" aria-label="Language Toggle">
-                <button type="button" class="btn btn-outline-light active" id="btnSpanish" onclick="setLanguage('es')">
-                  🇲🇽 ESPAÑOL
+              <div class="btn-group btn-group-sm mb-2" role="group" aria-label="Selector de idioma">
+                <button type="button" class="btn btn-secondary active" id="btnSpanish" onclick="setLanguage('es')" aria-pressed="true">
+                  <span aria-hidden="true">🇲🇽</span> ESPAÑOL
                 </button>
-                <button type="button" class="btn btn-outline-light" id="btnEnglish" onclick="setLanguage('en')">
-                  🇺🇸 ENGLISH
+                <button type="button" class="btn btn-secondary" id="btnEnglish" onclick="setLanguage('en')" aria-pressed="false">
+                  <span aria-hidden="true">🇺🇸</span> ENGLISH
+                </button>
+              </div>
+              
+              <!-- Logout Button -->
+              <div class="d-block">
+                <button type="button" class="btn btn-outline-light btn-sm" onclick="handleLogout()" id="logoutBtn">
+                  <span class="bootstrap-icons me-1" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span>
+                  <span data-es="Cerrar Sesión" data-en="Logout">Cerrar Sesión</span>
                 </button>
               </div>
             </div>
             <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white" 
                  style="width: 80px; height: 80px;">
-              <i class="bi bi-globe-americas text-warning" style="font-size: 2.5rem;"></i>
+              <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-globe-americas text-warning" style="font-size: 2.5rem;"></i></span>
             </div>
           </div>
         </div>
@@ -231,7 +239,7 @@
 
       <!-- Alertas críticas (si las hay) -->
       <div id="criticalAlerts" class="critical-alerts d-none">
-        <h6><i class="bi bi-exclamation-triangle text-warning"></i> <span data-es="Atención Crítica Requerida" data-en="Critical Attention Required">Atención Crítica Requerida</span></h6>
+        <h6><span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-exclamation-triangle text-warning"></i></span> <span data-es="Atención Crítica Requerida" data-en="Critical Attention Required">Atención Crítica Requerida</span></h6>
         <div id="alertsList"></div>
       </div>
 
@@ -266,7 +274,7 @@
       <!-- Sección de "Puertas" -->
       <div class="doors-section">
         <h3 class="mb-4 text-center">
-          <i class="bi bi-door-open text-warning"></i> 
+          <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-door-open text-warning"></i></span>
           <span data-es="Seleccione su Destino" data-en="Select Your Destination">Seleccione su Destino</span>
         </h3>
         
@@ -275,7 +283,7 @@
           <div class="col-md-4">
             <a href="acuerdos-aphis.html" class="door-card text-decoration-none">
               <div class="door-icon">
-                <i class="bi bi-clipboard-data"></i>
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>
               </div>
               <div class="door-title" data-es="Panel de Acuerdos" data-en="Agreements Dashboard">Panel de Acuerdos</div>
               <div class="door-description" data-es="Vista completa de todos los acuerdos, filtros y gestión de evidencias" data-en="Complete view of all agreements, filters and evidence management">
@@ -288,7 +296,7 @@
           <div class="col-md-4">
             <a href="repositorio-aphis.html" class="door-card text-decoration-none">
               <div class="door-icon">
-                <i class="bi bi-globe-americas"></i>
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-globe-americas"></i></span>
               </div>
               <div class="door-title" data-es="Repositorio APHIS" data-en="APHIS Repository">Repositorio APHIS</div>
               <div class="door-description" data-es="Documentos de cooperación USDA, protocolos y recursos de certificación" data-en="USDA cooperation documents, protocols and certification resources">
@@ -301,7 +309,7 @@
           <div class="col-md-4">
             <a href="#" class="door-card text-decoration-none" onclick="showComingSoon('Administrative Panel')">
               <div class="door-icon">
-                <i class="bi bi-gear"></i>
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-gear"></i></span>
               </div>
               <div class="door-title" data-es="Panel de Configuración" data-en="Configuration Panel">Panel de Configuración</div>
               <div class="door-description" data-es="Configuración de usuarios, permisos y parámetros del sistema" data-en="User configuration, permissions and system parameters">
@@ -312,13 +320,13 @@
 
           <!-- Reportes y Métricas -->
           <div class="col-md-4">
-            <a href="#" class="door-card text-decoration-none" onclick="showComingSoon('Reports Module')">
+            <a href="#" class="door-card text-decoration-none" onclick="openReportsModal()">
               <div class="door-icon">
-                <i class="bi bi-graph-up"></i>
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-graph-up"></i></span>
               </div>
               <div class="door-title" data-es="Reportes y Métricas" data-en="Reports & Metrics">Reportes y Métricas</div>
-              <div class="door-description" data-es="Estadísticas detalladas, gráficos y reportes de cumplimiento" data-en="Detailed statistics, charts and compliance reports">
-                Estadísticas detalladas, gráficos y reportes de cumplimiento
+              <div class="door-description" data-es="Generar reportes en PDF y Excel con filtros personalizados" data-en="Generate PDF and Excel reports with custom filters">
+                Generar reportes en PDF y Excel con filtros personalizados
               </div>
             </a>
           </div>
@@ -327,7 +335,7 @@
           <div class="col-md-4">
             <a href="batch-upload-aphis.html" class="door-card text-decoration-none">
               <div class="door-icon">
-                <i class="bi bi-upload"></i>
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-upload"></i></span>
               </div>
               <div class="door-title" data-es="Carga en Lote" data-en="Batch Upload">Carga en Lote</div>
               <div class="door-description" data-es="Carga masiva de acuerdos desde archivos CSV de sesiones" data-en="Mass upload of agreements from CSV session files">
@@ -340,7 +348,7 @@
           <div class="col-md-4">
             <a href="#" class="door-card text-decoration-none" onclick="showComingSoon('Help Center')">
               <div class="door-icon">
-                <i class="bi bi-question-circle"></i>
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-question-circle"></i></span>
               </div>
               <div class="door-title" data-es="Centro de Ayuda" data-en="Help Center">Centro de Ayuda</div>
               <div class="door-description" data-es="Tutoriales, preguntas frecuentes y soporte técnico para usuarios" data-en="Tutorials, FAQ and technical support for users">
@@ -360,7 +368,7 @@
       <div class="modal-content">
         <div class="modal-header bg-gobierno-dorado text-white">
           <h5 class="modal-title" id="agreementsModalLabel">
-            <i class="bi bi-list-ul me-2"></i>
+            <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-list-ul me-2"></i></span>
             <span id="modalTitle" data-es="Acuerdos" data-en="Agreements">Acuerdos</span>
           </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -407,12 +415,290 @@
     </div>
   </div>
 
+  <!-- Modal para mostrar detalle de acuerdo individual -->
+  <div class="modal fade" id="agreementDetailModal" tabindex="-1" aria-labelledby="agreementDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-gobierno-principal text-white">
+          <h5 class="modal-title" id="agreementDetailModalLabel">
+            <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-file-text me-2"></i></span>
+            <span data-es="Detalle del Acuerdo" data-en="Agreement Detail">Detalle del Acuerdo</span>
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Loading indicator for detail -->
+          <div id="detailLoadingIndicator" class="text-center py-4" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2" data-es="Cargando detalle..." data-en="Loading detail...">Cargando detalle...</p>
+          </div>
+
+          <!-- Agreement detail content -->
+          <div id="agreementDetailContent">
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="text-primary" data-es="Número de Acuerdo" data-en="Agreement Number">Número de Acuerdo</h6>
+                <p id="detailAgreementNumber" class="fw-bold">-</p>
+              </div>
+              <div class="col-md-6">
+                <h6 class="text-primary" data-es="Estado" data-en="Status">Estado</h6>
+                <p id="detailStatus">-</p>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="text-primary" data-es="Fecha de Cumplimiento" data-en="Compliance Date">Fecha de Cumplimiento</h6>
+                <p id="detailDate">-</p>
+              </div>
+              <div class="col-md-6">
+                <h6 class="text-primary" data-es="Responsable" data-en="Responsible">Responsable</h6>
+                <p id="detailResponsible">-</p>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-12">
+                <h6 class="text-primary" data-es="Descripción del Acuerdo" data-en="Agreement Description">Descripción del Acuerdo</h6>
+                <p id="detailDescription" class="text-wrap">-</p>
+              </div>
+            </div>
+
+            <!-- Evidence section -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <h6 class="text-primary" data-es="Evidencias" data-en="Evidence">Evidencias</h6>
+                <div id="detailEvidenceList" class="border rounded p-3 bg-light">
+                  <p class="text-muted mb-0" data-es="Cargando evidencias..." data-en="Loading evidence...">Cargando evidencias...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-es="Cerrar" data-en="Close">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="viewEvidenceBtn" data-es="Ver Evidencias" data-en="View Evidence">Ver Evidencias</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Reportes -->
+  <div class="modal fade" id="reportsModal" tabindex="-1" aria-labelledby="reportsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-gobierno-principal text-white">
+          <h5 class="modal-title" id="reportsModalLabel">
+            <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-graph-up me-2"></i></span>
+            <span data-es="Generador de Reportes APHIS" data-en="APHIS Report Generator">Generador de Reportes APHIS</span>
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <!-- Report Template Selection -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h6 class="text-primary mb-3" data-es="Plantillas de Reportes" data-en="Report Templates">Plantillas de Reportes</h6>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        <span class="bootstrap-icons text-danger me-2"><i class="bi bi-exclamation-triangle"></i></span>
+                        <span data-es="Acuerdos Vencidos" data-en="Overdue Agreements">Acuerdos Vencidos</span>
+                      </h6>
+                      <p class="card-text small" data-es="Reporte de acuerdos que han superado su fecha de cumplimiento" data-en="Report of agreements that have exceeded their compliance date">
+                        Reporte de acuerdos que han superado su fecha de cumplimiento
+                      </p>
+                      <button class="btn btn-danger btn-sm" onclick="loadReportTemplate('overdue')">
+                        <span class="bootstrap-icons me-1"><i class="bi bi-file-earmark-pdf"></i></span>
+                        <span data-es="Generar" data-en="Generate">Generar</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        <span class="bootstrap-icons text-info me-2"><i class="bi bi-person-check"></i></span>
+                        <span data-es="Actividad por Responsable" data-en="Activity by Responsible Person">Actividad por Responsable</span>
+                      </h6>
+                      <p class="card-text small" data-es="Reporte de acuerdos agrupados por persona responsable" data-en="Report of agreements grouped by responsible person">
+                        Reporte de acuerdos agrupados por persona responsable
+                      </p>
+                      <button class="btn btn-info btn-sm" onclick="loadReportTemplate('responsible')">
+                        <span class="bootstrap-icons me-1"><i class="bi bi-file-earmark-pdf"></i></span>
+                        <span data-es="Generar" data-en="Generate">Generar</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Report Filters -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h6 class="text-primary mb-3" data-es="Reporte Personalizado" data-en="Custom Report">Reporte Personalizado</h6>
+              <div class="card">
+                <div class="card-body">
+                  <form id="reportFiltersForm">
+                    <div class="row">
+                      <!-- Status Filter -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Estado del Acuerdo" data-en="Agreement Status">Estado del Acuerdo</label>
+                        <select class="form-select" id="reportStatusFilter" multiple>
+                          <option value="Pendiente">Pendiente</option>
+                          <option value="En Progreso">En Progreso</option>
+                          <option value="Vencidos">Vencidos</option>
+                          <option value="Completado">Completado</option>
+                        </select>
+                        <small class="text-muted" data-es="Mantén Ctrl para seleccionar múltiples" data-en="Hold Ctrl to select multiple">Mantén Ctrl para seleccionar múltiples</small>
+                      </div>
+                      
+                      <!-- Responsible Person Filter -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Responsable" data-en="Responsible Person">Responsable</label>
+                        <select class="form-select" id="reportResponsibleFilter">
+                          <option value="" data-es="Todos los responsables" data-en="All responsible persons">Todos los responsables</option>
+                          <!-- Will be populated dynamically -->
+                        </select>
+                      </div>
+                      
+                      <!-- Date Range -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Fecha Desde" data-en="Date From">Fecha Desde</label>
+                        <input type="date" class="form-control" id="reportDateFrom">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Fecha Hasta" data-en="Date To">Fecha Hasta</label>
+                        <input type="date" class="form-control" id="reportDateTo">
+                      </div>
+                      
+                      <!-- Agreement Number -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Número de Acuerdo" data-en="Agreement Number">Número de Acuerdo</label>
+                        <input type="text" class="form-control" id="reportAgreementNumber" placeholder="Ej: 01-IV-070624">
+                      </div>
+                      
+                      <!-- Session Number -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Número de Sesión" data-en="Session Number">Número de Sesión</label>
+                        <input type="text" class="form-control" id="reportSessionNumber" placeholder="Ej: Sesión IV">
+                      </div>
+                      
+                      <!-- Session Type -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Tipo de Sesión" data-en="Session Type">Tipo de Sesión</label>
+                        <select class="form-select" id="reportSessionType">
+                          <option value="" data-es="Todos los tipos" data-en="All types">Todos los tipos</option>
+                          <option value="Ordinaria" data-es="Ordinaria" data-en="Regular">Ordinaria</option>
+                          <option value="Extraordinaria" data-es="Extraordinaria" data-en="Extraordinary">Extraordinaria</option>
+                          <option value="Especial" data-es="Especial" data-en="Special">Especial</option>
+                          <option value="Urgente" data-es="Urgente" data-en="Urgent">Urgente</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <!-- Saved Configurations -->
+                    <div class="row mt-3">
+                      <div class="col-md-8 mb-3">
+                        <label class="form-label" data-es="Configuración Guardada" data-en="Saved Configuration">Configuración Guardada</label>
+                        <select class="form-select" id="savedConfigurations">
+                          <option value="" data-es="Seleccionar configuración guardada..." data-en="Select saved configuration...">Seleccionar configuración guardada...</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="form-label" data-es="Guardar Como" data-en="Save As">Guardar Como</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control" id="configurationName" placeholder="Nombre de configuración">
+                          <button class="btn btn-outline-secondary" type="button" onclick="saveConfiguration()">
+                            <span class="bootstrap-icons"><i class="bi bi-save"></i></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Report Preview -->
+          <div class="row">
+            <div class="col-12">
+              <h6 class="text-primary mb-3" data-es="Vista Previa del Reporte" data-en="Report Preview">Vista Previa del Reporte</h6>
+              <div class="card">
+                <div class="card-body">
+                  <div id="reportPreview" class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <p class="text-muted text-center py-4" data-es="Configure los filtros y haga clic en 'Generar Vista Previa' para ver el reporte" data-en="Configure filters and click 'Generate Preview' to see the report">
+                      Configure los filtros y haga clic en "Generar Vista Previa" para ver el reporte
+                    </p>
+                  </div>
+                  
+                  <!-- Report Summary -->
+                  <div id="reportSummary" class="mt-3 p-3 bg-light rounded" style="display: none;">
+                    <h6 class="text-primary mb-2" data-es="Resumen del Reporte" data-en="Report Summary">Resumen del Reporte</h6>
+                    <div class="row text-center">
+                      <div class="col-md-3">
+                        <div class="fw-bold text-warning" id="summaryPending">0</div>
+                        <small data-es="Pendientes" data-en="Pending">Pendientes</small>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="fw-bold text-info" id="summaryInProgress">0</div>
+                        <small data-es="En Progreso" data-en="In Progress">En Progreso</small>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="fw-bold text-danger" id="summaryOverdue">0</div>
+                        <small data-es="Vencidos" data-en="Overdue">Vencidos</small>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="fw-bold text-success" id="summaryCompleted">0</div>
+                        <small data-es="Completados" data-en="Completed">Completados</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-es="Cerrar" data-en="Close">Cerrar</button>
+          <button type="button" class="btn btn-outline-primary" onclick="generateReportPreview()">
+            <span class="bootstrap-icons me-1"><i class="bi bi-eye"></i></span>
+            <span data-es="Generar Vista Previa" data-en="Generate Preview">Generar Vista Previa</span>
+          </button>
+          <button type="button" class="btn btn-success" onclick="exportToExcel()" disabled id="exportExcelBtn">
+            <span class="bootstrap-icons me-1"><i class="bi bi-file-earmark-excel"></i></span>
+            <span data-es="Exportar Excel" data-en="Export Excel">Exportar Excel</span>
+          </button>
+          <button type="button" class="btn btn-primary" onclick="exportToPDF()" disabled id="exportPDFBtn">
+            <span class="bootstrap-icons me-1"><i class="bi bi-file-earmark-pdf"></i></span>
+            <span data-es="Exportar PDF" data-en="Export PDF">Exportar PDF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <script src="__/firebase/init.js"></script>
   <script src="auth-system.js"></script>
+  
+  <!-- PDF and Excel export libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   
   <script>
     // Prevenir interferencia de navegación hash legacy
@@ -451,6 +737,54 @@
       // Cargar estadísticas
       loadStatistics();
     });
+
+    // Logout functionality
+    function handleLogout() {
+      const logoutBtn = document.getElementById('logoutBtn');
+      
+      if (logoutBtn) {
+        logoutBtn.disabled = true;
+        logoutBtn.innerHTML = `
+          <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+          <span data-es="Cerrando..." data-en="Logging out...">Cerrando...</span>
+        `;
+      }
+      
+      try {
+        // Clear authentication data
+        if (window.gobmxAuth) {
+          window.gobmxAuth.logout();
+        }
+        
+        // Clear any local storage
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('authToken');
+        
+        // Redirect to login
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1000);
+        
+      } catch (error) {
+        console.error('Error during logout:', error);
+        
+        // Reset button state
+        if (logoutBtn) {
+          logoutBtn.disabled = false;
+          logoutBtn.innerHTML = `
+            <span class="bootstrap-icons me-1" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span>
+            <span data-es="Cerrar Sesión" data-en="Logout">Cerrar Sesión</span>
+          `;
+        }
+        
+        alert('Error al cerrar sesión. Intentando nuevamente...');
+        
+        // Force redirect as fallback
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 2000);
+      }
+    }
 
     async function loadStatistics() {
       try {
@@ -607,29 +941,76 @@
     // Función para obtener acuerdos de Firestore
     async function fetchAgreementsByStatus(status) {
       try {
+        console.log('🔍 Fetching agreements for status:', status);
         const db = firebase.firestore();
         const collection = db.collection('acuerdos-aphis');
         
         let query = collection;
+        
+        // Use simpler queries to avoid index requirements
         if (status !== 'all') {
-          // Filtrar por estado
-          query = collection.where('status', '==', status)
-                    .orderBy('agreementNumber', 'desc')
-                    .limit(50);
+          // First try with status filter only (without orderBy to avoid composite index requirement)
+          query = collection.where('status', '==', status).limit(50);
         } else {
-          query = collection.orderBy('agreementNumber', 'desc').limit(50);
+          // For 'all', just get recent documents
+          query = collection.limit(50);
         }
         
+        console.log('📊 Executing Firestore query...');
         const snapshot = await query.get();
+        console.log('📦 Retrieved documents:', snapshot.size);
+        
         displayAgreements(snapshot, status);
         
       } catch (error) {
-        console.error('Error fetching agreements:', error);
+        console.error('❌ Error fetching agreements:', error);
+        console.error('🔍 Error details:', error.code, error.message);
+        
+        // Try fallback query without filtering
+        try {
+          console.log('🔄 Attempting fallback query...');
+          const db = firebase.firestore();
+          const collection = db.collection('acuerdos-aphis');
+          const fallbackSnapshot = await collection.limit(50).get();
+          console.log('📦 Fallback retrieved documents:', fallbackSnapshot.size);
+          
+          if (fallbackSnapshot.size > 0) {
+            // Filter client-side if needed
+            const filteredDocs = [];
+            fallbackSnapshot.forEach(doc => {
+              const data = doc.data();
+              if (status === 'all' || data.status === status || data.Estado === status) {
+                filteredDocs.push({ id: doc.id, ...data });
+              }
+            });
+            
+            // Create a fake snapshot object for displayAgreements
+            const fakeSnapshot = {
+              empty: filteredDocs.length === 0,
+              size: filteredDocs.length,
+              forEach: (callback) => {
+                filteredDocs.forEach(doc => {
+                  callback({ id: doc.id, data: () => doc });
+                });
+              }
+            };
+            
+            displayAgreements(fakeSnapshot, status);
+            return;
+          }
+        } catch (fallbackError) {
+          console.error('❌ Fallback query also failed:', fallbackError);
+        }
+        
         document.getElementById('loadingIndicator').style.display = 'none';
         document.getElementById('agreementsList').innerHTML = `
           <div class="alert alert-danger">
             <i class="bi bi-exclamation-triangle me-2"></i>
-            Error al cargar los acuerdos. Por favor, inténtelo nuevamente.
+            Error al cargar los acuerdos: ${error.message}<br>
+            <small class="text-muted">Verifique la consola para más detalles.</small>
+            <button class="btn btn-sm btn-outline-danger mt-2" onclick="fetchAgreementsByStatus('${status}')">
+              <i class="bi bi-arrow-clockwise me-1"></i>Reintentar
+            </button>
           </div>
         `;
       }
@@ -661,15 +1042,96 @@
         agreements.push({ id: doc.id, ...doc.data() });
       });
       
+      // Sort agreements by date (oldest first) for better priority management
+      agreements.sort((a, b) => {
+        // Get the due date from various possible field names
+        const getDateValue = (agreement) => {
+          const dateField = 
+            agreement.complianceDate || 
+            agreement.fecha_cumplimiento || 
+            agreement['Fecha de Cumplimiento'] || 
+            agreement.fechaCumplimiento ||
+            agreement.deadline ||
+            agreement.meetingDate ||
+            agreement.fecha_reunion ||
+            agreement['Fecha de Reunión'] ||
+            null;
+          
+          if (!dateField) return new Date('1970-01-01'); // Very old date for agreements without dates
+          
+          // Handle Excel serial numbers
+          if (typeof dateField === 'number') {
+            return new Date((dateField - 25569) * 86400 * 1000);
+          }
+          
+          // Handle Firestore timestamps
+          if (dateField.toDate) {
+            return dateField.toDate();
+          }
+          
+          // Handle regular date strings
+          const date = new Date(dateField);
+          return isNaN(date) ? new Date('1970-01-01') : date;
+        };
+        
+        const dateA = getDateValue(a);
+        const dateB = getDateValue(b);
+        
+        // Sort oldest first (ascending order)
+        return dateA.getTime() - dateB.getTime();
+      });
+      
       // Generar HTML para la lista de acuerdos
       let html = '<div class="list-group">';
       
       agreements.forEach(agreement => {
-        const statusBadge = getStatusBadge(agreement.status || agreement.Estado);
-        const agreementNumber = agreement.agreementNumber || agreement.numero || agreement['Numero de Acuerdo'] || 'N/A';
-        const description = agreement.description || agreement.descripcion || agreement['Descripcion del Acuerdo'] || 'Sin descripción';
-        const responsible = agreement.responsible || agreement.responsable || agreement['Responsable del Seguimiento'] || 'No asignado';
-        const dueDate = agreement.complianceDate || agreement.fecha_cumplimiento || agreement['Fecha de Cumplimiento'] || '';
+        console.log('🔍 Processing agreement:', agreement);
+        
+        // Enhanced field mapping with more alternatives
+        const statusBadge = getStatusBadge(
+          agreement.status || 
+          agreement.Estado || 
+          agreement.estado || 
+          agreement['Estado del Acuerdo'] ||
+          'Pendiente'
+        );
+        
+        const agreementNumber = 
+          agreement.agreementNumber || 
+          agreement.numero || 
+          agreement.Numero ||
+          agreement['Numero de Acuerdo'] || 
+          agreement['Número de Acuerdo'] ||
+          agreement.id ||
+          'N/A';
+          
+        const description = 
+          agreement.description || 
+          agreement.descripcion || 
+          agreement.Descripcion ||
+          agreement['Descripcion del Acuerdo'] || 
+          agreement['Descripción del Acuerdo'] ||
+          agreement.tema ||
+          agreement.Tema ||
+          'Sin descripción';
+          
+        const responsible = 
+          agreement.responsible || 
+          agreement.responsable || 
+          agreement.Responsable ||
+          agreement['Responsable del Seguimiento'] || 
+          agreement['Responsable'] ||
+          'No asignado';
+          
+        const dueDate = 
+          agreement.complianceDate || 
+          agreement.fecha_cumplimiento || 
+          agreement['Fecha de Cumplimiento'] || 
+          agreement.fechaCumplimiento ||
+          agreement.deadline ||
+          '';
+        
+        console.log('📋 Mapped fields:', { agreementNumber, description: description.substring(0, 50), responsible, status: agreement.status || agreement.Estado });
         
         html += `
           <div class="list-group-item list-group-item-action" onclick="viewAgreementDetail('${agreement.id}')">
@@ -715,21 +1177,159 @@
       return `<span class="badge ${statusInfo.class}"><i class="bi bi-${statusInfo.icon} me-1"></i>${status}</span>`;
     }
 
-    // Función para formatear fechas
-    function formatDate(dateString) {
-      if (!dateString) return '';
+    // Función para formatear fechas (compatible con Excel, Firestore y strings)
+    function formatDate(v) {
       try {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-ES');
-      } catch (error) {
-        return dateString;
+        if (!v) return '';
+        
+        // Handle Excel serial numbers (like 44197 for a date)
+        if (typeof v === 'number') {
+          const d = new Date((v - 25569) * 86400 * 1000);
+          return d.toLocaleDateString('es-ES');
+        }
+        
+        // Handle Firestore timestamps
+        if (v.toDate) {
+          return v.toDate().toLocaleDateString('es-ES');
+        }
+        
+        // Handle regular date strings
+        const d = new Date(v);
+        return isNaN(d) ? String(v) : d.toLocaleDateString('es-ES');
+      } catch (e) {
+        return String(v);
       }
     }
 
-    // Función para ver el detalle de un acuerdo
-    function viewAgreementDetail(agreementId) {
-      // Redirigir a la página de acuerdos con el ID específico
-      window.location.href = `acuerdos-aphis.html?id=${agreementId}`;
+    // Función para ver el detalle de un acuerdo en modal
+    async function viewAgreementDetail(agreementId) {
+      const detailModal = new bootstrap.Modal(document.getElementById('agreementDetailModal'));
+      const loadingIndicator = document.getElementById('detailLoadingIndicator');
+      const detailContent = document.getElementById('agreementDetailContent');
+      
+      // Show modal and loading state
+      detailModal.show();
+      loadingIndicator.style.display = 'block';
+      detailContent.style.display = 'none';
+      
+      try {
+        console.log('🔍 Fetching agreement detail for ID:', agreementId);
+        const db = firebase.firestore();
+        const doc = await db.collection('acuerdos-aphis').doc(agreementId).get();
+        
+        if (!doc.exists) {
+          throw new Error('Agreement not found');
+        }
+        
+        const data = doc.data();
+        console.log('📋 Agreement data:', data);
+        
+        // Populate modal fields
+        document.getElementById('detailAgreementNumber').textContent = 
+          data.agreementNumber || 
+          data.numero || 
+          data.Numero ||
+          data['Numero de Acuerdo'] || 
+          data['Número de Acuerdo'] ||
+          agreementId || 'N/A';
+          
+        document.getElementById('detailDescription').textContent = 
+          data.description || 
+          data.descripcion || 
+          data.Descripcion ||
+          data['Descripcion del Acuerdo'] || 
+          data['Descripción del Acuerdo'] ||
+          data.tema ||
+          data.Tema ||
+          'Sin descripción';
+          
+        document.getElementById('detailResponsible').textContent = 
+          data.responsible || 
+          data.responsable || 
+          data.Responsable ||
+          data['Responsable del Seguimiento'] || 
+          data['Responsable'] ||
+          'No asignado';
+          
+        // Format and display date
+        const dueDate = 
+          data.complianceDate || 
+          data.fecha_cumplimiento || 
+          data['Fecha de Cumplimiento'] || 
+          data.fechaCumplimiento ||
+          data.deadline ||
+          data.meetingDate ||
+          data.fecha_reunion ||
+          data['Fecha de Reunión'] ||
+          '';
+          
+        document.getElementById('detailDate').textContent = dueDate ? formatDate(dueDate) : 'No especificada';
+        
+        // Display status with badge
+        const status = data.status || data.Estado || data.estado || 'Pendiente';
+        const statusElement = document.getElementById('detailStatus');
+        statusElement.innerHTML = getStatusBadge(status);
+        
+        // Load evidence
+        loadEvidenceForDetail(agreementId);
+        
+        // Hide loading, show content
+        loadingIndicator.style.display = 'none';
+        detailContent.style.display = 'block';
+        
+      } catch (error) {
+        console.error('❌ Error loading agreement detail:', error);
+        loadingIndicator.style.display = 'none';
+        detailContent.innerHTML = `
+          <div class="alert alert-danger">
+            <h6>Error al cargar el detalle</h6>
+            <p>No se pudo cargar la información del acuerdo. Por favor, intente nuevamente.</p>
+          </div>
+        `;
+        detailContent.style.display = 'block';
+      }
+    }
+    
+    // Function to load evidence for the detail modal
+    async function loadEvidenceForDetail(agreementId) {
+      const evidenceList = document.getElementById('detailEvidenceList');
+      
+      try {
+        const db = firebase.firestore();
+        const evidenceSnapshot = await db.collection('acuerdos-aphis').doc(agreementId).collection('evidencias').get();
+        
+        if (evidenceSnapshot.empty) {
+          evidenceList.innerHTML = '<p class="text-muted mb-0" data-es="No hay evidencias cargadas" data-en="No evidence uploaded">No hay evidencias cargadas</p>';
+          return;
+        }
+        
+        let evidenceHtml = '';
+        evidenceSnapshot.forEach(doc => {
+          const evidence = doc.data();
+          const fileName = evidence.fileName || evidence.nombre || 'Archivo';
+          const uploadDate = evidence.uploadDate || evidence.fechaSubida;
+          const fileUrl = evidence.downloadURL || evidence.url;
+          
+          evidenceHtml += `
+            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+              <div>
+                <span class="bootstrap-icons me-2"><i class="bi bi-file-earmark"></i></span>
+                <strong>${fileName}</strong>
+                ${uploadDate ? `<br><small class="text-muted">Subido: ${formatDate(uploadDate)}</small>` : ''}
+              </div>
+              <div>
+                ${fileUrl ? `<a href="${fileUrl}" target="_blank" class="btn btn-sm btn-outline-primary">Ver</a>` : ''}
+              </div>
+            </div>
+          `;
+        });
+        
+        evidenceList.innerHTML = evidenceHtml;
+        
+      } catch (error) {
+        console.error('❌ Error loading evidence:', error);
+        evidenceList.innerHTML = '<p class="text-warning mb-0">Error al cargar evidencias</p>';
+      }
     }
 
     // Language switching functionality
@@ -740,9 +1340,16 @@
     function setLanguage(lang) {
       localStorage.setItem('preferredLanguage', lang);
       
-      // Update button states
-      document.getElementById('btnSpanish').classList.toggle('active', lang === 'es');
-      document.getElementById('btnEnglish').classList.toggle('active', lang === 'en');
+      // Update button states for accessibility compliance
+      const btnSpanish = document.getElementById('btnSpanish');
+      const btnEnglish = document.getElementById('btnEnglish');
+      
+      btnSpanish.classList.toggle('active', lang === 'es');
+      btnEnglish.classList.toggle('active', lang === 'en');
+      
+      // Update aria-pressed attributes for screen readers
+      btnSpanish.setAttribute('aria-pressed', lang === 'es');
+      btnEnglish.setAttribute('aria-pressed', lang === 'en');
       
       // Update all translatable elements
       document.querySelectorAll('[data-es][data-en]').forEach(element => {
@@ -758,7 +1365,520 @@
     document.addEventListener('DOMContentLoaded', function() {
       const currentLang = getCurrentLanguage();
       setLanguage(currentLang);
+      loadResponsiblePersonsForReports();
+      loadSavedConfigurations();
     });
+
+    // ============ REPORTS FUNCTIONALITY (APHIS) ============
+    
+    let currentReportData = [];
+    
+    // Open reports modal
+    function openReportsModal() {
+      const modal = new bootstrap.Modal(document.getElementById('reportsModal'));
+      modal.show();
+    }
+    
+    // Load responsible persons for filter dropdown
+    async function loadResponsiblePersonsForReports() {
+      try {
+        const db = firebase.firestore();
+        const snapshot = await db.collection('acuerdos-aphis').get();
+        const responsibles = new Set();
+        
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const responsible = data.responsible || data.responsable || data.Responsable || data['Responsable del Seguimiento'] || data['Responsable'];
+          if (responsible && responsible.trim()) {
+            responsibles.add(responsible.trim());
+          }
+        });
+        
+        const select = document.getElementById('reportResponsibleFilter');
+        responsibles.forEach(responsible => {
+          const option = document.createElement('option');
+          option.value = responsible;
+          option.textContent = responsible;
+          select.appendChild(option);
+        });
+        
+      } catch (error) {
+        console.error('Error loading responsible persons:', error);
+      }
+    }
+    
+    // Load report template
+    function loadReportTemplate(templateType) {
+      const now = new Date();
+      const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+      
+      // Clear current filters
+      document.getElementById('reportFiltersForm').reset();
+      
+      if (templateType === 'overdue') {
+        // Overdue agreements template
+        document.getElementById('reportStatusFilter').value = 'Vencidos';
+        document.getElementById('reportDateTo').value = now.toISOString().split('T')[0];
+        
+      } else if (templateType === 'responsible') {
+        // Responsible person activity template
+        document.getElementById('reportDateFrom').value = oneMonthAgo.toISOString().split('T')[0];
+        document.getElementById('reportDateTo').value = now.toISOString().split('T')[0];
+      }
+      
+      // Generate preview automatically
+      setTimeout(() => generateReportPreview(), 500);
+    }
+    
+    // Generate report preview
+    async function generateReportPreview() {
+      const previewDiv = document.getElementById('reportPreview');
+      const summaryDiv = document.getElementById('reportSummary');
+      const exportPDFBtn = document.getElementById('exportPDFBtn');
+      const exportExcelBtn = document.getElementById('exportExcelBtn');
+      
+      // Show loading
+      previewDiv.innerHTML = `
+        <div class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <p class="mt-2">Generando reporte...</p>
+        </div>
+      `;
+      
+      try {
+        // Get filter values
+        const filters = getReportFilters();
+        
+        // Fetch data from Firestore
+        const db = firebase.firestore();
+        let query = db.collection('acuerdos-aphis');
+        
+        // Apply filters
+        const snapshot = await query.get();
+        let agreements = [];
+        
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const agreement = { id: doc.id, ...data };
+          
+          // Apply client-side filters
+          if (matchesFilters(agreement, filters)) {
+            agreements.push(agreement);
+          }
+        });
+        
+        // Sort by date (oldest first for priority)
+        agreements.sort((a, b) => {
+          const dateA = getDateValue(a);
+          const dateB = getDateValue(b);
+          return dateA - dateB;
+        });
+        
+        currentReportData = agreements;
+        
+        // Generate preview HTML
+        generatePreviewHTML(agreements);
+        
+        // Generate summary
+        generateReportSummary(agreements);
+        
+        // Enable export buttons
+        exportPDFBtn.disabled = false;
+        exportExcelBtn.disabled = false;
+        summaryDiv.style.display = 'block';
+        
+      } catch (error) {
+        console.error('Error generating report:', error);
+        previewDiv.innerHTML = `
+          <div class="alert alert-danger">
+            <h6>Error al generar el reporte</h6>
+            <p>No se pudo generar el reporte. Por favor, intente nuevamente.</p>
+          </div>
+        `;
+      }
+    }
+    
+    // Get report filters from form (same as CESO)
+    function getReportFilters() {
+      const statusSelect = document.getElementById('reportStatusFilter');
+      const selectedStatuses = Array.from(statusSelect.selectedOptions).map(option => option.value);
+      
+      return {
+        statuses: selectedStatuses.length > 0 ? selectedStatuses : null,
+        responsible: document.getElementById('reportResponsibleFilter').value || null,
+        dateFrom: document.getElementById('reportDateFrom').value || null,
+        dateTo: document.getElementById('reportDateTo').value || null,
+        agreementNumber: document.getElementById('reportAgreementNumber').value || null,
+        sessionNumber: document.getElementById('reportSessionNumber').value || null,
+        sessionType: document.getElementById('reportSessionType').value || null
+      };
+    }
+    
+    // Check if agreement matches filters (same as CESO)
+    function matchesFilters(agreement, filters) {
+      // Status filter
+      if (filters.statuses) {
+        const status = agreement.status || agreement.Estado || agreement.estado || 'Pendiente';
+        if (!filters.statuses.includes(status)) return false;
+      }
+      
+      // Responsible person filter
+      if (filters.responsible) {
+        const responsible = agreement.responsible || agreement.responsable || agreement.Responsable || agreement['Responsable del Seguimiento'] || '';
+        if (!responsible.toLowerCase().includes(filters.responsible.toLowerCase())) return false;
+      }
+      
+      // Agreement number filter
+      if (filters.agreementNumber) {
+        const agreementNumber = agreement.agreementNumber || agreement.numero || agreement.Numero || agreement['Numero de Acuerdo'] || agreement['Número de Acuerdo'] || '';
+        if (!agreementNumber.toLowerCase().includes(filters.agreementNumber.toLowerCase())) return false;
+      }
+      
+      // Session number filter
+      if (filters.sessionNumber) {
+        const description = agreement.description || agreement.descripcion || agreement.Descripcion || '';
+        if (!description.toLowerCase().includes(filters.sessionNumber.toLowerCase())) return false;
+      }
+      
+      // Session type filter
+      if (filters.sessionType) {
+        const sessionType = agreement.sessionType || agreement['Tipo_de_Sesion'] || agreement['Tipo de Sesión'] || agreement.tipo_sesion || '';
+        if (sessionType.toLowerCase() !== filters.sessionType.toLowerCase()) return false;
+      }
+      
+      // Date range filter
+      if (filters.dateFrom || filters.dateTo) {
+        const agreementDate = getDateValue(agreement);
+        if (agreementDate) {
+          if (filters.dateFrom && agreementDate < new Date(filters.dateFrom).getTime()) return false;
+          if (filters.dateTo && agreementDate > new Date(filters.dateTo).getTime()) return false;
+        }
+      }
+      
+      return true;
+    }
+    
+    // Get date value from agreement (same as CESO)
+    function getDateValue(agreement) {
+      const dateField = 
+        agreement.complianceDate || 
+        agreement.fecha_cumplimiento || 
+        agreement['Fecha de Cumplimiento'] || 
+        agreement.fechaCumplimiento ||
+        agreement.deadline ||
+        agreement.meetingDate ||
+        agreement.fecha_reunion ||
+        agreement['Fecha de Reunión'] ||
+        null;
+      
+      if (!dateField) return new Date('1970-01-01').getTime();
+      
+      if (typeof dateField === 'number') {
+        return (dateField - 25569) * 86400 * 1000;
+      }
+      
+      if (dateField.toDate) {
+        return dateField.toDate().getTime();
+      }
+      
+      const date = new Date(dateField);
+      return isNaN(date) ? new Date('1970-01-01').getTime() : date.getTime();
+    }
+    
+    // Generate preview HTML (same as CESO)
+    function generatePreviewHTML(agreements) {
+      const previewDiv = document.getElementById('reportPreview');
+      
+      if (agreements.length === 0) {
+        previewDiv.innerHTML = `
+          <div class="text-center py-4">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <h5 class="mt-3 text-muted">No se encontraron acuerdos</h5>
+            <p class="text-muted">No hay acuerdos que coincidan con los filtros seleccionados</p>
+          </div>
+        `;
+        return;
+      }
+      
+      let html = `
+        <table class="table table-striped table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>Número</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Responsable</th>
+              <th>Fecha</th>
+              <th>Evidencias</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      agreements.forEach(agreement => {
+        const agreementNumber = agreement.agreementNumber || agreement.numero || agreement.Numero || agreement['Numero de Acuerdo'] || agreement['Número de Acuerdo'] || agreement.id || 'N/A';
+        const description = agreement.description || agreement.descripcion || agreement.Descripcion || agreement['Descripcion del Acuerdo'] || agreement['Descripción del Acuerdo'] || 'Sin descripción';
+        const status = agreement.status || agreement.Estado || agreement.estado || 'Pendiente';
+        const responsible = agreement.responsible || agreement.responsable || agreement.Responsable || agreement['Responsable del Seguimiento'] || 'No asignado';
+        const date = formatDate(agreement.complianceDate || agreement.fecha_cumplimiento || agreement['Fecha de Cumplimiento'] || agreement.meetingDate || '');
+        
+        html += `
+          <tr>
+            <td><strong>${agreementNumber}</strong></td>
+            <td>${description.substring(0, 100)}${description.length > 100 ? '...' : ''}</td>
+            <td>${getStatusBadge(status)}</td>
+            <td>${responsible}</td>
+            <td>${date || 'No especificada'}</td>
+            <td><span class="badge bg-secondary">Ver detalles</span></td>
+          </tr>
+        `;
+      });
+      
+      html += '</tbody></table>';
+      previewDiv.innerHTML = html;
+    }
+    
+    // Generate report summary (same as CESO)
+    function generateReportSummary(agreements) {
+      const summary = {
+        pending: 0,
+        inProgress: 0,
+        overdue: 0,
+        completed: 0
+      };
+      
+      agreements.forEach(agreement => {
+        const status = (agreement.status || agreement.Estado || agreement.estado || 'Pendiente').toLowerCase();
+        
+        if (status.includes('pendiente') || status === '') {
+          summary.pending++;
+        } else if (status.includes('progreso')) {
+          summary.inProgress++;
+        } else if (status.includes('vencido')) {
+          summary.overdue++;
+        } else if (status.includes('completado') || status.includes('cumplido')) {
+          summary.completed++;
+        }
+      });
+      
+      document.getElementById('summaryPending').textContent = summary.pending;
+      document.getElementById('summaryInProgress').textContent = summary.inProgress;
+      document.getElementById('summaryOverdue').textContent = summary.overdue;
+      document.getElementById('summaryCompleted').textContent = summary.completed;
+    }
+    
+    // Export to PDF with Mexican government template (modified for APHIS)
+    function exportToPDF() {
+      if (currentReportData.length === 0) {
+        alert('No hay datos para exportar. Genere primero una vista previa del reporte.');
+        return;
+      }
+      
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('l', 'mm', 'a4'); // Landscape orientation
+      
+      // Mexican government header
+      doc.setFillColor(97, 18, 50); // Official government color
+      doc.rect(0, 0, 297, 30, 'F');
+      
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(16);
+      doc.setFont(undefined, 'bold');
+      doc.text('GOBIERNO DE MÉXICO', 15, 12);
+      doc.text('APHIS-USDA/SENASICA - Reporte de Acuerdos', 15, 22);
+      
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(10);
+      doc.text(`Fecha de generación: ${new Date().toLocaleDateString('es-ES')}`, 200, 12);
+      doc.text(`Total de registros: ${currentReportData.length}`, 200, 18);
+      
+      // Prepare table data
+      const tableData = currentReportData.map(agreement => {
+        return [
+          agreement.agreementNumber || agreement.numero || 'N/A',
+          agreement.sessionType || agreement['Tipo_de_Sesion'] || agreement['Tipo de Sesión'] || agreement.tipo_sesion || 'N/A',
+          (agreement.description || agreement.descripcion || 'Sin descripción').substring(0, 70),
+          agreement.status || agreement.Estado || 'Pendiente',
+          (agreement.responsible || agreement.responsable || 'No asignado').substring(0, 25),
+          formatDate(agreement.complianceDate || agreement.fecha_cumplimiento || '') || 'No especificada'
+        ];
+      });
+      
+      // Add table
+      doc.autoTable({
+        startY: 35,
+        head: [['Número', 'Tipo Sesión', 'Descripción', 'Estado', 'Responsable', 'Fecha']],
+        body: tableData,
+        styles: { fontSize: 8, cellPadding: 2 },
+        headStyles: { fillColor: [97, 18, 50], textColor: 255 },
+        alternateRowStyles: { fillColor: [245, 245, 245] },
+        columnStyles: {
+          0: { cellWidth: 25 },
+          1: { cellWidth: 20 },
+          2: { cellWidth: 80 },
+          3: { cellWidth: 20 },
+          4: { cellWidth: 50 },
+          5: { cellWidth: 30 }
+        }
+      });
+      
+      // Footer
+      const pageCount = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.text(`Página ${i} de ${pageCount}`, 240, 200);
+        doc.text('APHIS-USDA/SENASICA Working Group', 15, 200);
+      }
+      
+      // Save PDF
+      const filename = `Reporte_APHIS_${new Date().toISOString().split('T')[0]}.pdf`;
+      doc.save(filename);
+    }
+    
+    // Export to Excel (modified for APHIS)
+    function exportToExcel() {
+      if (currentReportData.length === 0) {
+        alert('No hay datos para exportar. Genere primero una vista previa del reporte.');
+        return;
+      }
+      
+      // Prepare data for Excel
+      const excelData = currentReportData.map(agreement => {
+        return {
+          'Número de Acuerdo': agreement.agreementNumber || agreement.numero || 'N/A',
+          'Tipo de Sesión': agreement.sessionType || agreement['Tipo_de_Sesion'] || agreement['Tipo de Sesión'] || agreement.tipo_sesion || 'N/A',
+          'Descripción': agreement.description || agreement.descripcion || 'Sin descripción',
+          'Estado': agreement.status || agreement.Estado || 'Pendiente',
+          'Responsable': agreement.responsible || agreement.responsable || 'No asignado',
+          'Fecha de Cumplimiento': formatDate(agreement.complianceDate || agreement.fecha_cumplimiento || '') || 'No especificada',
+          'Fecha de Reunión': formatDate(agreement.meetingDate || agreement.fecha_reunion || '') || 'No especificada'
+        };
+      });
+      
+      // Create workbook and worksheet
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(excelData);
+      
+      // Set column widths
+      ws['!cols'] = [
+        { width: 20 }, // Número de Acuerdo
+        { width: 15 }, // Tipo de Sesión
+        { width: 55 }, // Descripción
+        { width: 15 }, // Estado
+        { width: 25 }, // Responsable
+        { width: 20 }, // Fecha de Cumplimiento
+        { width: 20 }  // Fecha de Reunión
+      ];
+      
+      XLSX.utils.book_append_sheet(wb, ws, 'Reporte APHIS');
+      
+      // Save Excel file
+      const filename = `Reporte_APHIS_${new Date().toISOString().split('T')[0]}.xlsx`;
+      XLSX.writeFile(wb, filename);
+    }
+    
+    // Save configuration (modified for APHIS)
+    function saveConfiguration() {
+      const configName = document.getElementById('configurationName').value.trim();
+      if (!configName) {
+        alert('Por favor, ingrese un nombre para la configuración.');
+        return;
+      }
+      
+      const config = {
+        name: configName,
+        filters: getReportFilters(),
+        timestamp: new Date().toISOString()
+      };
+      
+      // Save to localStorage
+      const savedConfigs = JSON.parse(localStorage.getItem('aphisReportConfigs') || '[]');
+      
+      // Check if name already exists
+      const existingIndex = savedConfigs.findIndex(c => c.name === configName);
+      if (existingIndex >= 0) {
+        if (confirm('Ya existe una configuración con este nombre. ¿Desea sobrescribirla?')) {
+          savedConfigs[existingIndex] = config;
+        } else {
+          return;
+        }
+      } else {
+        savedConfigs.push(config);
+      }
+      
+      localStorage.setItem('aphisReportConfigs', JSON.stringify(savedConfigs));
+      loadSavedConfigurations();
+      
+      alert('Configuración guardada exitosamente.');
+      document.getElementById('configurationName').value = '';
+    }
+    
+    // Load saved configurations (modified for APHIS)
+    function loadSavedConfigurations() {
+      const select = document.getElementById('savedConfigurations');
+      const savedConfigs = JSON.parse(localStorage.getItem('aphisReportConfigs') || '[]');
+      
+      // Clear existing options except first
+      while (select.children.length > 1) {
+        select.removeChild(select.lastChild);
+      }
+      
+      savedConfigs.forEach(config => {
+        const option = document.createElement('option');
+        option.value = JSON.stringify(config);
+        option.textContent = `${config.name} (${new Date(config.timestamp).toLocaleDateString()})`;
+        select.appendChild(option);
+      });
+      
+      // Add change event listener
+      select.addEventListener('change', function() {
+        if (this.value) {
+          const config = JSON.parse(this.value);
+          loadConfiguration(config.filters);
+        }
+      });
+    }
+    
+    // Load configuration into form (same as CESO)
+    function loadConfiguration(filters) {
+      // Clear form first
+      document.getElementById('reportFiltersForm').reset();
+      
+      // Set filter values
+      if (filters.statuses) {
+        const statusSelect = document.getElementById('reportStatusFilter');
+        Array.from(statusSelect.options).forEach(option => {
+          option.selected = filters.statuses.includes(option.value);
+        });
+      }
+      
+      if (filters.responsible) {
+        document.getElementById('reportResponsibleFilter').value = filters.responsible;
+      }
+      
+      if (filters.dateFrom) {
+        document.getElementById('reportDateFrom').value = filters.dateFrom;
+      }
+      
+      if (filters.dateTo) {
+        document.getElementById('reportDateTo').value = filters.dateTo;
+      }
+      
+      if (filters.agreementNumber) {
+        document.getElementById('reportAgreementNumber').value = filters.agreementNumber;
+      }
+      
+      if (filters.sessionNumber) {
+        document.getElementById('reportSessionNumber').value = filters.sessionNumber;
+      }
+      
+      if (filters.sessionType) {
+        document.getElementById('reportSessionType').value = filters.sessionType;
+      }
+    }
   </script>
 
   <!-- Government Framework JavaScript -->
