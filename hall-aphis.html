@@ -508,44 +508,152 @@
             </div>
           </div>
           
-          <!-- Status Update Section -->
-          <div class="border rounded p-3 mb-4 bg-light">
-            <h6 class="text-primary mb-3">
-              <i class="bi bi-gear me-1"></i>
-              <span data-es="Actualizar Estado del Acuerdo" data-en="Update Agreement Status">Actualizar Estado del Acuerdo</span>
+          <!-- Status Update Section - COMPLIANCE CRITICAL -->
+          <div class="border rounded p-3 mb-4" style="background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); border-color: #856404 !important; border-width: 2px !important;">
+            <div class="alert alert-warning mb-3" role="alert">
+              <h6 class="alert-heading mb-2">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <strong data-es="CAMBIO DE ESTADO - EVIDENCIA OBLIGATORIA" data-en="STATUS CHANGE - EVIDENCE REQUIRED">
+                  CAMBIO DE ESTADO - EVIDENCIA OBLIGATORIA
+                </strong>
+              </h6>
+              <p class="mb-0 small" data-es="Para cambiar el estado de este acuerdo DEBE proporcionar evidencia documental válida y firmar la declaración de conformidad." data-en="To change the status of this agreement you MUST provide valid documentary evidence and sign the compliance statement.">
+                Para cambiar el estado de este acuerdo DEBE proporcionar evidencia documental válida y firmar la declaración de conformidad.
+              </p>
+            </div>
+            
+            <h6 class="text-danger mb-3">
+              <i class="bi bi-shield-check me-1"></i>
+              <span data-es="Actualización de Estado con Evidencia Obligatoria" data-en="Status Update with Mandatory Evidence">
+                Actualización de Estado con Evidencia Obligatoria
+              </span>
             </h6>
-            <div class="row align-items-center">
+            
+            <!-- Current vs New Status Display -->
+            <div class="row mb-3">
               <div class="col-md-6">
-                <label for="statusSelect" class="form-label" data-es="Nuevo Estado:" data-en="New Status:">Nuevo Estado:</label>
-                <select id="statusSelect" class="form-select">
+                <label class="form-label fw-bold" data-es="Estado Actual:" data-en="Current Status:">Estado Actual:</label>
+                <div id="currentStatusDisplay" class="p-2 border rounded bg-white">
+                  <!-- Current status badge will be populated here -->
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="statusSelect" class="form-label fw-bold text-danger" data-es="Nuevo Estado:" data-en="New Status:">Nuevo Estado: *</label>
+                <select id="statusSelect" class="form-select border-danger">
+                  <option value="" data-es="-- Seleccionar nuevo estado --" data-en="-- Select new status --">-- Seleccionar nuevo estado --</option>
                   <option value="Pendiente" data-es="Pendiente" data-en="Pending">Pendiente</option>
                   <option value="En Progreso" data-es="En Progreso" data-en="In Progress">En Progreso</option>
                   <option value="Completado" data-es="Completado" data-en="Completed">Completado</option>
                   <option value="Vencidos" data-es="Vencidos" data-en="Overdue">Vencidos</option>
                 </select>
               </div>
-              <div class="col-md-6">
-                <label class="form-label">&nbsp;</label>
-                <button id="updateStatusBtn" class="btn btn-success w-100">
-                  <i class="bi bi-check-circle me-1"></i>
-                  <span data-es="Actualizar Estado" data-en="Update Status">Actualizar Estado</span>
-                </button>
+            </div>
+            
+            <!-- Evidence Upload for Status Change -->
+            <div class="mb-3">
+              <label class="form-label fw-bold text-danger" data-es="Evidencia de Cambio de Estado:" data-en="Evidence of Status Change:">
+                Evidencia de Cambio de Estado: *
+              </label>
+              <input type="file" id="statusChangeEvidence" class="form-control border-danger" required
+                     accept="application/pdf,image/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+              <div class="form-text text-danger">
+                <strong data-es="OBLIGATORIO:" data-en="MANDATORY:">OBLIGATORIO:</strong>
+                <span data-es="PDF, Imagen, Word o Excel que compruebe el cambio de estado" data-en="PDF, Image, Word or Excel proving the status change">
+                  PDF, Imagen, Word o Excel que compruebe el cambio de estado
+                </span>
               </div>
+            </div>
+            
+            <!-- Evidence Description -->
+            <div class="mb-3">
+              <label for="statusChangeComment" class="form-label fw-bold text-danger" data-es="Descripción de la Evidencia:" data-en="Evidence Description:">
+                Descripción de la Evidencia: *
+              </label>
+              <textarea id="statusChangeComment" rows="3" class="form-control border-danger" required
+                        data-es="Describa cómo este documento comprueba el cambio de estado..." data-en="Describe how this document proves the status change..."
+                        placeholder="Describa cómo este documento comprueba el cambio de estado..."></textarea>
+            </div>
+            
+            <!-- COMPLIANCE AFFIDAVIT -->
+            <div class="border rounded p-3 mb-3" style="background-color: #f8f9fa; border-color: #dc3545 !important;">
+              <h6 class="text-danger mb-3">
+                <i class="bi bi-clipboard-check me-1"></i>
+                <span data-es="DECLARACIÓN JURADA DE CONFORMIDAD" data-en="COMPLIANCE AFFIDAVIT">
+                  DECLARACIÓN JURADA DE CONFORMIDAD
+                </span>
+              </h6>
+              
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="evidenceValidityCheck" required>
+                <label class="form-check-label fw-bold" for="evidenceValidityCheck">
+                  <span data-es="Certifico que la evidencia proporcionada es auténtica y válida" data-en="I certify that the evidence provided is authentic and valid">
+                    Certifico que la evidencia proporcionada es auténtica y válida
+                  </span>
+                </label>
+              </div>
+              
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="statusChangeJustificationCheck" required>
+                <label class="form-check-label fw-bold" for="statusChangeJustificationCheck">
+                  <span data-es="Confirmo que la evidencia justifica el cambio de estado solicitado" data-en="I confirm that the evidence justifies the requested status change">
+                    Confirmo que la evidencia justifica el cambio de estado solicitado
+                  </span>
+                </label>
+              </div>
+              
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="auditTrailConsentCheck" required>
+                <label class="form-check-label fw-bold" for="auditTrailConsentCheck">
+                  <span data-es="Entiendo que esta acción será registrada para auditoría" data-en="I understand this action will be logged for audit purposes">
+                    Entiendo que esta acción será registrada para auditoría
+                  </span>
+                </label>
+              </div>
+              
+              <!-- Digital Signature -->
+              <div class="mb-3">
+                <label for="digitalSignature" class="form-label fw-bold text-danger" data-es="Firma Digital (Nombre Completo):" data-en="Digital Signature (Full Name):">
+                  Firma Digital (Nombre Completo): *
+                </label>
+                <input type="text" id="digitalSignature" class="form-control border-danger" required
+                       data-es="Escriba su nombre completo como firma digital" data-en="Type your full name as digital signature"
+                       placeholder="Escriba su nombre completo como firma digital">
+              </div>
+            </div>
+            
+            <!-- Action Button -->
+            <button id="updateStatusBtn" class="btn btn-danger w-100" disabled>
+              <i class="bi bi-shield-exclamation me-1"></i>
+              <span data-es="PROCESAR CAMBIO DE ESTADO CON EVIDENCIA" data-en="PROCESS STATUS CHANGE WITH EVIDENCE">
+                PROCESAR CAMBIO DE ESTADO CON EVIDENCIA
+              </span>
+            </button>
+            
+            <div class="mt-2">
+              <small class="text-muted">
+                <i class="bi bi-info-circle me-1"></i>
+                <span data-es="El botón se habilitará cuando complete todos los campos obligatorios y las declaraciones" data-en="Button will be enabled when you complete all required fields and statements">
+                  El botón se habilitará cuando complete todos los campos obligatorios y las declaraciones
+                </span>
+              </small>
             </div>
           </div>
           
-          <!-- Upload Evidence Section -->
+          <!-- Upload Additional Evidence Section (Optional) -->
           <div class="border rounded p-3 bg-light">
             <h6 class="text-primary mb-3">
               <i class="bi bi-cloud-upload me-1"></i>
-              <span data-es="Subir Nueva Evidencia" data-en="Upload New Evidence">Subir Nueva Evidencia</span>
+              <span data-es="Subir Evidencia Adicional (Opcional)" data-en="Upload Additional Evidence (Optional)">Subir Evidencia Adicional (Opcional)</span>
               <small class="text-muted">(<span data-es="requiere autenticación" data-en="requires authentication">requiere autenticación</span>)</small>
             </h6>
+            <p class="text-muted small mb-3" data-es="Use esta sección para subir documentación adicional sin cambiar el estado del acuerdo." data-en="Use this section to upload additional documentation without changing the agreement status.">
+              Use esta sección para subir documentación adicional sin cambiar el estado del acuerdo.
+            </p>
             <div class="mb-3">
               <input type="file" id="evidenceFiles" multiple class="form-control" 
-                     accept="application/pdf,image/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-              <div class="form-text" data-es="Formatos permitidos: PDF, imágenes, documentos Word" data-en="Allowed formats: PDF, images, Word documents">
-                Formatos permitidos: PDF, imágenes, documentos Word
+                     accept="application/pdf,image/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+              <div class="form-text" data-es="Formatos permitidos: PDF, imágenes, documentos Word, Excel" data-en="Allowed formats: PDF, images, Word documents, Excel">
+                Formatos permitidos: PDF, imágenes, documentos Word, Excel
               </div>
             </div>
             <div class="mb-3">
@@ -555,7 +663,7 @@
             </div>
             <button id="evidenceUploadBtn" class="btn btn-primary">
               <i class="bi bi-upload me-1"></i>
-              <span data-es="Subir" data-en="Upload">Subir</span>
+              <span data-es="Subir Evidencia Adicional" data-en="Upload Additional Evidence">Subir Evidencia Adicional</span>
             </button>
           </div>
         </div>
@@ -1480,12 +1588,32 @@
       // Load evidence list
       loadEvidenceList(collection, agreementId);
       
-      // Set current status in dropdown
+      // Set current status in dropdown and display
       const currentStatus = agreementData?.status || agreementData?.Estado || agreementData?.estado || 'Pendiente';
-      document.getElementById('statusSelect').value = currentStatus;
+      
+      // Display current status
+      const currentStatusDisplay = document.getElementById('currentStatusDisplay');
+      currentStatusDisplay.innerHTML = getStatusBadge(currentStatus);
+      
+      // Reset status dropdown to default
+      document.getElementById('statusSelect').value = '';
+      
+      // Clear all compliance fields
+      document.getElementById('statusChangeEvidence').value = '';
+      document.getElementById('statusChangeComment').value = '';
+      document.getElementById('evidenceValidityCheck').checked = false;
+      document.getElementById('statusChangeJustificationCheck').checked = false;
+      document.getElementById('auditTrailConsentCheck').checked = false;
+      document.getElementById('digitalSignature').value = '';
+      
+      // Store current status for comparison
+      document.getElementById('statusSelect').setAttribute('data-current-status', currentStatus);
       
       // Setup event handlers
       setupEvidenceModalHandlers(collection, agreementId, agreementData);
+      
+      // Setup compliance validation
+      setupComplianceValidation();
       
       // Show modal
       const modal = new bootstrap.Modal(document.getElementById('evidenceModal'));
@@ -1578,40 +1706,178 @@
       };
     }
     
-    // Update agreement status
-    async function updateAgreementStatus(collection, agreementId, agreementData) {
-      const newStatus = document.getElementById('statusSelect').value;
+    // Setup compliance validation for status changes
+    function setupComplianceValidation() {
+      const statusSelect = document.getElementById('statusSelect');
+      const evidenceFile = document.getElementById('statusChangeEvidence');
+      const comment = document.getElementById('statusChangeComment');
+      const validityCheck = document.getElementById('evidenceValidityCheck');
+      const justificationCheck = document.getElementById('statusChangeJustificationCheck');
+      const auditCheck = document.getElementById('auditTrailConsentCheck');
+      const signature = document.getElementById('digitalSignature');
       const updateBtn = document.getElementById('updateStatusBtn');
       
+      function validateCompliance() {
+        const currentStatus = statusSelect.getAttribute('data-current-status');
+        const newStatus = statusSelect.value;
+        
+        // Check if status is actually changing
+        const statusChanged = newStatus && newStatus !== currentStatus;
+        
+        if (!statusChanged) {
+          updateBtn.disabled = true;
+          updateBtn.innerHTML = '<i class="bi bi-info-circle me-1"></i><span data-es="Seleccione un estado diferente" data-en="Select a different status">Seleccione un estado diferente</span>';
+          return;
+        }
+        
+        // Check all compliance requirements
+        const hasEvidence = evidenceFile.files.length > 0;
+        const hasComment = comment.value.trim().length >= 10; // Minimum 10 characters
+        const hasValidityCheck = validityCheck.checked;
+        const hasJustificationCheck = justificationCheck.checked;
+        const hasAuditCheck = auditCheck.checked;
+        const hasSignature = signature.value.trim().length >= 3;
+        
+        const allValid = hasEvidence && hasComment && hasValidityCheck && hasJustificationCheck && hasAuditCheck && hasSignature;
+        
+        updateBtn.disabled = !allValid;
+        
+        if (allValid) {
+          updateBtn.innerHTML = '<i class="bi bi-shield-exclamation me-1"></i><span data-es="PROCESAR CAMBIO DE ESTADO CON EVIDENCIA" data-en="PROCESS STATUS CHANGE WITH EVIDENCE">PROCESAR CAMBIO DE ESTADO CON EVIDENCIA</span>';
+        } else {
+          updateBtn.innerHTML = '<i class="bi bi-exclamation-triangle me-1"></i><span data-es="Complete todos los campos obligatorios" data-en="Complete all required fields">Complete todos los campos obligatorios</span>';
+        }
+      }
+      
+      // Add event listeners for real-time validation
+      statusSelect.addEventListener('change', validateCompliance);
+      evidenceFile.addEventListener('change', validateCompliance);
+      comment.addEventListener('input', validateCompliance);
+      validityCheck.addEventListener('change', validateCompliance);
+      justificationCheck.addEventListener('change', validateCompliance);
+      auditCheck.addEventListener('change', validateCompliance);
+      signature.addEventListener('input', validateCompliance);
+      
+      // Initial validation
+      validateCompliance();
+    }
+    
+    // Update agreement status with MANDATORY EVIDENCE
+    async function updateAgreementStatus(collection, agreementId, agreementData) {
+      const currentStatus = document.getElementById('statusSelect').getAttribute('data-current-status');
+      const newStatus = document.getElementById('statusSelect').value;
+      const evidenceFile = document.getElementById('statusChangeEvidence').files[0];
+      const comment = document.getElementById('statusChangeComment').value.trim();
+      const signature = document.getElementById('digitalSignature').value.trim();
+      const updateBtn = document.getElementById('updateStatusBtn');
+      
+      // Validation
       if (!firebase.auth().currentUser) {
         alert('Debe estar autenticado para actualizar el estado del acuerdo');
         return;
       }
       
+      if (newStatus === currentStatus) {
+        alert('El nuevo estado debe ser diferente al estado actual');
+        return;
+      }
+      
+      if (!evidenceFile) {
+        alert('EVIDENCIA OBLIGATORIA: Debe proporcionar un archivo de evidencia');
+        return;
+      }
+      
+      if (comment.length < 10) {
+        alert('DESCRIPCIÓN OBLIGATORIA: Debe proporcionar una descripción detallada de la evidencia (mínimo 10 caracteres)');
+        return;
+      }
+      
+      if (!signature || signature.length < 3) {
+        alert('FIRMA DIGITAL OBLIGATORIA: Debe proporcionar su nombre completo como firma digital');
+        return;
+      }
+      
+      // Validate all checkboxes
+      const checks = ['evidenceValidityCheck', 'statusChangeJustificationCheck', 'auditTrailConsentCheck'];
+      for (let checkId of checks) {
+        if (!document.getElementById(checkId).checked) {
+          alert('DECLARACIÓN JURADA INCOMPLETA: Debe marcar todas las casillas de verificación');
+          return;
+        }
+      }
+      
       updateBtn.disabled = true;
-      updateBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Actualizando...';
+      updateBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Procesando cambio con evidencia...';
       
       try {
         const db = firebase.firestore();
+        const storage = firebase.storage();
         const user = firebase.auth().currentUser;
+        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
         
+        // Upload evidence file first
+        const fileName = `STATUS_CHANGE_${Date.now()}_${evidenceFile.name}`;
+        const storageRef = storage.ref(`acuerdos-${collection.split('-')[1]}/${agreementId}/status-change-evidence/${fileName}`);
+        const snapshot = await storageRef.put(evidenceFile);
+        const evidenceUrl = await snapshot.ref.getDownloadURL();
+        
+        // Create audit trail entry
+        const auditEntry = {
+          agreementId: agreementId,
+          collection: collection,
+          previousStatus: currentStatus,
+          newStatus: newStatus,
+          evidenceFileName: evidenceFile.name,
+          evidenceUrl: evidenceUrl,
+          evidenceDescription: comment,
+          digitalSignature: signature,
+          timestamp: timestamp,
+          performedBy: user.email || user.uid,
+          performedByUID: user.uid,
+          ipAddress: 'CLIENT_IP', // In production, capture actual IP
+          userAgent: navigator.userAgent,
+          complianceChecks: {
+            evidenceValidity: true,
+            statusJustification: true,
+            auditConsent: true
+          }
+        };
+        
+        // Update agreement status
         await db.collection(collection).doc(agreementId).update({
           status: newStatus,
           Estado: newStatus, // Also update Estado field for compatibility
           lastStatusChangeBy: user.email || user.uid,
-          lastStatusChangeAt: firebase.firestore.FieldValue.serverTimestamp()
+          lastStatusChangeAt: timestamp,
+          statusChangeEvidence: evidenceUrl,
+          statusChangeComment: comment,
+          digitalSignature: signature,
+          auditTrail: firebase.firestore.FieldValue.arrayUnion(auditEntry)
+        });
+        
+        // Save evidence to evidencias subcollection with special status change flag
+        await db.collection(collection).doc(agreementId).collection('evidencias').add({
+          fileName: evidenceFile.name,
+          fileUrl: evidenceUrl,
+          comment: `[CAMBIO DE ESTADO] ${currentStatus} → ${newStatus}: ${comment}`,
+          createdAt: timestamp,
+          uploadedBy: user.email || user.uid,
+          isStatusChangeEvidence: true,
+          statusChangeData: auditEntry
         });
         
         // Show success message
-        const alert = document.createElement('div');
-        alert.className = 'alert alert-success alert-dismissible fade show';
-        alert.innerHTML = `
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success alert-dismissible fade show';
+        alertDiv.innerHTML = `
           <i class="bi bi-check-circle me-2"></i>
-          Estado actualizado correctamente a: <strong>${newStatus}</strong>
+          <strong>CAMBIO DE ESTADO PROCESADO</strong><br>
+          Estado actualizado de <strong>${currentStatus}</strong> a <strong>${newStatus}</strong><br>
+          Evidencia registrada y auditoría creada
           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
         
-        document.querySelector('#evidenceModal .modal-body').insertBefore(alert, document.querySelector('#evidenceModal .modal-body').firstChild);
+        document.querySelector('#evidenceModal .modal-body').insertBefore(alertDiv, document.querySelector('#evidenceModal .modal-body').firstChild);
         
         // Update the status in the detail modal if it's open
         const detailStatus = document.getElementById('detailStatus');
@@ -1625,12 +1891,27 @@
         // Refresh the hall statistics
         fetchAgreementsData();
         
+        // Reload evidence list to show new evidence
+        loadEvidenceList(collection, agreementId);
+        
+        // Reset form
+        document.getElementById('statusSelect').value = '';
+        document.getElementById('statusChangeEvidence').value = '';
+        document.getElementById('statusChangeComment').value = '';
+        document.getElementById('evidenceValidityCheck').checked = false;
+        document.getElementById('statusChangeJustificationCheck').checked = false;
+        document.getElementById('auditTrailConsentCheck').checked = false;
+        document.getElementById('digitalSignature').value = '';
+        
+        // Update current status reference
+        document.getElementById('statusSelect').setAttribute('data-current-status', newStatus);
+        document.getElementById('currentStatusDisplay').innerHTML = getStatusBadge(newStatus);
+        
       } catch (error) {
-        console.error('Error updating status:', error);
-        alert('Error al actualizar el estado: ' + error.message);
+        console.error('Error updating status with evidence:', error);
+        alert('Error al procesar el cambio de estado: ' + error.message);
       } finally {
-        updateBtn.disabled = false;
-        updateBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i><span data-es="Actualizar Estado" data-en="Update Status">Actualizar Estado</span>';
+        setupComplianceValidation(); // Re-setup validation for next use
       }
     }
     
