@@ -444,7 +444,8 @@
               </div>
               <div class="col-md-6">
                 <h6 class="text-primary" data-es="Estado" data-en="Status">Estado</h6>
-                <p id="detailStatus">-</p>
+                <p id="detailStatus" class="clickable-status" style="cursor: pointer;" 
+                   title="Haz clic para gestionar evidencias y cambiar estado">-</p>
               </div>
             </div>
             
@@ -480,6 +481,86 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-es="Cerrar" data-en="Close">Cerrar</button>
           <button type="button" class="btn btn-primary" id="viewEvidenceBtn" data-es="Ver Evidencias" data-en="View Evidence">Ver Evidencias</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Evidence Modal -->
+  <div class="modal fade" id="evidenceModal" tabindex="-1" aria-labelledby="evidenceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-gobierno-principal text-white">
+          <h5 class="modal-title" id="evidenceModalLabel">
+            <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-file-earmark-text me-2"></i></span>
+            <span data-es="Evidencias" data-en="Evidence">Evidencias</span>
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Evidence List -->
+          <div id="evidenceList" class="mb-4">
+            <div class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando evidencias...</span>
+              </div>
+              <p class="mt-2" data-es="Cargando evidencias..." data-en="Loading evidence...">Cargando evidencias...</p>
+            </div>
+          </div>
+          
+          <!-- Status Update Section -->
+          <div class="border rounded p-3 mb-4 bg-light">
+            <h6 class="text-primary mb-3">
+              <i class="bi bi-gear me-1"></i>
+              <span data-es="Actualizar Estado del Acuerdo" data-en="Update Agreement Status">Actualizar Estado del Acuerdo</span>
+            </h6>
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <label for="statusSelect" class="form-label" data-es="Nuevo Estado:" data-en="New Status:">Nuevo Estado:</label>
+                <select id="statusSelect" class="form-select">
+                  <option value="Pendiente" data-es="Pendiente" data-en="Pending">Pendiente</option>
+                  <option value="En Progreso" data-es="En Progreso" data-en="In Progress">En Progreso</option>
+                  <option value="Completado" data-es="Completado" data-en="Completed">Completado</option>
+                  <option value="Vencidos" data-es="Vencidos" data-en="Overdue">Vencidos</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">&nbsp;</label>
+                <button id="updateStatusBtn" class="btn btn-success w-100">
+                  <i class="bi bi-check-circle me-1"></i>
+                  <span data-es="Actualizar Estado" data-en="Update Status">Actualizar Estado</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Upload Evidence Section -->
+          <div class="border rounded p-3 bg-light">
+            <h6 class="text-primary mb-3">
+              <i class="bi bi-cloud-upload me-1"></i>
+              <span data-es="Subir Nueva Evidencia" data-en="Upload New Evidence">Subir Nueva Evidencia</span>
+              <small class="text-muted">(<span data-es="requiere autenticación" data-en="requires authentication">requiere autenticación</span>)</small>
+            </h6>
+            <div class="mb-3">
+              <input type="file" id="evidenceFiles" multiple class="form-control" 
+                     accept="application/pdf,image/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+              <div class="form-text" data-es="Formatos permitidos: PDF, imágenes, documentos Word" data-en="Allowed formats: PDF, images, Word documents">
+                Formatos permitidos: PDF, imágenes, documentos Word
+              </div>
+            </div>
+            <div class="mb-3">
+              <textarea id="evidenceComment" rows="3" class="form-control" 
+                        data-es="Comentario (opcional)" data-en="Comment (optional)"
+                        placeholder="Comentario (opcional)"></textarea>
+            </div>
+            <button id="evidenceUploadBtn" class="btn btn-primary">
+              <i class="bi bi-upload me-1"></i>
+              <span data-es="Subir" data-en="Upload">Subir</span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-es="Cerrar" data-en="Close">Cerrar</button>
         </div>
       </div>
     </div>
@@ -1270,6 +1351,11 @@
         const statusElement = document.getElementById('detailStatus');
         statusElement.innerHTML = getStatusBadge(status);
         
+        // Add click handler to status element to open evidence modal
+        statusElement.onclick = function() {
+          openEvidenceModal('acuerdos-aphis', agreementId, data);
+        };
+        
         // Load evidence
         loadEvidenceForDetail(agreementId);
         
@@ -1368,6 +1454,252 @@
       loadResponsiblePersonsForReports();
       loadSavedConfigurations();
     });
+
+    // ============ EVIDENCE MODAL FUNCTIONALITY ============
+    
+    let currentAgreementId = null;
+    let currentCollection = null;
+    let pendingStatusChange = null;
+    
+    // Open evidence modal
+    function openEvidenceModal(collection, agreementId, agreementData) {
+      currentAgreementId = agreementId;
+      currentCollection = collection;
+      
+      // Set modal title
+      const modalTitle = document.getElementById('evidenceModalLabel');
+      const agreementNumber = agreementData?.agreementNumber || 
+                             agreementData?.numero || 
+                             agreementData?.['Número de Acuerdo'] || 
+                             agreementId;
+      modalTitle.innerHTML = `
+        <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-file-earmark-text me-2"></i></span>
+        <span data-es="Evidencias - ${agreementNumber}" data-en="Evidence - ${agreementNumber}">Evidencias - ${agreementNumber}</span>
+      `;
+      
+      // Load evidence list
+      loadEvidenceList(collection, agreementId);
+      
+      // Set current status in dropdown
+      const currentStatus = agreementData?.status || agreementData?.Estado || agreementData?.estado || 'Pendiente';
+      document.getElementById('statusSelect').value = currentStatus;
+      
+      // Setup event handlers
+      setupEvidenceModalHandlers(collection, agreementId, agreementData);
+      
+      // Show modal
+      const modal = new bootstrap.Modal(document.getElementById('evidenceModal'));
+      modal.show();
+    }
+    
+    // Load evidence list
+    async function loadEvidenceList(collection, agreementId) {
+      const evidenceList = document.getElementById('evidenceList');
+      evidenceList.innerHTML = `
+        <div class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando evidencias...</span>
+          </div>
+          <p class="mt-2" data-es="Cargando evidencias..." data-en="Loading evidence...">Cargando evidencias...</p>
+        </div>
+      `;
+      
+      try {
+        const db = firebase.firestore();
+        const evidenceSnapshot = await db.collection(collection).doc(agreementId).collection('evidencias').orderBy('createdAt', 'desc').get();
+        
+        if (evidenceSnapshot.empty) {
+          evidenceList.innerHTML = `
+            <div class="alert alert-info">
+              <i class="bi bi-info-circle me-2"></i>
+              <span data-es="No hay evidencias cargadas para este acuerdo" data-en="No evidence uploaded for this agreement">
+                No hay evidencias cargadas para este acuerdo
+              </span>
+            </div>
+          `;
+          return;
+        }
+        
+        let html = '<div class="list-group">';
+        evidenceSnapshot.forEach(doc => {
+          const evidence = doc.data();
+          const fileName = evidence.fileName || evidence.nombre || 'Archivo';
+          const uploadDate = evidence.createdAt ? formatDate(evidence.createdAt) : 'Fecha no disponible';
+          const comment = evidence.comment || evidence.comentario || '';
+          const fileUrl = evidence.fileUrl || evidence.url || '#';
+          
+          html += `
+            <div class="list-group-item">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">
+                    <i class="bi bi-file-earmark me-1"></i>
+                    <a href="${fileUrl}" target="_blank" class="text-primary">${fileName}</a>
+                  </h6>
+                  ${comment ? `<p class="mb-1 text-muted">${comment}</p>` : ''}
+                  <small class="text-muted">
+                    <i class="bi bi-calendar me-1"></i>
+                    Subido el ${uploadDate}
+                  </small>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        html += '</div>';
+        
+        evidenceList.innerHTML = html;
+        
+      } catch (error) {
+        console.error('Error loading evidence:', error);
+        evidenceList.innerHTML = `
+          <div class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <span data-es="Error al cargar las evidencias" data-en="Error loading evidence">
+              Error al cargar las evidencias
+            </span>
+          </div>
+        `;
+      }
+    }
+    
+    // Setup event handlers for evidence modal
+    function setupEvidenceModalHandlers(collection, agreementId, agreementData) {
+      // Status update handler
+      const updateStatusBtn = document.getElementById('updateStatusBtn');
+      updateStatusBtn.onclick = function() {
+        updateAgreementStatus(collection, agreementId, agreementData);
+      };
+      
+      // Evidence upload handler
+      const uploadBtn = document.getElementById('evidenceUploadBtn');
+      uploadBtn.onclick = function() {
+        uploadEvidence(collection, agreementId);
+      };
+    }
+    
+    // Update agreement status
+    async function updateAgreementStatus(collection, agreementId, agreementData) {
+      const newStatus = document.getElementById('statusSelect').value;
+      const updateBtn = document.getElementById('updateStatusBtn');
+      
+      if (!firebase.auth().currentUser) {
+        alert('Debe estar autenticado para actualizar el estado del acuerdo');
+        return;
+      }
+      
+      updateBtn.disabled = true;
+      updateBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Actualizando...';
+      
+      try {
+        const db = firebase.firestore();
+        const user = firebase.auth().currentUser;
+        
+        await db.collection(collection).doc(agreementId).update({
+          status: newStatus,
+          Estado: newStatus, // Also update Estado field for compatibility
+          lastStatusChangeBy: user.email || user.uid,
+          lastStatusChangeAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        // Show success message
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-success alert-dismissible fade show';
+        alert.innerHTML = `
+          <i class="bi bi-check-circle me-2"></i>
+          Estado actualizado correctamente a: <strong>${newStatus}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.querySelector('#evidenceModal .modal-body').insertBefore(alert, document.querySelector('#evidenceModal .modal-body').firstChild);
+        
+        // Update the status in the detail modal if it's open
+        const detailStatus = document.getElementById('detailStatus');
+        if (detailStatus) {
+          detailStatus.innerHTML = getStatusBadge(newStatus);
+          detailStatus.onclick = function() {
+            openEvidenceModal(collection, agreementId, {...agreementData, status: newStatus});
+          };
+        }
+        
+        // Refresh the hall statistics
+        fetchAgreementsData();
+        
+      } catch (error) {
+        console.error('Error updating status:', error);
+        alert('Error al actualizar el estado: ' + error.message);
+      } finally {
+        updateBtn.disabled = false;
+        updateBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i><span data-es="Actualizar Estado" data-en="Update Status">Actualizar Estado</span>';
+      }
+    }
+    
+    // Upload evidence
+    async function uploadEvidence(collection, agreementId) {
+      const files = document.getElementById('evidenceFiles').files;
+      const comment = document.getElementById('evidenceComment').value;
+      const uploadBtn = document.getElementById('evidenceUploadBtn');
+      
+      if (!files.length) {
+        alert('Por favor seleccione al menos un archivo');
+        return;
+      }
+      
+      if (!firebase.auth().currentUser) {
+        alert('Debe estar autenticado para subir evidencias');
+        return;
+      }
+      
+      uploadBtn.disabled = true;
+      uploadBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Subiendo...';
+      
+      try {
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        const user = firebase.auth().currentUser;
+        
+        for (let file of files) {
+          // Upload file to storage
+          const storageRef = storage.ref(`acuerdos-${collection.split('-')[1]}/${agreementId}/evidence-files/${Date.now()}_${file.name}`);
+          const snapshot = await storageRef.put(file);
+          const downloadURL = await snapshot.ref.getDownloadURL();
+          
+          // Save evidence metadata to Firestore
+          await db.collection(collection).doc(agreementId).collection('evidencias').add({
+            fileName: file.name,
+            fileUrl: downloadURL,
+            comment: comment,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            uploadedBy: user.email || user.uid
+          });
+        }
+        
+        // Clear form
+        document.getElementById('evidenceFiles').value = '';
+        document.getElementById('evidenceComment').value = '';
+        
+        // Show success message
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-success alert-dismissible fade show';
+        alert.innerHTML = `
+          <i class="bi bi-check-circle me-2"></i>
+          ${files.length} archivo(s) subido(s) correctamente
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.querySelector('#evidenceModal .modal-body').insertBefore(alert, document.querySelector('#evidenceModal .modal-body').firstChild);
+        
+        // Reload evidence list
+        loadEvidenceList(collection, agreementId);
+        
+      } catch (error) {
+        console.error('Error uploading evidence:', error);
+        alert('Error al subir evidencias: ' + error.message);
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = '<i class="bi bi-upload me-1"></i><span data-es="Subir" data-en="Upload">Subir</span>';
+      }
+    }
 
     // ============ REPORTS FUNCTIONALITY (APHIS) ============
     
