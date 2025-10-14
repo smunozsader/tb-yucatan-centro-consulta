@@ -22,6 +22,31 @@
       border-radius: 8px;
       margin-bottom: 20px;
     }
+    
+    /* Government-compliant navigation styling */
+    nav.row {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      margin: 0;
+    }
+    
+    @media (max-width: 768px) {
+      nav.row .col-md-8,
+      nav.row .col-md-4 {
+        text-align: center !important;
+        margin-bottom: 0.5rem;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .btn-group .btn {
+        border-radius: 0.375rem !important;
+        margin-bottom: 0.25rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -44,32 +69,39 @@
             </div>
           </div>
           
-          <h1><i class="bi bi-archive"></i> <span data-es="Repositorio CESO" data-en="CESO Repository">Repositorio CESO</span></h1>
+          <h1><span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-archive"></i></span> <span data-es="Repositorio CESO" data-en="CESO Repository">Repositorio CESO</span></h1>
           <p class="mb-0" data-es="Consejo Estatal de Seguimiento Operativo del SINIDA" data-en="State Council for SINIDA Operational Monitoring">Consejo Estatal de Seguimiento Operativo del SINIDA</p>
           <small data-es="Gestión de documentos oficiales para acuerdos sanitarios y seguimiento operativo" data-en="Official document management for health agreements and operational monitoring">Gestión de documentos oficiales para acuerdos sanitarios y seguimiento operativo</small>
         </div>
 
         <!-- Navigation -->
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
-          <div class="btn-group" role="group">
-            <a href="hall-ceso.html" class="btn btn-primary">
-              <i class="bi bi-house"></i> <span data-es="Panel CESO" data-en="CESO Panel">Panel CESO</span>
-            </a>
-            <a href="acuerdos-ceso.html" class="btn btn-secondary">
-              <i class="bi bi-file-text"></i> <span data-es="Acuerdos CESO" data-en="CESO Agreements">Acuerdos CESO</span>
-            </a>
+        <nav class="row align-items-center mb-4 py-3 border-bottom">
+          <div class="col-md-8">
+            <div class="btn-group" role="group" aria-label="Navegación principal">
+              <a href="hall-ceso.html" class="btn btn-primary">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-house"></i></span>
+                <span data-es="Panel CESO" data-en="CESO Panel">Panel CESO</span>
+              </a>
+              <a href="acuerdos-ceso.html" class="btn btn-secondary">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-file-text"></i></span>
+                <span data-es="Acuerdos CESO" data-en="CESO Agreements">Acuerdos CESO</span>
+              </a>
+            </div>
           </div>
-          <button class="btn btn-danger btn-lg px-4" id="logoutBtn">
-            <i class="bi bi-box-arrow-right"></i> <span data-es="Cerrar Sesión" data-en="Sign Out">Cerrar Sesión</span>
-          </button>
-        </div>
+          <div class="col-md-4 text-end">
+            <button class="btn btn-danger" id="logoutBtn" type="button">
+              <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span>
+              <span data-es="Cerrar Sesión" data-en="Sign Out">Cerrar Sesión</span>
+            </button>
+          </div>
+        </nav>
 
         <div id="repoAlerts"></div>
 
         <!-- Upload Section -->
         <div class="card card-repo border-primary">
           <div class="card-header bg-primary text-white">
-            <h5 class="card-title mb-0"><i class="bi bi-cloud-upload"></i> <span data-es="Subir Documento CESO" data-en="Upload CESO Document">Subir Documento CESO</span></h5>
+            <h5 class="card-title mb-0"><span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-cloud-upload"></i></span> <span data-es="Subir Documento CESO" data-en="Upload CESO Document">Subir Documento CESO</span></h5>
           </div>
           <div class="card-body">
             <div class="row">
@@ -77,11 +109,11 @@
                 <label class="form-label" data-es="Categoría" data-en="Category">Categoría</label>
                 <select id="repoCategory" class="form-select">
                   <option value="actas-ceso" data-es="Actas de Reuniones CESO" data-en="CESO Meeting Minutes">Actas de Reuniones CESO</option>
-                  <option value="normativas-ceso">Normativas SINIDA</option>
-                  <option value="manuales-ceso">Manuales Operativos</option>
-                  <option value="formatos-ceso">Formatos y Plantillas</option>
-                  <option value="reportes-ceso">Reportes de Seguimiento</option>
-                  <option value="certificaciones-ceso">Certificaciones</option>
+                  <option value="normativas-ceso" data-es="Normativas SINIDA" data-en="SINIDA Regulations">Normativas SINIDA</option>
+                  <option value="manuales-ceso" data-es="Manuales Operativos" data-en="Operational Manuals">Manuales Operativos</option>
+                  <option value="formatos-ceso" data-es="Formatos y Plantillas" data-en="Forms and Templates">Formatos y Plantillas</option>
+                  <option value="reportes-ceso" data-es="Reportes de Seguimiento" data-en="Follow-up Reports">Reportes de Seguimiento</option>
+                  <option value="certificaciones-ceso" data-es="Certificaciones" data-en="Certifications">Certificaciones</option>
                 </select>
               </div>
               <div class="col-md-6">
@@ -107,7 +139,7 @@
         <!-- Documents List -->
         <div class="card mt-4">
           <div class="card-header bg-light">
-            <h5 class="card-title mb-0"><i class="bi bi-files"></i> Documentos CESO</h5>
+            <h5 class="card-title mb-0"><span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-files"></i></span> Documentos CESO</h5>
           </div>
           <div class="card-body">
             <div id="repoList">
@@ -128,9 +160,11 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
   <script src="__/firebase/init.js"></script>
+  <script src="auth-system.js"></script>
   <script>
     function fmtDate(v){ 
       try{ 
@@ -200,7 +234,7 @@
             const p=b.getAttribute('data-path'); 
             if(!p) return showAlert('Ruta del archivo faltante', 'danger'); 
             
-            b.innerHTML = '<i class="bi bi-hourglass-split"></i> Cargando...';
+            b.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span> Cargando...';
             b.disabled = true;
             
             firebase.storage().ref(p).getDownloadURL().then(u=> {
@@ -228,15 +262,18 @@
       
       if(!files.length) return showAlert('Por favor seleccione un archivo', 'warning'); 
       
-      const user = (firebase.auth && firebase.auth().currentUser) || null; 
-      if(!user) return showAlert('Debe estar autenticado para subir documentos', 'danger'); 
+      // Check authentication using gobmxAuth system
+      const user = window.gobmxAuth && window.gobmxAuth.getCurrentUser();
+      if(!user) return showAlert('Debe estar autenticado para subir documentos', 'danger');
+      
+      // Repository uploads use application-level auth (no Firebase Auth required) 
       
       const file = files[0]; 
       const storagePath = 'repositorio-ceso/'+cat+'/'+Date.now()+'_'+file.name; 
       const ref = firebase.storage().ref(storagePath); 
       
       // Show upload progress
-      this.innerHTML = '<i class="bi bi-hourglass-split"></i> Subiendo...';
+      this.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span> Subiendo...';
       this.disabled = true;
       showAlert('Subiendo archivo...', 'info');
       
@@ -246,27 +283,39 @@
           title: title||file.name, 
           filename: file.name, 
           storagePath: storagePath, 
-          uploader: user.email||user.uid, 
+          uploader: user.email || user.nombre || 'Usuario', 
           createdAt: firebase.firestore.FieldValue.serverTimestamp() 
         })
       }).then(()=>{ 
         showAlert('¡Documento subido exitosamente!', 'success'); 
         document.getElementById('repoFile').value = ''; 
         document.getElementById('repoTitle').value = ''; 
-        this.innerHTML = '<i class="bi bi-upload"></i> Subir Documento';
+        this.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-upload"></i></span> Subir Documento';
         this.disabled = false;
         loadRepo(); 
       }).catch(err=> {
         showAlert('Error subiendo archivo: ' + err.message, 'danger');
-        this.innerHTML = '<i class="bi bi-upload"></i> Subir Documento';
+        this.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-upload"></i></span> Subir Documento';
         this.disabled = false;
       }); 
     });
 
     // Logout functionality
     document.getElementById('logoutBtn').addEventListener('click', function() {
+      const btn = this;
+      const originalText = btn.innerHTML;
+      
+      // Show loading state
+      btn.disabled = true;
+      btn.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span> <span data-es="Cerrando Sesión..." data-en="Signing Out...">Cerrando Sesión...</span>';
+      
       firebase.auth().signOut().then(() => {
         window.location.href = 'index.html';
+      }).catch((error) => {
+        console.error('Error signing out:', error);
+        showAlert('Error al cerrar sesión: ' + error.message, 'danger');
+        btn.disabled = false;
+        btn.innerHTML = originalText;
       });
     });
 

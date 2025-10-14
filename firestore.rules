@@ -36,30 +36,30 @@ service cloud.firestore {
     }
 
     // Repository documents - CESO specific
+    // Using application-level authentication (gobmxAuth) instead of Firebase Auth
     match /repositorio-ceso/{docId} {
       allow read: if true;
-      allow create: if request.auth != null
-        && request.resource.data.keys().hasAll(['category','title','filename','storagePath','uploader','createdAt'])
+      allow create: if request.resource.data.keys().hasAll(['category','title','filename','storagePath','uploader','createdAt'])
         && request.resource.data.category is string
         && request.resource.data.title is string
         && request.resource.data.filename is string
         && request.resource.data.storagePath is string
         && request.resource.data.uploader is string;
-      allow update: if request.auth != null;
+      allow update: if true;
       allow delete: if false;
     }
 
     // Repository documents - APHIS specific
+    // Using application-level authentication (gobmxAuth) instead of Firebase Auth
     match /repositorio-aphis/{docId} {
       allow read: if true;
-      allow create: if request.auth != null
-        && request.resource.data.keys().hasAll(['category','title','filename','storagePath','uploader','createdAt'])
+      allow create: if request.resource.data.keys().hasAll(['category','title','filename','storagePath','uploader','createdAt'])
         && request.resource.data.category is string
         && request.resource.data.title is string
         && request.resource.data.filename is string
         && request.resource.data.storagePath is string
         && request.resource.data.uploader is string;
-      allow update: if request.auth != null;
+      allow update: if true;
       allow delete: if false;
     }
 
