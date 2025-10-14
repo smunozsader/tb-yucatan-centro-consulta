@@ -27,19 +27,20 @@
   - Modelo de seguridad Firebase y flujos de despliegue
   - Patrones de control de acceso basado en roles
   - Especificaciones de integración de datos Excel
+  - Contexto organizacional: CESO y Grupo de Trabajo APHIS-USDA/SENASICA
 
 ### 2. Cumplimiento del Marco GOB.mx v3
 - **Actualizadas Todas las Páginas HTML**: Migración completa al sistema de diseño gubernamental oficial
 - **Archivos Modificados**: 
   - `index.html` - Página principal de inicio
   - `ceso.html` - Sección organización CESO
-  - `aphis.html` - Sección organización APHIS-USDA
+  - `aphis.html` - Sección organización Grupo de Trabajo APHIS-USDA/SENASICA
   - `repositorio-ceso.html` - Repositorio de documentos CESO
-  - `repositorio-aphis.html` - Repositorio de documentos APHIS
+  - `repositorio-aphis.html` - Repositorio de documentos Grupo de Trabajo APHIS-USDA/SENASICA
   - `hall-ceso.html` - Sala de reuniones CESO
-  - `hall-aphis.html` - Sala de reuniones APHIS
+  - `hall-aphis.html` - Sala de reuniones Grupo de Trabajo APHIS-USDA/SENASICA
   - `acuerdos-ceso.html` - Página de acuerdos CESO
-  - `acuerdos-aphis.html` - Página de acuerdos APHIS
+  - `acuerdos-aphis.html` - Página de acuerdos Grupo de Trabajo APHIS-USDA/SENASICA
   - `public/index.production.html` - Plantilla de despliegue en producción
 
 ### 3. Proyecto de Estandarización de Botones
@@ -88,7 +89,7 @@
 
 ### Estándares de Cumplimiento de Botones
 - **Acciones Primarias**: `btn btn-primary` (acceso CESO, navegación principal)
-- **Acciones Secundarias**: `btn btn-secondary` (acceso APHIS, opciones alternativas)
+- **Acciones Secundarias**: `btn btn-secondary` (acceso Grupo de Trabajo APHIS-USDA/SENASICA, opciones alternativas)
 - **Estados de Error/Advertencia**: `btn btn-danger` (eliminación, acciones críticas)
 - **Botones de Enlace**: `btn btn-link` (navegación, referencias)
 
@@ -989,4 +990,207 @@ firebase deploy --only hosting          # Despliegue de interfaz web
 *Sesión completada: 13 de octubre de 2025*  
 *Estado: **ÉXITO COMPLETO** - Sistema de clase mundial listo para operación gubernamental*  
 *Duración: ~3 horas | Problemas resueltos: 16 | Funcionalidades agregadas: 5*
+
+---
+
+## Fecha de Sesión: 14 de octubre de 2025
+
+### Implementación del Sistema de Cumplimiento de Evidencia Obligatoria - FUNCIONALIDAD CRÍTICA DE GOBERNANZA
+
+**Resumen de Sesión**: Implementó un sistema integral de cumplimiento de evidencia obligatoria que exige documentación adecuada para TODOS los cambios de estado de acuerdos. Este sistema es el "corazón y alma" de la aplicación, asegurando responsabilidad y auditabilidad completas para requisitos de cumplimiento gubernamental.
+
+#### 🔒 **FUNCIONALIDADES CRÍTICAS DE CUMPLIMIENTO IMPLEMENTADAS:**
+
+**1. REQUISITO DE EVIDENCIA OBLIGATORIA**
+- **Cero cambios de estado sin evidencia**: Ningún estado de acuerdo puede cambiarse sin subir archivos de evidencia
+- **Formatos soportados**: Documentos PDF, JPG, Word, Excel
+- **Arquitectura de almacenamiento**: Carpetas dedicadas `status-change-evidence/` para separación de auditoría
+- **Validación de archivos**: Verificación de formato y tamaño en tiempo real
+
+**2. SISTEMA INTEGRAL DE DECLARACIÓN JURADA**
+```
+CERTIFICACIONES REQUERIDAS:
+✅ "Certifico que la evidencia proporcionada es auténtica y válida"
+✅ "Confirmo que la evidencia justifica el cambio de estado solicitado"  
+✅ "Entiendo que esta acción será registrada para auditoría"
+```
+
+**3. APLICACIÓN DE FIRMA DIGITAL**
+- **Firma de nombre completo obligatoria**: No puede proceder sin firma digital completa
+- **Validación de firma**: Requisitos mínimos de caracteres aplicados
+- **Integración de rastro de auditoría**: Todas las firmas almacenadas con marcas de tiempo
+
+**4. VALIDACIÓN DE CUMPLIMIENTO EN TIEMPO REAL**
+- **Validación progresiva**: Botón deshabilitado hasta que se cumplan TODOS los requisitos
+- **Retroalimentación en vivo**: Validación de formulario en tiempo real con indicadores de estado
+- **Lista de verificación de requisitos**:
+  - Archivo de evidencia subido ✅
+  - Descripción proporcionada (mínimo 10 caracteres) ✅
+  - Las tres casillas de declaración jurada marcadas ✅
+  - Firma digital ingresada ✅
+  - Estado realmente diferente del actual ✅
+
+**5. RASTRO DE AUDITORÍA INTEGRAL**
+```javascript
+entradaAuditoria = {
+  agreementId, collection, estadoPrevio, estadoNuevo,
+  nombreArchivoEvidencia, urlEvidencia, descripcionEvidencia,
+  firmaDigital, marcaTiempo, realizadoPor, realizadoPorUID,
+  direccionIP, agenteUsuario, verificacionesCumplimiento: {
+    validezEvidencia: true,
+    justificacionEstado: true,
+    consentimientoAuditoria: true
+  }
+}
+```
+
+#### 🎯 **ARQUITECTURA TÉCNICA:**
+
+**Mejora del Modal de Evidencia:**
+- **Antes**: Lista desplegable de estado simple con validación básica
+- **Después**: Sistema de cumplimiento completo con carga obligatoria de evidencia
+- **Seguridad**: Todas las operaciones requieren autenticación
+- **Almacenamiento**: Archivos de evidencia almacenados en carpetas separadas listas para auditoría
+
+**Flujo de Trabajo de Cambio de Estado:**
+1. Usuario hace clic en insignia de estado de acuerdo
+2. Modal de evidencia se abre con visualización de estado actual
+3. Usuario debe completar TODOS los requisitos de cumplimiento:
+   - Seleccionar nuevo estado (diferente del actual)
+   - Subir archivo de evidencia (PDF/JPG/Word/Excel)
+   - Proporcionar descripción detallada (mín 10 caracteres)
+   - Marcar las tres casillas de declaración jurada
+   - Ingresar firma digital completa
+4. Validación en tiempo real habilita botón de envío solo cuando esté completo
+5. Sistema sube evidencia, crea rastro de auditoría, actualiza acuerdo
+6. Confirmación de éxito con documentación de auditoría completa
+
+**Interfaz Visual de Cumplimiento:**
+- ⚠️ **Secciones de advertencia amarillas** para cambios de estado con alertas de cumplimiento
+- 🔴 **Bordes rojos** en todos los campos requeridos
+- 🛡️ **Iconos de escudo** en toda la interfaz indicando seguridad y cumplimiento
+- **Retroalimentación de validación en tiempo real** con estados de botón descriptivos
+
+#### 🔍 **FUNCIONALIDADES LISTAS PARA CSI Y AUDITORÍA:**
+
+**Categorización de Evidencia:**
+- Evidencia de cambio de estado: bandera `isStatusChangeEvidence: true`
+- Rutas de almacenamiento separadas: `status-change-evidence/` vs `evidence-files/`
+- Seguimiento completo de metadatos con verificación de cumplimiento
+
+**Documentación de Auditoría:**
+- **Marcas de tiempo del servidor**: Todas las acciones con marca de tiempo en el servidor
+- **Verificación de autenticación de usuario**: Seguimiento completo de identidad de usuario
+- **Registro de dirección IP**: Seguimiento de origen de red para seguridad
+- **Huella dactilar del navegador**: Captura de agente de usuario para seguimiento de sesión
+- **Verificación de firma digital**: Registro de certificación de cumplimiento
+- **Registro de verificación de casillas**: Seguimiento completo de cumplimiento de declaración jurada
+
+**Arquitectura de Aplicación de Cumplimiento:**
+```javascript
+// ANTES: Actualización simple de estado
+actualizarEstado(nuevoEstado) {
+  firebase.firestore().collection('acuerdos').doc(id).update({estado: nuevoEstado});
+}
+
+// DESPUÉS: Cumplimiento obligatorio de evidencia
+actualizarEstadoConEvidencia(nuevoEstado, archivoEvidencia, descripcion, firma, verificacionesDeclaracion) {
+  // 1. Validar TODOS los requisitos
+  // 2. Subir evidencia a carpeta dedicada
+  // 3. Crear rastro de auditoría integral
+  // 4. Actualizar acuerdo con documentación completa
+  // 5. Marcar evidencia como relacionada con cambio de estado
+}
+```
+
+#### ✅ **RESULTADOS DE IMPLEMENTACIÓN:**
+
+**Archivos Mejorados:**
+- `hall-ceso.html`: Modal de evidencia completo con sistema de cumplimiento
+- `hall-aphis.html`: Modal de evidencia completo con sistema de cumplimiento
+
+**Nuevas Funciones Agregadas:**
+- `setupComplianceValidation()`: Validación de formulario en tiempo real
+- `updateAgreementStatus()`: Aplicación obligatoria de evidencia
+- `openEvidenceModal()`: Modal mejorado con interfaz de cumplimiento
+
+**Mejoras de UI/UX:**
+- **Visualización de Estado Actual vs Nuevo**: Comparación visual clara
+- **Validación Progresiva**: Retroalimentación en tiempo real sobre finalización
+- **Alertas de Cumplimiento**: Advertencias claras sobre requisitos
+- **Confirmación de Éxito**: Retroalimentación detallada sobre cambios exitosos
+
+#### 🚀 **ESTADO DE IMPLEMENTACIÓN:**
+
+**Aplicación en Vivo**: https://ceso-aphis-yuc.web.app
+- ✅ Modal de evidencia con cumplimiento obligatorio implementado
+- ✅ Sistema de validación en tiempo real activo
+- ✅ Creación de rastro de auditoría funcional
+- ✅ Cumplimiento de diseño gubernamental mantenido
+
+**Verificación de Pruebas:**
+- ✅ Cambios de estado bloqueados sin evidencia
+- ✅ Requisitos de declaración jurada aplicados
+- ✅ Validación de firma digital funcionando
+- ✅ Creación de rastro de auditoría verificada
+- ✅ Categorización de evidencia funcional
+
+#### 🎯 **IMPACTO EMPRESARIAL:**
+
+**Cumplimiento de Gobernanza:**
+- **100% responsabilidad**: No es posible cambiar estados sin evidencia
+- **Rastro de auditoría completo**: Cada acción completamente documentada
+- **Cumplimiento legal**: Firmas digitales y certificaciones registradas
+- **Preparación CSI**: Capacidad de investigación completa con documentación integral
+
+**Seguridad Operativa:**
+- **Aplicación de autenticación**: Todas las operaciones requieren usuario válido
+- **Preservación de evidencia**: Todos los archivos almacenados en formato listo para auditoría
+- **Integridad de datos**: Validación y marcado de tiempo del lado del servidor
+- **Control de acceso**: Permisos basados en roles mantenidos
+
+#### 📈 **MÉTRICAS DE ÉXITO:**
+
+**Logro de Cumplimiento:**
+- ✅ **Cero evasión**: No es posible cambiar estados sin evidencia
+- ✅ **Documentación completa**: 100% de cambios de estado completamente documentados
+- ✅ **Preparación para auditoría**: Todos los cambios listos para CSI e investigación legal
+- ✅ **Cumplimiento del usuario**: El sistema aplica procedimientos adecuados automáticamente
+
+**Excelencia Técnica:**
+- ✅ **Validación en tiempo real**: Retroalimentación instantánea sobre estado de cumplimiento
+- ✅ **Prevención de errores**: El sistema previene envíos incompletos
+- ✅ **Experiencia de usuario**: Orientación clara a través del proceso de cumplimiento
+- ✅ **Estándares gubernamentales**: Cumplimiento completo de diseño gob.mx v3 mantenido
+
+#### 🔄 **SIGUIENTE FASE DE DESARROLLO:**
+
+**Prioridades Inmediatas:**
+1. **Capacitación de Usuarios**: Documentación para flujo de trabajo de cumplimiento
+2. **Panel de Auditoría**: Vista administrativa de toda evidencia y cambios
+3. **Informes de Cumplimiento**: Generar informes de auditoría para supervisión
+4. **Gestión de Evidencia**: Operaciones de evidencia en lote para administradores
+
+**Mejoras Futuras:**
+1. **Sistema de Revisión de Evidencia**: Flujos de trabajo de aprobación de múltiples etapas
+2. **Análisis de Cumplimiento**: Métricas y estadísticas del panel
+3. **Extensiones de Integración**: Exportar a sistemas de auditoría gubernamental
+4. **Validación Avanzada**: Verificación de contenido de evidencia impulsada por IA
+
+#### 🎉 **LOGRO DE SESIÓN:**
+
+**HITO CRÍTICO ALCANZADO**: El Modal de Evidencia ahora es verdaderamente el "corazón y alma" de la aplicación como se solicitó. Cada cambio de estado de acuerdo requiere:
+- ✅ Carga válida de archivo de evidencia
+- ✅ Descripción detallada de evidencia  
+- ✅ Declaración jurada de cumplimiento de tres puntos
+- ✅ Certificación de firma digital
+- ✅ Creación completa de rastro de auditoría
+
+Esta implementación asegura que la aplicación cumpla con los más altos estándares de responsabilidad gubernamental y proporcione documentación completa lista para CSI para todos los cambios de estado de acuerdos.
+
+---
+
+*Sesión completada: 14 de octubre de 2025*
+*Próximo enfoque: Capacitación de usuarios y desarrollo de panel de auditoría*
+*Estado: LISTO PARA PRODUCCIÓN con aplicación completa de cumplimiento*
 
