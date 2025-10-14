@@ -1106,8 +1106,8 @@
         const dateA = getDateValue(a);
         const dateB = getDateValue(b);
         
-        // Sort oldest first (ascending order)
-        return dateA.getTime() - dateB.getTime();
+        // Sort newest first (descending order) - most recent agreements at the top
+        return dateB.getTime() - dateA.getTime();
       });
       
       // Generar HTML para la lista de acuerdos
