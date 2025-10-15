@@ -66,10 +66,10 @@
           <!-- Language Toggle -->
           <div class="position-absolute top-0 end-0 m-3">
             <div class="btn-group btn-group-sm" role="group" aria-label="Language Toggle">
-              <button type="button" class="btn btn-outline-light active" id="btnSpanish" onclick="setLanguage('es')">
+              <button type="button" class="btn btn-secondary active" id="btnSpanish" onclick="setLanguage('es')">
                 🇲🇽 ESPAÑOL
               </button>
-              <button type="button" class="btn btn-outline-light" id="btnEnglish" onclick="setLanguage('en')">
+              <button type="button" class="btn btn-secondary" id="btnEnglish" onclick="setLanguage('en')">
                 🇺🇸 ENGLISH
               </button>
             </div>
@@ -115,13 +115,11 @@
               <div class="col-md-6">
                 <label class="form-label" data-es="Categoría" data-en="Category">Categoría</label>
                 <select id="repoCategory" class="form-select">
-                  <option value="actas-aphis" data-es="Actas de Reuniones APHIS" data-en="APHIS Meeting Minutes">Actas de Reuniones APHIS</option>
-                  <option value="normativas-aphis" data-es="Normativas Sanitarias" data-en="Health Regulations">Normativas Sanitarias</option>
-                  <option value="protocolos-aphis" data-es="Protocolos de Exportación" data-en="Export Protocols">Protocolos de Exportación</option>
-                  <option value="certificaciones-aphis" data-es="Certificaciones USDA" data-en="USDA Certifications">Certificaciones USDA</option>
-                  <option value="reportes-aphis" data-es="Reportes de Tuberculosis" data-en="Tuberculosis Reports">Reportes de Tuberculosis</option>
-                  <option value="formatos-aphis" data-es="Formatos Oficiales" data-en="Official Forms">Formatos Oficiales</option>
-                  <option value="cooperacion-aphis" data-es="Documentos de Cooperación" data-en="Cooperation Documents">Documentos de Cooperación</option>
+                  <option value="actas-aphis" data-es="Actas de Reuniones" data-en="Meeting Minutes">Actas de Reuniones</option>
+                  <option value="normativas-aphis" data-es="Normativa y comunicados Oficiales SENASICA" data-en="SENASICA Official Regulations and Communications">Normativa y comunicados Oficiales SENASICA</option>
+                  <option value="recomendaciones-aphis" data-es="Recomendaciones APHIS-USDA" data-en="APHIS-USDA Recommendations">Recomendaciones APHIS-USDA</option>
+                  <option value="formatos-aphis" data-es="Formatos y Documentos diversos" data-en="Forms and Miscellaneous Documents">Formatos y Documentos diversos</option>
+                  <option value="presentaciones-aphis" data-es="Presentaciones Anexas a Reuniones (PPT's)" data-en="Meeting Presentations (PPT's)">Presentaciones Anexas a Reuniones (PPT's)</option>
                 </select>
               </div>
               <div class="col-md-6">
@@ -144,18 +142,149 @@
           </div>
         </div>
 
-        <!-- Documents List -->
+        <!-- Documents Classification Landing Page -->
         <div class="card mt-4">
           <div class="card-header bg-light">
-            <h5 class="card-title mb-0"><span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-files"></i></span> Documentos APHIS-USDA/SENASICA</h5>
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="card-title mb-0">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-files"></i></span> 
+                <span data-es="Biblioteca de Documentos APHIS-USDA/SENASICA" data-en="APHIS-USDA/SENASICA Document Library">Biblioteca de Documentos APHIS-USDA/SENASICA</span>
+              </h5>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary btn-sm" id="viewToggle" onclick="toggleView()">
+                  <i class="bi bi-grid-3x3-gap" id="viewIcon"></i> 
+                  <span id="viewText" data-es="Vista de Categorías" data-en="Category View">Vista de Categorías</span>
+                </button>
+              </div>
+            </div>
           </div>
           <div class="card-body">
-            <div id="repoList">
-              <div class="text-center">
-                <div class="spinner-border text-info" role="status">
-                  <span class="visually-hidden">Cargando...</span>
+            
+            <!-- Category Grid View -->
+            <div id="categoryView" class="row">
+              <!-- Actas de Reuniones -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('actas-aphis')" style="cursor: pointer;">
+                  <div class="card h-100 border-primary">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-journal-text text-primary" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Actas de Reuniones" data-en="Meeting Minutes">
+                        Actas de Reuniones
+                      </h6>
+                      <p class="card-text text-muted" data-es="Actas oficiales del grupo de trabajo APHIS-USDA/SENASICA" data-en="Official APHIS-USDA/SENASICA working group minutes">
+                        Actas oficiales del grupo de trabajo APHIS-USDA/SENASICA
+                      </p>
+                      <div class="badge bg-primary" id="count-actas-aphis">0 documentos</div>
+                    </div>
+                  </div>
                 </div>
-                <p class="mt-2">Cargando documentos...</p>
+              </div>
+
+              <!-- Normativas y comunicados Oficiales SENASICA -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('normativas-aphis')" style="cursor: pointer;">
+                  <div class="card h-100 border-warning">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-clipboard-check text-warning" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Normativa y comunicados Oficiales SENASICA" data-en="SENASICA Official Regulations and Communications">
+                        Normativa y comunicados Oficiales SENASICA
+                      </h6>
+                      <p class="card-text text-muted" data-es="Regulaciones y comunicados oficiales del servicio nacional" data-en="National service official regulations and communications">
+                        Regulaciones y comunicados oficiales del servicio nacional
+                      </p>
+                      <div class="badge bg-warning" id="count-normativas-aphis">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recomendaciones APHIS-USDA -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('recomendaciones-aphis')" style="cursor: pointer;">
+                  <div class="card h-100 border-success">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-lightbulb text-success" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Recomendaciones APHIS-USDA" data-en="APHIS-USDA Recommendations">
+                        Recomendaciones APHIS-USDA
+                      </h6>
+                      <p class="card-text text-muted" data-es="Recomendaciones técnicas y operativas del USDA" data-en="USDA technical and operational recommendations">
+                        Recomendaciones técnicas y operativas del USDA
+                      </p>
+                      <div class="badge bg-success" id="count-recomendaciones-aphis">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Formatos y Documentos diversos -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('formatos-aphis')" style="cursor: pointer;">
+                  <div class="card h-100 border-info">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-file-earmark-spreadsheet text-info" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Formatos y Documentos diversos" data-en="Forms and Miscellaneous Documents">
+                        Formatos y Documentos diversos
+                      </h6>
+                      <p class="card-text text-muted" data-es="Formatos oficiales y documentos misceláneos" data-en="Official forms and miscellaneous documents">
+                        Formatos oficiales y documentos misceláneos
+                      </p>
+                      <div class="badge bg-info" id="count-formatos-aphis">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Presentaciones Anexas a Reuniones -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('presentaciones-aphis')" style="cursor: pointer;">
+                  <div class="card h-100 border-secondary">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-easel text-secondary" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Presentaciones Anexas a Reuniones (PPT's)" data-en="Meeting Presentations (PPT's)">
+                        Presentaciones Anexas a Reuniones (PPT's)
+                      </h6>
+                      <p class="card-text text-muted" data-es="Presentaciones PowerPoint y materiales de reuniones" data-en="PowerPoint presentations and meeting materials">
+                        Presentaciones PowerPoint y materiales de reuniones
+                      </p>
+                      <div class="badge bg-secondary" id="count-presentaciones-aphis">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Detail View -->
+            <div id="categoryDetail" style="display: none;">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 id="categoryTitle">Categoría</h6>
+                <button class="btn btn-secondary btn-sm" onclick="showCategoryView()">
+                  <i class="bi bi-arrow-left"></i> 
+                  <span data-es="Volver a Categorías" data-en="Back to Categories">Volver a Categorías</span>
+                </button>
+              </div>
+              <div id="categoryDocuments">
+                <!-- Documents for selected category will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Traditional List View (Hidden by default) -->
+            <div id="listView" style="display: none;">
+              <div id="repoList">
+                <div class="text-center">
+                  <div class="spinner-border text-info" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                  </div>
+                  <p class="mt-2">Cargando documentos...</p>
               </div>
             </div>
           </div>
@@ -174,6 +303,44 @@
   <script src="__/firebase/init.js"></script>
   <script src="auth-system.js"></script>
   <script>
+    // Global variables for categorized view
+    let allDocuments = [];
+    let currentView = 'category'; // 'category' or 'list'
+    
+    // Category configuration for APHIS
+    const categories = {
+      'actas-aphis': {
+        name: 'Actas de Reuniones',
+        nameEn: 'Meeting Minutes',
+        icon: 'bi-journal-text',
+        color: 'primary'
+      },
+      'normativas-aphis': {
+        name: 'Normativa y comunicados Oficiales SENASICA',
+        nameEn: 'SENASICA Official Regulations and Communications',
+        icon: 'bi-clipboard-check',
+        color: 'warning'
+      },
+      'recomendaciones-aphis': {
+        name: 'Recomendaciones APHIS-USDA',
+        nameEn: 'APHIS-USDA Recommendations',
+        icon: 'bi-lightbulb',
+        color: 'success'
+      },
+      'formatos-aphis': {
+        name: 'Formatos y Documentos diversos',
+        nameEn: 'Forms and Miscellaneous Documents',
+        icon: 'bi-file-earmark-spreadsheet',
+        color: 'info'
+      },
+      'presentaciones-aphis': {
+        name: 'Presentaciones Anexas a Reuniones (PPT\'s)',
+        nameEn: 'Meeting Presentations (PPT\'s)',
+        icon: 'bi-easel',
+        color: 'secondary'
+      }
+    };
+
     function fmtDate(v){ 
       try{ 
         if(!v) return ''; 
@@ -194,6 +361,164 @@
       setTimeout(() => alerts.innerHTML = '', 5000);
     }
 
+    // Toggle between category and list view
+    function toggleView() {
+      const categoryView = document.getElementById('categoryView');
+      const listView = document.getElementById('listView');
+      const categoryDetail = document.getElementById('categoryDetail');
+      const viewIcon = document.getElementById('viewIcon');
+      const viewText = document.getElementById('viewText');
+      
+      if (currentView === 'category') {
+        // Switch to list view
+        categoryView.style.display = 'none';
+        categoryDetail.style.display = 'none';
+        listView.style.display = 'block';
+        viewIcon.className = 'bi bi-grid-3x3-gap';
+        viewText.textContent = 'Vista de Categorías';
+        viewText.setAttribute('data-es', 'Vista de Categorías');
+        viewText.setAttribute('data-en', 'Category View');
+        currentView = 'list';
+        loadRepo(); // Load traditional list
+      } else {
+        // Switch to category view
+        listView.style.display = 'none';
+        categoryDetail.style.display = 'none';
+        categoryView.style.display = 'block';
+        viewIcon.className = 'bi bi-list-ul';
+        viewText.textContent = 'Vista de Lista';
+        viewText.setAttribute('data-es', 'Vista de Lista');
+        viewText.setAttribute('data-en', 'List View');
+        currentView = 'category';
+        loadCategorizedDocuments();
+      }
+    }
+
+    // Show category view
+    function showCategoryView() {
+      document.getElementById('categoryDetail').style.display = 'none';
+      document.getElementById('categoryView').style.display = 'block';
+    }
+
+    // Show specific category
+    function showCategory(categoryId) {
+      const category = categories[categoryId];
+      if (!category) return;
+      
+      document.getElementById('categoryView').style.display = 'none';
+      document.getElementById('categoryDetail').style.display = 'block';
+      document.getElementById('categoryTitle').textContent = category.name;
+      
+      // Filter documents for this category
+      const categoryDocs = allDocuments.filter(doc => doc.category === categoryId);
+      const documentsContainer = document.getElementById('categoryDocuments');
+      
+      if (categoryDocs.length === 0) {
+        documentsContainer.innerHTML = `
+          <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle"></i> 
+            <span data-es="No hay documentos en esta categoría" data-en="No documents in this category">
+              No hay documentos en esta categoría
+            </span>
+          </div>`;
+        return;
+      }
+      
+      let html = '<div class="list-group">';
+      categoryDocs.forEach(doc => {
+        const iconClass = getFileIcon(doc.filename);
+        html += `
+          <div class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between align-items-start">
+              <div class="flex-grow-1">
+                <h6 class="mb-1">
+                  <i class="${iconClass} text-primary"></i> ${doc.filename}
+                </h6>
+                <p class="mb-1 text-muted">${category.name.toUpperCase()}</p>
+                <small class="text-muted">
+                  Subido: ${fmtDate(doc.createdAt)} • Por: ${doc.uploader || 'Usuario'}
+                </small>
+              </div>
+              <div class="ms-3">
+                <button class="btn btn-primary btn-sm repo-download" data-path="${doc.storagePath}">
+                  <i class="bi bi-download"></i> Descargar
+                </button>
+              </div>
+            </div>
+          </div>`;
+      });
+      html += '</div>';
+      documentsContainer.innerHTML = html;
+      
+      // Attach download handlers
+      attachDownloadHandlers();
+    }
+
+    // Get file icon based on extension
+    function getFileIcon(filename) {
+      const ext = filename.toLowerCase().split('.').pop();
+      switch (ext) {
+        case 'pdf': return 'bi-file-earmark-pdf';
+        case 'doc': case 'docx': return 'bi-file-earmark-word';
+        case 'xls': case 'xlsx': return 'bi-file-earmark-excel';
+        case 'ppt': case 'pptx': return 'bi-file-earmark-ppt';
+        case 'jpg': case 'jpeg': case 'png': case 'gif': return 'bi-file-earmark-image';
+        default: return 'bi-file-earmark-text';
+      }
+    }
+
+    // Load documents with categorization
+    function loadCategorizedDocuments() {
+      // Reset category counts
+      Object.keys(categories).forEach(categoryId => {
+        const countEl = document.getElementById(`count-${categoryId}`);
+        if (countEl) countEl.textContent = '0 documentos';
+      });
+      
+      db.collection('repositorio-aphis').orderBy('createdAt','desc').get().then(snap => {
+        allDocuments = [];
+        const categoryCounts = {};
+        
+        // Initialize counts
+        Object.keys(categories).forEach(categoryId => {
+          categoryCounts[categoryId] = 0;
+        });
+        
+        if (snap.size) {
+          snap.forEach(doc => {
+            const data = doc.data();
+            allDocuments.push({
+              id: doc.id,
+              filename: data.filename || 'Sin nombre',
+              category: data.category || 'otros',
+              storagePath: data.storagePath || '',
+              createdAt: data.createdAt,
+              uploader: data.uploader || 'Usuario'
+            });
+            
+            // Count documents per category
+            const category = data.category || 'otros';
+            if (categoryCounts.hasOwnProperty(category)) {
+              categoryCounts[category]++;
+            }
+          });
+        }
+        
+        // Update category counts
+        Object.keys(categoryCounts).forEach(categoryId => {
+          const countEl = document.getElementById(`count-${categoryId}`);
+          if (countEl) {
+            const count = categoryCounts[categoryId];
+            countEl.textContent = `${count} documento${count !== 1 ? 's' : ''}`;
+          }
+        });
+        
+      }).catch(err => {
+        console.error('Error loading documents:', err);
+        showAlert('Error al cargar documentos: ' + err.message, 'danger');
+      });
+    }
+
     function loadRepo(){ 
       const list = document.getElementById('repoList'); 
       list.innerHTML = '<div class="text-center"><div class="spinner-border text-info" role="status"><span class="visually-hidden">Cargando...</span></div><p class="mt-2">Cargando documentos...</p></div>'; 
@@ -210,11 +535,9 @@
           const categoryIcon = {
             'actas-aphis': 'bi-file-earmark-text',
             'normativas-aphis': 'bi-shield-check',
-            'protocolos-aphis': 'bi-clipboard-check',
-            'certificaciones-aphis': 'bi-award',
-            'reportes-aphis': 'bi-graph-up',
+            'recomendaciones-aphis': 'bi-lightbulb',
             'formatos-aphis': 'bi-file-earmark',
-            'cooperacion-aphis': 'bi-globe'
+            'presentaciones-aphis': 'bi-presentation'
           };
           const icon = categoryIcon[md.category] || 'bi-file-earmark';
           
@@ -226,7 +549,7 @@
                 <small class="text-muted">Subido: ${fmtDate(md.createdAt)} • Por: ${md.uploader || 'Usuario'}</small>
               </div>
               <div class="ms-3">
-                <button class="btn btn-outline-info btn-sm repo-download" data-path="${md.storagePath || ''}">
+                <button class="btn btn-primary btn-sm repo-download" data-path="${md.storagePath || ''}">
                   <i class="bi bi-download"></i> Descargar
                 </button>
               </div>
@@ -260,6 +583,34 @@
       }).catch(err=> {
         list.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle"></i> Error cargando documentos: '+err.message+'</div>';
       }); 
+    }
+
+    // Reusable download handler for categorized view
+    function attachDownloadHandlers() {
+      document.querySelectorAll('button.repo-download').forEach(button => {
+        // Remove existing event listeners by cloning the element
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', function(ev) {
+          ev.preventDefault();
+          const path = newButton.getAttribute('data-path');
+          if (!path) return showAlert('Ruta del archivo faltante', 'danger');
+          
+          newButton.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span> Cargando...';
+          newButton.disabled = true;
+          
+          firebase.storage().ref(path).getDownloadURL().then(url => {
+            window.open(url, '_blank');
+            newButton.innerHTML = '<i class="bi bi-download"></i> Descargar';
+            newButton.disabled = false;
+          }).catch(err => {
+            showAlert('Error abriendo archivo: ' + err.message, 'danger');
+            newButton.innerHTML = '<i class="bi bi-download"></i> Descargar';
+            newButton.disabled = false;
+          });
+        });
+      });
     }
 
     // Upload functionality
@@ -301,7 +652,13 @@
         document.getElementById('repoTitle').value = ''; 
         this.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-upload"></i></span> Subir Documento';
         this.disabled = false;
-        loadRepo(); 
+        
+        // Reload the appropriate view
+        if (currentView === 'category') {
+          loadCategorizedDocuments();
+        } else {
+          loadRepo();
+        }
       }).catch(err=> {
         showAlert('Error subiendo archivo: ' + err.message, 'danger');
         this.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-upload"></i></span> Subir Documento';
@@ -365,8 +722,8 @@
       setLanguage(currentLang);
     });
 
-    // Initial load
-    loadRepo();
+    // Initial load - Start with categorized view
+    loadCategorizedDocuments();
   </script>
 
   <!-- Government Framework JavaScript -->

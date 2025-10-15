@@ -1,0 +1,3 @@
+Numero_de_Acuerdo,Descripcion_del_Acuerdo,Responsable_del_Seguimiento,Fecha_de_Reunion,Fecha_de_Cumplimiento,Estado,Tipo_de_Sesion
+01-XIX-EJEMPLO-001,"Ejemplo de acuerdo APHIS-USDA para template","M.Sc. Responsable Ejemplo (APHIS-USDA)","2025-10-09","2025-11-09","Pendiente","Primera Ordinaria"
+02-XIX-EJEMPLO-002,"Segundo ejemplo de acuerdo APHIS-USDA","Dr. Otro Responsable (SENASICA)","2025-10-09","2025-12-09","Completado","Segunda Ordinaria"

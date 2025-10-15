@@ -26,7 +26,7 @@ async function uploadAgreements() {
     // Use agreement number or description as document ID if available
     let docId = agreement.numero || agreement.Numero || agreement.descripcion || agreement.Descripcion || undefined;
     if (!docId) docId = Math.random().toString(36).substring(2, 12);
-    await db.collection('acuerdos_ceso').doc(docId.toString()).set(agreement);
+    await db.collection('acuerdos-ceso').doc(docId.toString()).set(agreement);
     console.log(`Uploaded CESO agreement: ${docId}`);
   }
   console.log('All CESO agreements uploaded!');

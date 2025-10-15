@@ -58,6 +58,95 @@
         padding: 0.375rem 0.5rem;
       }
     }
+    
+    /* Enhanced Modal Typography - Following GOB.mx Standards */
+    .modal-body {
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 1rem; /* 16px minimum as per government standards */
+      line-height: 1.6; /* Better line spacing for readability */
+    }
+    
+    .modal-body p {
+      font-size: 1.1rem; /* 17.6px for better readability */
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    .modal-body .small, .modal-body small {
+      font-size: 1rem !important; /* Override Bootstrap small to meet 16px minimum */
+    }
+    
+    .modal-body label, .modal-body .form-label {
+      font-size: 1.1rem; /* Larger labels for better readability */
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .modal-body .form-text {
+      font-size: 1rem; /* Ensure form help text meets minimum */
+      line-height: 1.5;
+    }
+    
+    .modal-body .alert {
+      font-size: 1.1rem; /* Larger alert text */
+      line-height: 1.5;
+    }
+    
+    .modal-body h6 {
+      font-size: 1.25rem; /* Larger h6 headings */
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .modal-body .list-group-item {
+      font-size: 1rem; /* Better list item readability */
+      line-height: 1.5;
+    }
+    
+    .modal-body .btn {
+      font-size: 1rem; /* Larger button text */
+      padding: 0.75rem 1.5rem; /* More padding for better touch targets */
+    }
+    
+    .modal-body textarea {
+      font-size: 1rem; /* Ensure textarea text is readable */
+      line-height: 1.5;
+    }
+    
+    .modal-body .form-control {
+      font-size: 1rem; /* Ensure form inputs are readable */
+      padding: 0.75rem 1rem; /* Better padding for inputs */
+    }
+    
+    .modal-body .form-check-label {
+      font-size: 1rem; /* Readable checkbox labels */
+      line-height: 1.5;
+    }
+    
+    /* Badge improvements for better readability */
+    .modal-body .badge {
+      font-size: 0.875rem; /* Slightly larger badges while keeping them distinct */
+      padding: 0.5rem 0.75rem;
+    }
+    
+    /* Mobile responsive modal typography */
+    @media (max-width: 768px) {
+      .modal-body {
+        font-size: 1rem; /* Maintain 16px minimum on mobile */
+      }
+      
+      .modal-body p {
+        font-size: 1rem; /* Standard size on mobile to prevent overflow */
+      }
+      
+      .modal-body label, .modal-body .form-label {
+        font-size: 1rem;
+      }
+      
+      .modal-body h6 {
+        font-size: 1.125rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -93,7 +182,7 @@
         </div>
 
         <div class="mb-4 d-flex flex-wrap align-items-center justify-content-center gap-4 px-3">
-          <a href="hall-ceso.html" class="btn btn-lg btn-outline-secondary d-flex align-items-center justify-content-center">Volver</a>
+          <a href="hall-ceso.html" class="btn btn-lg btn-secondary d-flex align-items-center justify-content-center">Volver</a>
           <button id="refreshBtn" class="btn btn-lg btn-primary d-flex align-items-center justify-content-center">Refrescar</button>
           <a href="repositorio-ceso.html" class="btn btn-lg btn-primary d-flex align-items-center justify-content-center" aria-label="Ir al Repositorio CESO">Repositorio CESO</a>
         </div>
@@ -226,18 +315,29 @@
       
       let html='<div class="table-responsive"><table class="table-gobierno"><thead><tr><th>Numero</th><th>Tipo de Sesión</th><th>Acuerdo</th><th>Fecha</th><th>Estatus</th><th>Responsable</th><th>Acciones</th></tr></thead><tbody>'; 
       docs.forEach(doc=>{ const d=doc.data(); const num=d.agreementNumber||d['Número de Acuerdo']||d.numero||d.id_acuerdo||''; const tipoSesion=d.sessionType||d['Tipo_de_Sesion']||d['Tipo de Sesión']||d.tipo_sesion||''; const txt=d.description||d['Descripción del Acuerdo']||d.acuerdo||d.descripcion||d.texto||''; const fecha=fmtDate(d.meetingDate||d.complianceDate||d['Fecha de Reunión']||d['Fecha de Cumplimiento']||d.fecha_cumplimiento||d.fecha_reunion||d.fecha); const est=(d.status||d['Estado']||d.estatus||d.Estatus||'')+''; const resp=d.responsible||d['Responsable del Seguimiento']||d.responsable||d.email_responsable||''; const normalized = (est||'').toLowerCase(); const completedValues = ['completado','cumplido','completed']; const statusOptions = ['Pendiente','En Progreso','Parcialmente Cumplido','Vencido','Completado']; let estCell=''; if (completedValues.includes(normalized) || !est) { estCell = '<span class="badge badge-gobierno bg-success">'+ (est || '') +'</span>'; } else { let opts = '<option value="">-- Seleccione --</option>'; statusOptions.forEach(opt=>{ opts += '<option value="'+opt+'"'+(opt===est? ' selected':'')+'>'+opt+'</option>'; }); estCell = '<select class="form-select form-select-sm status-select" data-doc="'+doc.id+'" data-coll="'+collName+'" data-prev="'+(est||'')+'">'+opts+'</select>'; }
-      html+='<tr>' + '<td><a href="#" class="link-num" data-doc="'+doc.id+'" data-coll="'+collName+'">'+num+'</a></td>' + '<td style="font-size:0.9em;"><span class="badge bg-secondary">'+tipoSesion+'</span></td>' + '<td style="max-width:40ch; white-space:normal;">'+ (txt? '<div>'+txt+'</div>':'') +'</td>' + '<td>'+fecha+'</td>' + '<td>'+estCell+'</td>' + '<td>'+resp+'</td>' + '<td>' + '<button class="btn btn-sm btn-outline-primary view-evidence" data-doc="'+doc.id+'" data-coll="'+collName+'">Ver Evidencias</button>' + '</td>' + '</tr>'; }); html+='</tbody></table></div>'; document.getElementById('acuerdosContainer').innerHTML=html; attachActions(); }
+      html+='<tr>' + '<td><a href="#" class="link-num" data-doc="'+doc.id+'" data-coll="'+collName+'">'+num+'</a></td>' + '<td style="font-size:0.9em;"><span class="badge bg-secondary">'+tipoSesion+'</span></td>' + '<td style="max-width:40ch; white-space:normal;">'+ (txt? '<div>'+txt+'</div>':'') +'</td>' + '<td>'+fecha+'</td>' + '<td>'+estCell+'</td>' + '<td>'+resp+'</td>' + '<td>' + '<button class="btn btn-sm btn-primary view-evidence" data-doc="'+doc.id+'" data-coll="'+collName+'">Ver Evidencias</button>' + '</td>' + '</tr>'; }); html+='</tbody></table></div>'; document.getElementById('acuerdosContainer').innerHTML=html; attachActions(); }
 
     function attachActions(){ const container=document.getElementById('acuerdosContainer'); Array.from(container.querySelectorAll('button.view-evidence')).forEach(btn=>{ btn.addEventListener('click', function(){ const coll=btn.getAttribute('data-coll'); const docId=btn.getAttribute('data-doc'); db.collection(coll).doc(docId).get().then(d=> openEvidenceModal(coll, docId, d.data())).catch(err=> alert('Error: '+err.message)); }); }); Array.from(container.querySelectorAll('a.link-num')).forEach(a=>{ a.addEventListener('click', function(ev){ ev.preventDefault(); const coll=a.getAttribute('data-coll'); const docId=a.getAttribute('data-doc'); db.collection(coll).doc(docId).get().then(d=>{             const data=d.data()||{}; document.getElementById('detail_numero').textContent=data.agreementNumber||data['Número de Acuerdo']||data.numero||data.id_acuerdo||docId; document.getElementById('detail_tipo_sesion').textContent=data.sessionType||data['Tipo_de_Sesion']||data['Tipo de Sesión']||data.tipo_sesion||''; document.getElementById('detail_acuerdo').textContent=data.description||data['Descripción del Acuerdo']||data.acuerdo||data.descripcion||data.texto||''; document.getElementById('detail_fecha').textContent=fmtDate(data.meetingDate||data.complianceDate||data['Fecha de Reunión']||data['Fecha de Cumplimiento']||data.fecha_cumplimiento||data.fecha_reunion||data.fecha); document.getElementById('detail_estatus').textContent=data.status||data['Estado']||data.estatus||data.Estatus||''; document.getElementById('detail_responsable').textContent=data.responsible||data['Responsable del Seguimiento']||data.responsable||data.email_responsable||''; new bootstrap.Modal(document.getElementById('agreementDetailModal')).show(); }).catch(err=> alert('No se pudo cargar detalle: '+err.message)); }); });
 
       Array.from(container.querySelectorAll('select.status-select')).forEach(sel=>{
         sel.addEventListener('change', function(ev){ const newVal = sel.value; const docId = sel.getAttribute('data-doc'); const coll = sel.getAttribute('data-coll'); const prev = sel.getAttribute('data-prev')||'';
           if (!newVal || newVal===prev) { return; }
+          
           // Check authorization: user must be the responsible person or admin
           const user = window.gobmxAuth ? window.gobmxAuth.getCurrentUser() : null;
-          if (!user) { alert('Debe autenticarse para cambiar el estatus.'); sel.value = prev; return; }
+          console.log('[DEBUG] Current user from gobmxAuth:', user);
+          
+          if (!user) { 
+            alert('Debe autenticarse para cambiar el estatus.'); 
+            sel.value = prev; 
+            return; 
+          }
+          
           const userEmail = user.correo || user.email || user.uid;
           const isAdmin = (user.rol === 'Administrador') || userEmail.toLowerCase() === 'smunoz.sader@gmail.com';
+          
+          console.log('[DEBUG] User email:', userEmail, 'Is Admin:', isAdmin);
+          
           // Get agreement data to check responsible person
           db.collection(coll).doc(docId).get().then(doc => {
             if (!doc.exists) { alert('Acuerdo no encontrado.'); sel.value = prev; return; }
@@ -257,7 +357,7 @@
       }); });
     }
 
-  function openEvidenceModal(coll, docId, docData){ const evidenceList=document.getElementById('evidenceList'); const filesEl=document.getElementById('evidenceFiles'); const uploadBtn=document.getElementById('evidenceUploadBtn'); const commentEl=document.getElementById('evidenceComment'); evidenceList.innerHTML='<em>Cargando evidencias...</em>'; db.collection(coll).doc(docId).collection('evidencias').orderBy('createdAt','desc').get().then(snap=>{ if(!snap.size) evidenceList.innerHTML='<div class="alert alert-gobierno alert-info">No hay evidencias registradas.</div>'; else{ let html='<ul class="list-group">'; snap.forEach(d=>{ const md=d.data(); html+='<li class="list-group-item d-flex justify-content-between align-items-start"><div><strong>'+ (md.filename||'archivo') +'</strong><br/><small class="text-muted">'+ (md.uploader||'') + ' • ' + fmtDate(md.createdAt && md.createdAt.toDate ? md.createdAt.toDate() : md.createdAt) + '</small><div>' + (md.comment? '<em>'+md.comment+'</em>':'') + '</div></div><div><a class="btn btn-sm btn-outline-primary" href="#" data-url="'+(md.storagePath||'')+'">Descargar</a></div></li>'; }); html+='</ul>'; evidenceList.innerHTML=html; Array.from(evidenceList.querySelectorAll('a[data-url]')).forEach(a=> a.addEventListener('click', function(ev){ ev.preventDefault(); const path=a.getAttribute('data-url'); if(!path) return alert('Ruta faltante'); firebase.storage().ref(path).getDownloadURL().then(u=> window.open(u,'_blank')).catch(err=> alert('No se pudo obtener archivo: '+err.message)); })); } }).catch(err=> evidenceList.innerHTML='<div class="alert alert-gobierno alert-danger">Error: '+err.message+'</div>'); uploadBtn.onclick=function(){ const files=(filesEl && filesEl.files)||[]; if(!files.length) return alert('Seleccione archivos'); const user = window.gobmxAuth ? window.gobmxAuth.getCurrentUser() : null; if(!user) return alert('Debe autenticarse para subir evidencias.'); const promises=[]; Array.from(files).forEach(file=>{ const storagePath=coll+'/'+docId+'/'+Date.now()+'_'+file.name; const ref=firebase.storage().ref(storagePath); const upload=ref.put(file); const p=upload.then(()=> ref.getMetadata().then(()=>({storagePath, filename:file.name}))); promises.push(p.then(info=> db.collection(coll).doc(docId).collection('evidencias').add({ filename: info.filename, storagePath: info.storagePath, uploader: user.correo||user.email||user.uid, comment: commentEl.value||null, createdAt: firebase.firestore.FieldValue.serverTimestamp() }))); }); Promise.all(promises).then(()=>{ alert('Evidencias subidas'); if (pendingStatusChange && pendingStatusChange.coll===coll && pendingStatusChange.docId===docId){ const newStatus = pendingStatusChange.newStatus; const sel = pendingStatusChange.selectEl; db.collection(coll).doc(docId).update({ estatus: newStatus, lastStatusChangeBy: user.correo||user.email||user.uid, lastStatusChangeAt: firebase.firestore.FieldValue.serverTimestamp() }).then(()=>{ if (sel){ sel.setAttribute('data-prev', newStatus); sel.value = newStatus; } pendingStatusChange = null; openEvidenceModal(coll, docId, docData); }).catch(err=>{ alert('Error actualizando estatus: '+err.message); }); } else { openEvidenceModal(coll, docId, docData); } }).catch(err=> alert('Error subiendo: '+err.message)); };   document.getElementById('evidenceModalLabel').textContent='Evidencias - '+ (docData && (docData.agreementNumber||docData.numero||docData.id_acuerdo||docId)); const modalEl = document.getElementById('evidenceModal'); const modal = new bootstrap.Modal(modalEl); const onHidden = function(){ if (pendingStatusChange && pendingStatusChange.docId===docId){ const sel = pendingStatusChange.selectEl; if (sel){ sel.value = pendingStatusChange.prevStatus || ''; } pendingStatusChange = null; } modalEl.removeEventListener('hidden.bs.modal', onHidden); }; modalEl.addEventListener('hidden.bs.modal', onHidden); modal.show(); }
+  function openEvidenceModal(coll, docId, docData){ const evidenceList=document.getElementById('evidenceList'); const filesEl=document.getElementById('evidenceFiles'); const uploadBtn=document.getElementById('evidenceUploadBtn'); const commentEl=document.getElementById('evidenceComment'); evidenceList.innerHTML='<em>Cargando evidencias...</em>'; db.collection(coll).doc(docId).collection('evidencias').orderBy('createdAt','desc').get().then(snap=>{ if(!snap.size) evidenceList.innerHTML='<div class="alert alert-gobierno alert-info">No hay evidencias registradas.</div>'; else{ let html='<ul class="list-group">'; snap.forEach(d=>{ const md=d.data(); html+='<li class="list-group-item d-flex justify-content-between align-items-start"><div><strong>'+ (md.filename||'archivo') +'</strong><br/><small class="text-muted">'+ (md.uploader||'') + ' • ' + fmtDate(md.createdAt && md.createdAt.toDate ? md.createdAt.toDate() : md.createdAt) + '</small><div>' + (md.comment? '<em>'+md.comment+'</em>':'') + '</div></div><div><a class="btn btn-sm btn-primary" href="#" data-url="'+(md.storagePath||'')+'">Descargar</a></div></li>'; }); html+='</ul>'; evidenceList.innerHTML=html; Array.from(evidenceList.querySelectorAll('a[data-url]')).forEach(a=> a.addEventListener('click', function(ev){ ev.preventDefault(); const path=a.getAttribute('data-url'); if(!path) return alert('Ruta faltante'); firebase.storage().ref(path).getDownloadURL().then(u=> window.open(u,'_blank')).catch(err=> alert('No se pudo obtener archivo: '+err.message)); })); } }).catch(err=> evidenceList.innerHTML='<div class="alert alert-gobierno alert-danger">Error: '+err.message+'</div>'); uploadBtn.onclick=function(){ const files=(filesEl && filesEl.files)||[]; if(!files.length) return alert('Seleccione archivos'); const user = window.gobmxAuth ? window.gobmxAuth.getCurrentUser() : null; if(!user) return alert('Debe autenticarse para subir evidencias.'); const promises=[]; Array.from(files).forEach(file=>{ const storagePath=coll+'/'+docId+'/'+Date.now()+'_'+file.name; const ref=firebase.storage().ref(storagePath); const upload=ref.put(file); const p=upload.then(()=> ref.getMetadata().then(()=>({storagePath, filename:file.name}))); promises.push(p.then(info=> db.collection(coll).doc(docId).collection('evidencias').add({ filename: info.filename, storagePath: info.storagePath, uploader: user.correo||user.email||user.uid, comment: commentEl.value||null, createdAt: firebase.firestore.FieldValue.serverTimestamp() }))); }); Promise.all(promises).then(()=>{ alert('Evidencias subidas'); if (pendingStatusChange && pendingStatusChange.coll===coll && pendingStatusChange.docId===docId){ const newStatus = pendingStatusChange.newStatus; const sel = pendingStatusChange.selectEl; db.collection(coll).doc(docId).update({ estatus: newStatus, lastStatusChangeBy: user.correo||user.email||user.uid, lastStatusChangeAt: firebase.firestore.FieldValue.serverTimestamp() }).then(()=>{ if (sel){ sel.setAttribute('data-prev', newStatus); sel.value = newStatus; } pendingStatusChange = null; openEvidenceModal(coll, docId, docData); }).catch(err=>{ alert('Error actualizando estatus: '+err.message); }); } else { openEvidenceModal(coll, docId, docData); } }).catch(err=> alert('Error subiendo: '+err.message)); };   document.getElementById('evidenceModalLabel').textContent='Evidencias - '+ (docData && (docData.agreementNumber||docData.numero||docData.id_acuerdo||docId)); const modalEl = document.getElementById('evidenceModal'); const modal = new bootstrap.Modal(modalEl); const onHidden = function(){ if (pendingStatusChange && pendingStatusChange.docId===docId){ const sel = pendingStatusChange.selectEl; if (sel){ sel.value = pendingStatusChange.prevStatus || ''; } pendingStatusChange = null; } modalEl.removeEventListener('hidden.bs.modal', onHidden); }; modalEl.addEventListener('hidden.bs.modal', onHidden); modal.show(); }
 
     document.getElementById('refreshBtn').addEventListener('click', loadAcuerdos);
 

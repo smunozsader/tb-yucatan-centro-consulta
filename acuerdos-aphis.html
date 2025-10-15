@@ -58,6 +58,95 @@
         padding: 0.375rem 0.5rem;
       }
     }
+    
+    /* Enhanced Modal Typography - Following GOB.mx Standards */
+    .modal-body {
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 1rem; /* 16px minimum as per government standards */
+      line-height: 1.6; /* Better line spacing for readability */
+    }
+    
+    .modal-body p {
+      font-size: 1.1rem; /* 17.6px for better readability */
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    .modal-body .small, .modal-body small {
+      font-size: 1rem !important; /* Override Bootstrap small to meet 16px minimum */
+    }
+    
+    .modal-body label, .modal-body .form-label {
+      font-size: 1.1rem; /* Larger labels for better readability */
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .modal-body .form-text {
+      font-size: 1rem; /* Ensure form help text meets minimum */
+      line-height: 1.5;
+    }
+    
+    .modal-body .alert {
+      font-size: 1.1rem; /* Larger alert text */
+      line-height: 1.5;
+    }
+    
+    .modal-body h6 {
+      font-size: 1.25rem; /* Larger h6 headings */
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .modal-body .list-group-item {
+      font-size: 1rem; /* Better list item readability */
+      line-height: 1.5;
+    }
+    
+    .modal-body .btn {
+      font-size: 1rem; /* Larger button text */
+      padding: 0.75rem 1.5rem; /* More padding for better touch targets */
+    }
+    
+    .modal-body textarea {
+      font-size: 1rem; /* Ensure textarea text is readable */
+      line-height: 1.5;
+    }
+    
+    .modal-body .form-control {
+      font-size: 1rem; /* Ensure form inputs are readable */
+      padding: 0.75rem 1rem; /* Better padding for inputs */
+    }
+    
+    .modal-body .form-check-label {
+      font-size: 1rem; /* Readable checkbox labels */
+      line-height: 1.5;
+    }
+    
+    /* Badge improvements for better readability */
+    .modal-body .badge {
+      font-size: 0.875rem; /* Slightly larger badges while keeping them distinct */
+      padding: 0.5rem 0.75rem;
+    }
+    
+    /* Mobile responsive modal typography */
+    @media (max-width: 768px) {
+      .modal-body {
+        font-size: 1rem; /* Maintain 16px minimum on mobile */
+      }
+      
+      .modal-body p {
+        font-size: 1rem; /* Standard size on mobile to prevent overflow */
+      }
+      
+      .modal-body label, .modal-body .form-label {
+        font-size: 1rem;
+      }
+      
+      .modal-body h6 {
+        font-size: 1.125rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -93,7 +182,7 @@
         </div>
 
         <div class="mb-4 d-flex flex-wrap align-items-center justify-content-center gap-4 px-3">
-          <a href="hall-aphis.html" class="btn btn-lg btn-outline-secondary d-flex align-items-center justify-content-center">Volver</a>
+          <a href="hall-aphis.html" class="btn btn-lg btn-secondary d-flex align-items-center justify-content-center">Volver</a>
           <button id="refreshBtn" class="btn btn-lg btn-primary d-flex align-items-center justify-content-center">Refrescar</button>
           <a href="repositorio-aphis.html" class="btn btn-lg btn-primary d-flex align-items-center justify-content-center" aria-label="Ir al Repositorio APHIS">Repositorio APHIS</a>
         </div>
@@ -239,7 +328,7 @@
         statusOptions.forEach(opt=>{ opts += '<option value="'+opt+'"'+(opt===est? ' selected':'')+'>'+opt+'</option>'; });
         estCell = '<select class="form-select form-select-sm status-select" data-doc="'+doc.id+'" data-coll="'+collName+'" data-prev="'+(est||'')+'">'+opts+'</select>';
       }
-      html+='<tr>' + '<td><a href="#" class="link-num" data-doc="'+doc.id+'" data-coll="'+collName+'">'+num+'</a></td>' + '<td style="font-size:0.9em;"><span class="badge bg-secondary">'+tipoSesion+'</span></td>' + '<td style="max-width:40ch; white-space:normal;">'+ (txt? '<div>'+txt+'</div>':'') +'</td>' + '<td>'+fecha+'</td>' + '<td>'+estCell+'</td>' + '<td>'+resp+'</td>' + '<td>' + '<button class="btn btn-sm btn-outline-primary view-evidence" data-doc="'+doc.id+'" data-coll="'+collName+'">Ver Evidencias</button>' + '</td>' + '</tr>'; }); html+='</tbody></table></div>'; document.getElementById('acuerdosContainer').innerHTML=html; attachActions(); }
+      html+='<tr>' + '<td><a href="#" class="link-num" data-doc="'+doc.id+'" data-coll="'+collName+'">'+num+'</a></td>' + '<td style="font-size:0.9em;"><span class="badge bg-secondary">'+tipoSesion+'</span></td>' + '<td style="max-width:40ch; white-space:normal;">'+ (txt? '<div>'+txt+'</div>':'') +'</td>' + '<td>'+fecha+'</td>' + '<td>'+estCell+'</td>' + '<td>'+resp+'</td>' + '<td>' + '<button class="btn btn-sm btn-primary view-evidence" data-doc="'+doc.id+'" data-coll="'+collName+'">Ver Evidencias</button>' + '</td>' + '</tr>'; }); html+='</tbody></table></div>'; document.getElementById('acuerdosContainer').innerHTML=html; attachActions(); }
 
     function attachActions(){ const container=document.getElementById('acuerdosContainer'); // view evidence buttons
       Array.from(container.querySelectorAll('button.view-evidence')).forEach(btn=>{ btn.addEventListener('click', function(){ const coll=btn.getAttribute('data-coll'); const docId=btn.getAttribute('data-doc'); db.collection(coll).doc(docId).get().then(d=> openEvidenceModal(coll, docId, d.data())).catch(err=> alert('Error: '+err.message)); }); });
@@ -250,11 +339,22 @@
       Array.from(container.querySelectorAll('select.status-select')).forEach(sel=>{
         sel.addEventListener('change', function(ev){ const newVal = sel.value; const docId = sel.getAttribute('data-doc'); const coll = sel.getAttribute('data-coll'); const prev = sel.getAttribute('data-prev')||'';
           if (!newVal || newVal===prev) { return; }
+          
           // Check authorization: user must be the responsible person or admin
           const user = window.gobmxAuth ? window.gobmxAuth.getCurrentUser() : null;
-          if (!user) { alert('Debe autenticarse para cambiar el estatus.'); sel.value = prev; return; }
+          console.log('[DEBUG] Current user from gobmxAuth:', user);
+          
+          if (!user) { 
+            alert('Debe autenticarse para cambiar el estatus.'); 
+            sel.value = prev; 
+            return; 
+          }
+          
           const userEmail = user.correo || user.email || user.uid;
           const isAdmin = (user.rol === 'Administrador') || userEmail.toLowerCase() === 'smunoz.sader@gmail.com';
+          
+          console.log('[DEBUG] User email:', userEmail, 'Is Admin:', isAdmin);
+          
           // Get agreement data to check responsible person
           db.collection(coll).doc(docId).get().then(doc => {
             if (!doc.exists) { alert('Acuerdo no encontrado.'); sel.value = prev; return; }
@@ -275,7 +375,7 @@
     }
 
     function openEvidenceModal(coll, docId, docData){ const evidenceList=document.getElementById('evidenceList'); const filesEl=document.getElementById('evidenceFiles'); const uploadBtn=document.getElementById('evidenceUploadBtn'); const commentEl=document.getElementById('evidenceComment'); evidenceList.innerHTML='<em>Cargando evidencias...</em>'; // load existing evidences
-      db.collection(coll).doc(docId).collection('evidencias').orderBy('createdAt','desc').get().then(snap=>{ if(!snap.size) evidenceList.innerHTML='<div class="alert alert-gobierno alert-info">No hay evidencias registradas.</div>'; else{ let html='<ul class="list-group">'; snap.forEach(d=>{ const md=d.data(); html+='<li class="list-group-item d-flex justify-content-between align-items-start"><div><strong>'+ (md.filename||'archivo') +'</strong><br/><small class="text-muted">'+ (md.uploader||'') + ' • ' + fmtDate(md.createdAt && md.createdAt.toDate ? md.createdAt.toDate() : md.createdAt) + '</small><div>' + (md.comment? '<em>'+md.comment+'</em>':'') + '</div></div><div><a class="btn btn-sm btn-outline-primary" href="#" data-url="'+(md.storagePath||'')+'">Descargar</a></div></li>'; }); html+='</ul>'; evidenceList.innerHTML=html; Array.from(evidenceList.querySelectorAll('a[data-url]')).forEach(a=> a.addEventListener('click', function(ev){ ev.preventDefault(); const path=a.getAttribute('data-url'); if(!path) return alert('Ruta faltante'); firebase.storage().ref(path).getDownloadURL().then(u=> window.open(u,'_blank')).catch(err=> alert('No se pudo obtener archivo: '+err.message)); })); } }).catch(err=> evidenceList.innerHTML='<div class="alert alert-gobierno alert-danger">Error: '+err.message+'</div>');
+      db.collection(coll).doc(docId).collection('evidencias').orderBy('createdAt','desc').get().then(snap=>{ if(!snap.size) evidenceList.innerHTML='<div class="alert alert-gobierno alert-info">No hay evidencias registradas.</div>'; else{ let html='<ul class="list-group">'; snap.forEach(d=>{ const md=d.data(); html+='<li class="list-group-item d-flex justify-content-between align-items-start"><div><strong>'+ (md.filename||'archivo') +'</strong><br/><small class="text-muted">'+ (md.uploader||'') + ' • ' + fmtDate(md.createdAt && md.createdAt.toDate ? md.createdAt.toDate() : md.createdAt) + '</small><div>' + (md.comment? '<em>'+md.comment+'</em>':'') + '</div></div><div><a class="btn btn-sm btn-primary" href="#" data-url="'+(md.storagePath||'')+'">Descargar</a></div></li>'; }); html+='</ul>'; evidenceList.innerHTML=html; Array.from(evidenceList.querySelectorAll('a[data-url]')).forEach(a=> a.addEventListener('click', function(ev){ ev.preventDefault(); const path=a.getAttribute('data-url'); if(!path) return alert('Ruta faltante'); firebase.storage().ref(path).getDownloadURL().then(u=> window.open(u,'_blank')).catch(err=> alert('No se pudo obtener archivo: '+err.message)); })); } }).catch(err=> evidenceList.innerHTML='<div class="alert alert-gobierno alert-danger">Error: '+err.message+'</div>');
 
       // Upload handler: when used in regular view it simply uploads; if there's a pendingStatusChange it will also update the status document
       uploadBtn.onclick=function(){ const files=(filesEl && filesEl.files)||[]; if(!files.length) return alert('Seleccione archivos'); const user = window.gobmxAuth ? window.gobmxAuth.getCurrentUser() : null; if(!user) return alert('Debe autenticarse para subir evidencias.'); const promises=[]; Array.from(files).forEach(file=>{ const storagePath=coll+'/'+docId+'/'+Date.now()+'_'+file.name; const ref=firebase.storage().ref(storagePath); const upload=ref.put(file); const p=upload.then(()=> ref.getMetadata().then(()=>({storagePath, filename:file.name}))); promises.push(p.then(info=> db.collection(coll).doc(docId).collection('evidencias').add({ filename: info.filename, storagePath: info.storagePath, uploader: user.correo||user.email||user.uid, comment: commentEl.value||null, createdAt: firebase.firestore.FieldValue.serverTimestamp() })) ); }); Promise.all(promises).then(()=>{ // uploaded metadata exists now

@@ -1,0 +1,40 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Allow public read access to files (e.g., evidence downloads).
+    match /{allPaths=**} {
+      allow read: if true;
+    }
+
+    // Restrict writes to evidence paths: <collection>/<docId>/{filename}
+    match /{coll}/{docId}/{fileName} {
+      allow write: if request.auth != null
+        // Optional: limit file size to 20MB
+        && request.resource.size < 20 * 1024 * 1024;
+    }
+
+    // Repository files - CESO specific (supports nested paths)
+    match /repositorio-ceso/{allPaths=**} {
+      allow write: if request.auth != null
+        && request.resource.size < 50 * 1024 * 1024; // 50MB limit for repository files
+    }
+
+    // Repository files - APHIS specific (supports nested paths)
+    match /repositorio-aphis/{allPaths=**} {
+      allow write: if request.auth != null
+        && request.resource.size < 50 * 1024 * 1024; // 50MB limit for repository files
+    }
+
+    // Status change evidence - special evidence folder
+    match /{coll}/{docId}/status-change-evidence/{fileName} {
+      allow write: if request.auth != null
+        && request.resource.size < 20 * 1024 * 1024;
+    }
+
+    // Deny all other client write attempts by default
+    match /{allPaths=**} {
+      allow write: if false;
+    }
+  }
+}

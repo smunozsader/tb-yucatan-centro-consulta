@@ -60,10 +60,10 @@
           <!-- Language Toggle -->
           <div class="position-absolute top-0 end-0 m-3">
             <div class="btn-group btn-group-sm" role="group" aria-label="Language Toggle">
-              <button type="button" class="btn btn-outline-light active" id="btnSpanish" onclick="setLanguage('es')">
+              <button type="button" class="btn btn-secondary active" id="btnSpanish" onclick="setLanguage('es')">
                 🇲🇽 ESPAÑOL
               </button>
-              <button type="button" class="btn btn-outline-light" id="btnEnglish" onclick="setLanguage('en')">
+              <button type="button" class="btn btn-secondary" id="btnEnglish" onclick="setLanguage('en')">
                 🇺🇸 ENGLISH
               </button>
             </div>
@@ -136,18 +136,169 @@
           </div>
         </div>
 
-        <!-- Documents List -->
+        <!-- Documents Classification Landing Page -->
         <div class="card mt-4">
           <div class="card-header bg-light">
-            <h5 class="card-title mb-0"><span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-files"></i></span> Documentos CESO</h5>
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="card-title mb-0">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-files"></i></span> 
+                <span data-es="Biblioteca de Documentos CESO" data-en="CESO Document Library">Biblioteca de Documentos CESO</span>
+              </h5>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary btn-sm" id="viewToggle" onclick="toggleView()">
+                  <i class="bi bi-grid-3x3-gap" id="viewIcon"></i> 
+                  <span id="viewText" data-es="Vista de Categorías" data-en="Category View">Vista de Categorías</span>
+                </button>
+              </div>
+            </div>
           </div>
           <div class="card-body">
-            <div id="repoList">
-              <div class="text-center">
-                <div class="spinner-border text-primary" role="status">
-                  <span class="visually-hidden">Cargando...</span>
+            
+            <!-- Category Grid View -->
+            <div id="categoryView" class="row">
+              <!-- Actas de Reuniones CESO -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('actas-ceso')" style="cursor: pointer;">
+                  <div class="card h-100 border-primary">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-journal-text text-primary" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Actas de Reuniones CESO" data-en="CESO Meeting Minutes">
+                        Actas de Reuniones CESO
+                      </h6>
+                      <p class="card-text text-muted" data-es="Actas oficiales de sesiones ordinarias y extraordinarias" data-en="Official minutes from ordinary and extraordinary sessions">
+                        Actas oficiales de sesiones ordinarias y extraordinarias
+                      </p>
+                      <div class="badge bg-primary" id="count-actas-ceso">0 documentos</div>
+                    </div>
+                  </div>
                 </div>
-                <p class="mt-2">Cargando documentos...</p>
+              </div>
+
+              <!-- Normativas SINIDA -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('normativas-ceso')" style="cursor: pointer;">
+                  <div class="card h-100 border-warning">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-clipboard-check text-warning" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Normativas SINIDA" data-en="SINIDA Regulations">
+                        Normativas SINIDA
+                      </h6>
+                      <p class="card-text text-muted" data-es="Regulaciones y lineamientos oficiales del sistema" data-en="Official system regulations and guidelines">
+                        Regulaciones y lineamientos oficiales del sistema
+                      </p>
+                      <div class="badge bg-warning" id="count-normativas-ceso">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Manuales Operativos -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('manuales-ceso')" style="cursor: pointer;">
+                  <div class="card h-100 border-success">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-book text-success" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Manuales Operativos" data-en="Operational Manuals">
+                        Manuales Operativos
+                      </h6>
+                      <p class="card-text text-muted" data-es="Guías y procedimientos operativos del sistema" data-en="System operational guides and procedures">
+                        Guías y procedimientos operativos del sistema
+                      </p>
+                      <div class="badge bg-success" id="count-manuales-ceso">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Formatos y Plantillas -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('formatos-ceso')" style="cursor: pointer;">
+                  <div class="card h-100 border-info">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-file-earmark-spreadsheet text-info" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Formatos y Plantillas" data-en="Forms and Templates">
+                        Formatos y Plantillas
+                      </h6>
+                      <p class="card-text text-muted" data-es="Formatos oficiales y plantillas de trabajo" data-en="Official forms and work templates">
+                        Formatos oficiales y plantillas de trabajo
+                      </p>
+                      <div class="badge bg-info" id="count-formatos-ceso">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reportes de Seguimiento -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('reportes-ceso')" style="cursor: pointer;">
+                  <div class="card h-100 border-secondary">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-graph-up text-secondary" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Reportes de Seguimiento" data-en="Follow-up Reports">
+                        Reportes de Seguimiento
+                      </h6>
+                      <p class="card-text text-muted" data-es="Informes y análisis de seguimiento operativo" data-en="Operational follow-up reports and analysis">
+                        Informes y análisis de seguimiento operativo
+                      </p>
+                      <div class="badge bg-secondary" id="count-reportes-ceso">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Certificaciones -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('certificaciones-ceso')" style="cursor: pointer;">
+                  <div class="card h-100 border-dark">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-award text-dark" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Certificaciones" data-en="Certifications">
+                        Certificaciones
+                      </h6>
+                      <p class="card-text text-muted" data-es="Documentos de certificación y validación" data-en="Certification and validation documents">
+                        Documentos de certificación y validación
+                      </p>
+                      <div class="badge bg-dark" id="count-certificaciones-ceso">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Detail View -->
+            <div id="categoryDetail" style="display: none;">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 id="categoryTitle">Categoría</h6>
+                <button class="btn btn-secondary btn-sm" onclick="showCategoryView()">
+                  <i class="bi bi-arrow-left"></i> 
+                  <span data-es="Volver a Categorías" data-en="Back to Categories">Volver a Categorías</span>
+                </button>
+              </div>
+              <div id="categoryDocuments">
+                <!-- Documents for selected category will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Traditional List View (Hidden by default) -->
+            <div id="listView" style="display: none;">
+              <div id="repoList">
+                <div class="text-center">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                  </div>
+                  <p class="mt-2">Cargando documentos...</p>
               </div>
             </div>
           </div>
@@ -166,6 +317,50 @@
   <script src="__/firebase/init.js"></script>
   <script src="auth-system.js"></script>
   <script>
+    // Global variables for categorized view
+    let allDocuments = [];
+    let currentView = 'category'; // 'category' or 'list'
+    
+    // Category configuration
+    const categories = {
+      'actas-ceso': {
+        name: 'Actas de Reuniones CESO',
+        nameEn: 'CESO Meeting Minutes',
+        icon: 'bi-journal-text',
+        color: 'primary'
+      },
+      'normativas-ceso': {
+        name: 'Normativas SINIDA',
+        nameEn: 'SINIDA Regulations',
+        icon: 'bi-clipboard-check',
+        color: 'warning'
+      },
+      'manuales-ceso': {
+        name: 'Manuales Operativos',
+        nameEn: 'Operational Manuals',
+        icon: 'bi-book',
+        color: 'success'
+      },
+      'formatos-ceso': {
+        name: 'Formatos y Plantillas',
+        nameEn: 'Forms and Templates',
+        icon: 'bi-file-earmark-spreadsheet',
+        color: 'info'
+      },
+      'reportes-ceso': {
+        name: 'Reportes de Seguimiento',
+        nameEn: 'Follow-up Reports',
+        icon: 'bi-graph-up',
+        color: 'secondary'
+      },
+      'certificaciones-ceso': {
+        name: 'Certificaciones',
+        nameEn: 'Certifications',
+        icon: 'bi-award',
+        color: 'dark'
+      }
+    };
+
     function fmtDate(v){ 
       try{ 
         if(!v) return ''; 
@@ -184,6 +379,164 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>`;
       setTimeout(() => alerts.innerHTML = '', 5000);
+    }
+
+    // Toggle between category and list view
+    function toggleView() {
+      const categoryView = document.getElementById('categoryView');
+      const listView = document.getElementById('listView');
+      const categoryDetail = document.getElementById('categoryDetail');
+      const viewIcon = document.getElementById('viewIcon');
+      const viewText = document.getElementById('viewText');
+      
+      if (currentView === 'category') {
+        // Switch to list view
+        categoryView.style.display = 'none';
+        categoryDetail.style.display = 'none';
+        listView.style.display = 'block';
+        viewIcon.className = 'bi bi-grid-3x3-gap';
+        viewText.textContent = 'Vista de Categorías';
+        viewText.setAttribute('data-es', 'Vista de Categorías');
+        viewText.setAttribute('data-en', 'Category View');
+        currentView = 'list';
+        loadRepo(); // Load traditional list
+      } else {
+        // Switch to category view
+        listView.style.display = 'none';
+        categoryDetail.style.display = 'none';
+        categoryView.style.display = 'block';
+        viewIcon.className = 'bi bi-list-ul';
+        viewText.textContent = 'Vista de Lista';
+        viewText.setAttribute('data-es', 'Vista de Lista');
+        viewText.setAttribute('data-en', 'List View');
+        currentView = 'category';
+        loadCategorizedDocuments();
+      }
+    }
+
+    // Show category view
+    function showCategoryView() {
+      document.getElementById('categoryDetail').style.display = 'none';
+      document.getElementById('categoryView').style.display = 'block';
+    }
+
+    // Show specific category
+    function showCategory(categoryId) {
+      const category = categories[categoryId];
+      if (!category) return;
+      
+      document.getElementById('categoryView').style.display = 'none';
+      document.getElementById('categoryDetail').style.display = 'block';
+      document.getElementById('categoryTitle').textContent = category.name;
+      
+      // Filter documents for this category
+      const categoryDocs = allDocuments.filter(doc => doc.category === categoryId);
+      const documentsContainer = document.getElementById('categoryDocuments');
+      
+      if (categoryDocs.length === 0) {
+        documentsContainer.innerHTML = `
+          <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle"></i> 
+            <span data-es="No hay documentos en esta categoría" data-en="No documents in this category">
+              No hay documentos en esta categoría
+            </span>
+          </div>`;
+        return;
+      }
+      
+      let html = '<div class="list-group">';
+      categoryDocs.forEach(doc => {
+        const iconClass = getFileIcon(doc.filename);
+        html += `
+          <div class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between align-items-start">
+              <div class="flex-grow-1">
+                <h6 class="mb-1">
+                  <i class="${iconClass} text-primary"></i> ${doc.filename}
+                </h6>
+                <p class="mb-1 text-muted">${category.name.toUpperCase()}</p>
+                <small class="text-muted">
+                  Subido: ${fmtDate(doc.createdAt)} • Por: ${doc.uploader || 'Usuario'}
+                </small>
+              </div>
+              <div class="ms-3">
+                <button class="btn btn-primary btn-sm repo-download" data-path="${doc.storagePath}">
+                  <i class="bi bi-download"></i> Descargar
+                </button>
+              </div>
+            </div>
+          </div>`;
+      });
+      html += '</div>';
+      documentsContainer.innerHTML = html;
+      
+      // Attach download handlers
+      attachDownloadHandlers();
+    }
+
+    // Get file icon based on extension
+    function getFileIcon(filename) {
+      const ext = filename.toLowerCase().split('.').pop();
+      switch (ext) {
+        case 'pdf': return 'bi-file-earmark-pdf';
+        case 'doc': case 'docx': return 'bi-file-earmark-word';
+        case 'xls': case 'xlsx': return 'bi-file-earmark-excel';
+        case 'ppt': case 'pptx': return 'bi-file-earmark-ppt';
+        case 'jpg': case 'jpeg': case 'png': case 'gif': return 'bi-file-earmark-image';
+        default: return 'bi-file-earmark-text';
+      }
+    }
+
+    // Load documents with categorization
+    function loadCategorizedDocuments() {
+      // Reset category counts
+      Object.keys(categories).forEach(categoryId => {
+        const countEl = document.getElementById(`count-${categoryId}`);
+        if (countEl) countEl.textContent = '0 documentos';
+      });
+      
+      db.collection('repositorio-ceso').orderBy('createdAt','desc').get().then(snap => {
+        allDocuments = [];
+        const categoryCounts = {};
+        
+        // Initialize counts
+        Object.keys(categories).forEach(categoryId => {
+          categoryCounts[categoryId] = 0;
+        });
+        
+        if (snap.size) {
+          snap.forEach(doc => {
+            const data = doc.data();
+            allDocuments.push({
+              id: doc.id,
+              filename: data.filename || 'Sin nombre',
+              category: data.category || 'otros',
+              storagePath: data.storagePath || '',
+              createdAt: data.createdAt,
+              uploader: data.uploader || 'Usuario'
+            });
+            
+            // Count documents per category
+            const category = data.category || 'otros';
+            if (categoryCounts.hasOwnProperty(category)) {
+              categoryCounts[category]++;
+            }
+          });
+        }
+        
+        // Update category counts
+        Object.keys(categoryCounts).forEach(categoryId => {
+          const countEl = document.getElementById(`count-${categoryId}`);
+          if (countEl) {
+            const count = categoryCounts[categoryId];
+            countEl.textContent = `${count} documento${count !== 1 ? 's' : ''}`;
+          }
+        });
+        
+      }).catch(err => {
+        console.error('Error loading documents:', err);
+        showAlert('Error al cargar documentos: ' + err.message, 'danger');
+      });
     }
 
     function loadRepo(){ 
@@ -217,7 +570,7 @@
                 <small class="text-muted">Subido: ${fmtDate(md.createdAt)} • Por: ${md.uploader || 'Usuario'}</small>
               </div>
               <div class="ms-3">
-                <button class="btn btn-outline-primary btn-sm repo-download" data-path="${md.storagePath || ''}">
+                <button class="btn btn-primary btn-sm repo-download" data-path="${md.storagePath || ''}">
                   <i class="bi bi-download"></i> Descargar
                 </button>
               </div>
@@ -251,6 +604,34 @@
       }).catch(err=> {
         list.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle"></i> Error cargando documentos: '+err.message+'</div>';
       }); 
+    }
+
+    // Reusable download handler for categorized view
+    function attachDownloadHandlers() {
+      document.querySelectorAll('button.repo-download').forEach(button => {
+        // Remove existing event listeners by cloning the element
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', function(ev) {
+          ev.preventDefault();
+          const path = newButton.getAttribute('data-path');
+          if (!path) return showAlert('Ruta del archivo faltante', 'danger');
+          
+          newButton.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span> Cargando...';
+          newButton.disabled = true;
+          
+          firebase.storage().ref(path).getDownloadURL().then(url => {
+            window.open(url, '_blank');
+            newButton.innerHTML = '<i class="bi bi-download"></i> Descargar';
+            newButton.disabled = false;
+          }).catch(err => {
+            showAlert('Error abriendo archivo: ' + err.message, 'danger');
+            newButton.innerHTML = '<i class="bi bi-download"></i> Descargar';
+            newButton.disabled = false;
+          });
+        });
+      });
     }
 
     // Upload functionality
@@ -292,7 +673,13 @@
         document.getElementById('repoTitle').value = ''; 
         this.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-upload"></i></span> Subir Documento';
         this.disabled = false;
-        loadRepo(); 
+        
+        // Reload the appropriate view
+        if (currentView === 'category') {
+          loadCategorizedDocuments();
+        } else {
+          loadRepo();
+        }
       }).catch(err=> {
         showAlert('Error subiendo archivo: ' + err.message, 'danger');
         this.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-upload"></i></span> Subir Documento';
@@ -356,8 +743,8 @@
       setLanguage(currentLang);
     });
 
-    // Initial load
-    loadRepo();
+    // Initial load - Start with categorized view
+    loadCategorizedDocuments();
   </script>
 
   <!-- Government Framework JavaScript -->

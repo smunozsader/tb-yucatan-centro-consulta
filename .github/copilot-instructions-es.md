@@ -4,8 +4,8 @@
 
 Esta es una aplicación web del gobierno mexicano para gestionar acuerdos de sanidad pecuaria entre dos grupos de trabajo especializados:
 
-- **CESO** - Consejo Estatal de Seguimiento Operativo del SINIDA (Trazabilidad estatal de ganado mediante aretes)
-- **Grupo de Trabajo APHIS-USDA** - Cooperación federal/internacional para control de tuberculosis bovina y certificación de exportación de ganado
+- **CESO** - Consejo Estatal de Seguimiento Operativo (CESO) del Sistema Nacional de Identificación y Registro de la Movilización de Animales (SINIIGA-SINIDA)
+- **Grupo de Trabajo APHIS-USDA/SENASICA** - Cooperación federal/internacional para control de tuberculosis bovina y certificación de exportación de ganado
 
 La aplicación sirve como **sistema de monitoreo de acuerdos** y **repositorio documental** para documentación crítica de sanidad animal.
 
@@ -22,7 +22,7 @@ La aplicación sirve como **sistema de monitoreo de acuerdos** y **repositorio d
 // Estructura dual de colecciones para acuerdos
 firestore/
 ├── acuerdos-ceso/           # Acuerdos CESO
-├── acuerdos-aphis/          # Acuerdos APHIS-USDA  
+├── acuerdos-aphis/          # Acuerdos APHIS-USDA/SENASICA  
 └── {collection}/{docId}/evidencias/  # Subcolecciones de evidencias
 ```
 
@@ -90,7 +90,7 @@ npm run deploy:rules        # Solo reglas de seguridad
 ```javascript
 // Patrones de número de acuerdo determinan organización origen
 // CESO: patrones de formato específicos
-// APHIS-USDA: convención de numeración diferente
+// APHIS-USDA/SENASICA: convención de numeración diferente
 // Parsear números seriales de fecha Excel a objetos Date JavaScript
 ```
 

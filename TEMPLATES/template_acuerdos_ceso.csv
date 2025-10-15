@@ -1,0 +1,3 @@
+Numero_de_Acuerdo,Descripcion_del_Acuerdo,Responsable_del_Seguimiento,Fecha_de_Reunion,Fecha_de_Cumplimiento,Estado,Tipo_de_Sesion
+CE-YUC-EJEMPLO-001,"Ejemplo de acuerdo CESO para template","MVZ. Responsable Ejemplo","2025-10-09","2025-11-09","Pendiente","Ordinaria"
+CE-YUC-EJEMPLO-002,"Segundo ejemplo de acuerdo CESO","Ing. Otro Responsable","2025-10-09","2025-12-09","Completado","Extraordinaria"

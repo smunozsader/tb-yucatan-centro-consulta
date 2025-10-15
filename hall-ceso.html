@@ -69,9 +69,10 @@
     }
     
     .stat-label {
-      color: #6c757d;
-      font-size: 0.9rem;
+      color: #495057; /* Darker color for better contrast */
+      font-size: 1rem; /* Increased from 0.9rem to meet 16px minimum */
       margin-top: 0.5rem;
+      font-family: 'Noto Sans', sans-serif; /* Official government typeface */
     }
     
     .doors-section {
@@ -81,15 +82,31 @@
     .door-card {
       background: white;
       border-radius: 15px;
-      padding: 2rem;
+      padding: 2.5rem 2rem; /* Increased vertical padding for larger text */
       text-align: center;
       box-shadow: 0 6px 25px rgba(0,0,0,0.1);
       transition: all 0.3s ease;
       border: 2px solid transparent;
-      height: 200px;
+      height: 240px; /* Increased from 200px to accommodate larger typography */
       display: flex;
       flex-direction: column;
       justify-content: center;
+    }
+    
+    /* Responsive card heights */
+    @media (max-width: 768px) {
+      .door-card {
+        height: auto; /* Auto height on mobile for better content flow */
+        min-height: 220px; /* Minimum height to maintain consistency */
+        padding: 2rem 1.5rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .door-card {
+        min-height: 200px;
+        padding: 1.5rem 1rem;
+      }
     }
     
     .door-card:hover {
@@ -106,15 +123,89 @@
     }
     
     .door-title {
-      font-size: 1.3rem;
-      font-weight: bold;
+      font-size: 1.75rem; /* Increased from 1.3rem for better readability */
+      font-weight: 600; /* Semi-bold following government standards */
       color: var(--color-gobierno-principal);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+      font-family: 'Noto Sans', 'Patria', sans-serif; /* Official government typeface */
+      line-height: 1.3; /* Better line spacing */
     }
     
     .door-description {
-      color: #6c757d;
-      font-size: 0.9rem;
+      color: #495057; /* Darker color for better contrast following government standards */
+      font-size: 1.1rem; /* Increased from 0.9rem to meet 16px minimum (17.6px) */
+      font-family: 'Noto Sans', sans-serif; /* Official government typeface */
+      line-height: 1.5; /* Better line spacing for readability */
+      margin-bottom: 0;
+    }
+    
+    /* Responsive typography for mobile devices */
+    @media (max-width: 768px) {
+      .door-title {
+        font-size: 1.5rem; /* Larger on mobile for better touch accessibility */
+      }
+      
+      .door-description {
+        font-size: 1rem; /* Exactly 16px minimum on mobile */
+        line-height: 1.6; /* Increased line spacing for mobile readability */
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .door-title {
+        font-size: 1.4rem; /* Slightly smaller but still readable on small screens */
+      }
+      
+      .door-description {
+        font-size: 1rem; /* Maintain 16px minimum even on smallest screens */
+      }
+    }
+    
+    /* Official GOB.mx Typography Standards */
+    /* Based on https://www.gob.mx/guias/grafica/v3/tipografia.html */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Noto Sans', 'Patria', sans-serif;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--color-gobierno-principal);
+    }
+    
+    h1, .h1 {
+      font-size: 2.5rem; /* Large headings for better hierarchy */
+    }
+    
+    h2, .h2 {
+      font-size: 2rem; /* Section headings */
+    }
+    
+    h3, .h3 {
+      font-size: 1.75rem; /* Subsection headings */
+    }
+    
+    p, .lead, body {
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 1rem; /* Minimum 16px as per government standards */
+      line-height: 1.6; /* Optimal line spacing for readability */
+      color: #495057; /* Better contrast than default gray */
+    }
+    
+    .lead {
+      font-size: 1.25rem; /* Larger lead text */
+      font-weight: 400;
+    }
+    
+    /* Mobile typography adjustments */
+    @media (max-width: 768px) {
+      h1, .h1 { font-size: 2rem; }
+      h2, .h2 { font-size: 1.75rem; }
+      h3, .h3 { font-size: 1.5rem; }
+      .lead { font-size: 1.125rem; }
+    }
+    
+    @media (max-width: 576px) {
+      h1, .h1 { font-size: 1.75rem; }
+      h2, .h2 { font-size: 1.5rem; }
+      h3, .h3 { font-size: 1.25rem; }
     }
     
     .organization-badge {
@@ -136,8 +227,10 @@
     }
     
     .user-greeting {
-      opacity: 0.9;
-      font-size: 1.1rem;
+      color: white !important; /* Force white color for readability */
+      opacity: 1 !important; /* Remove transparency */
+      font-size: 1.2rem; /* Slightly larger for better readability */
+      font-weight: 400; /* Regular weight for clarity */
     }
     
     /* Fix GOB.mx framework navbar styling conflicts */
@@ -198,7 +291,7 @@
             <p class="user-greeting mb-0" id="userGreeting" data-es="Consejo Estatal de Seguimiento Operativo del SINIDA" data-en="State Council for SINIDA Operational Monitoring">
               Consejo Estatal de Seguimiento Operativo del SINIDA
             </p>
-            <p class="small mb-0 mt-2 opacity-75">
+            <p class="mb-0 mt-2" style="color: white; font-size: 1.1rem; font-weight: 400; opacity: 1;">
               <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-geo-alt"></i></span> <span data-es="Sistema Nacional de Identificación y Registro de la Movilización de Animales" data-en="National System for Identification and Registration of Animal Movement">Sistema Nacional de Identificación y Registro de la Movilización de Animales</span>
             </p>
           </div>
@@ -216,7 +309,7 @@
               
               <!-- Logout Button -->
               <div class="d-block">
-                <button type="button" class="btn btn-outline-light btn-sm" onclick="handleLogout()" id="logoutBtn">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="handleLogout()" id="logoutBtn">
                   <span class="bootstrap-icons me-1" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span>
                   <span data-es="Cerrar Sesión" data-en="Logout">Cerrar Sesión</span>
                 </button>
@@ -339,7 +432,7 @@
 
           <!-- Centro de Ayuda -->
           <div class="col-md-4">
-            <a href="#" class="door-card text-decoration-none" onclick="showComingSoon('Centro de Ayuda')">
+            <a href="centro-ayuda.html" class="door-card text-decoration-none">
               <div class="door-icon">
                 <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-question-circle"></i></span>
               </div>
@@ -799,7 +892,7 @@
                         <label class="form-label" data-es="Guardar Como" data-en="Save As">Guardar Como</label>
                         <div class="input-group">
                           <input type="text" class="form-control" id="configurationName" placeholder="Nombre de configuración">
-                          <button class="btn btn-outline-secondary" type="button" onclick="saveConfiguration()">
+                          <button class="btn btn-secondary" type="button" onclick="saveConfiguration()">
                             <span class="bootstrap-icons"><i class="bi bi-save"></i></span>
                           </button>
                         </div>
@@ -853,7 +946,7 @@
         
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-es="Cerrar" data-en="Close">Cerrar</button>
-          <button type="button" class="btn btn-outline-primary" onclick="generateReportPreview()">
+          <button type="button" class="btn btn-primary" onclick="generateReportPreview()">
             <span class="bootstrap-icons me-1"><i class="bi bi-eye"></i></span>
             <span data-es="Generar Vista Previa" data-en="Generate Preview">Generar Vista Previa</span>
           </button>
@@ -1226,7 +1319,7 @@
             <i class="bi bi-exclamation-triangle me-2"></i>
             Error al cargar los acuerdos: ${error.message}<br>
             <small class="text-muted">Verifique la consola para más detalles.</small>
-            <button class="btn btn-sm btn-outline-danger mt-2" onclick="fetchAgreementsByStatus('${status}')">
+            <button class="btn btn-sm btn-danger mt-2" onclick="fetchAgreementsByStatus('${status}')">
               <i class="bi bi-arrow-clockwise me-1"></i>Reintentar
             </button>
           </div>
@@ -1542,7 +1635,7 @@
                 ${uploadDate ? `<br><small class="text-muted">Subido: ${formatDate(uploadDate)}</small>` : ''}
               </div>
               <div>
-                ${fileUrl ? `<a href="${fileUrl}" target="_blank" class="btn btn-sm btn-outline-primary">Ver</a>` : ''}
+                ${fileUrl ? `<a href="${fileUrl}" target="_blank" class="btn btn-sm btn-primary">Ver</a>` : ''}
               </div>
             </div>
           `;

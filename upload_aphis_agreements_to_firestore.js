@@ -26,7 +26,7 @@ async function uploadAgreements() {
     // Use agreement number or description as document ID if available
     let docId = agreement.numero || agreement.Numero || agreement.descripcion || agreement.Descripcion || undefined;
     if (!docId) docId = Math.random().toString(36).substring(2, 12);
-    await db.collection('acuerdos_aphis').doc(docId.toString()).set(agreement);
+    await db.collection('acuerdos-aphis').doc(docId.toString()).set(agreement);
     console.log(`Uploaded APHIS agreement: ${docId}`);
   }
   console.log('All APHIS agreements uploaded!');

@@ -4,8 +4,8 @@ Markdown PDF: Export (pdf)# Copilot Instructions - Centro de Consulta de Acuerdo
 
 This is a Mexican government web application for managing cattle health agreements between two specialized working groups:
 
-- **CESO** - Consejo Estatal de Seguimiento Operativo del SINIDA (State-level cattle traceability via ear tags)
-- **APHIS-USDA Working Group** - Federal/international cooperation for bovine tuberculosis control and cattle export certification
+- **CESO** - Consejo Estatal de Seguimiento Operativo (CESO) del Sistema Nacional de Identificación y Registro de la Movilización de Animales (SINIIGA-SINIDA)
+- **APHIS-USDA/SENASICA Working Group** - Federal/international cooperation for bovine tuberculosis control and cattle export certification
 
 The app serves as an **agreement monitoring system** and **document repository** for critical animal health documentation.
 
@@ -22,7 +22,7 @@ The app serves as an **agreement monitoring system** and **document repository**
 // Dual collection structure for agreements
 firestore/
 ├── acuerdos-ceso/           # CESO agreements
-├── acuerdos-aphis/          # APHIS-USDA agreements  
+├── acuerdos-aphis/          # APHIS-USDA/SENASICA agreements  
 └── {collection}/{docId}/evidencias/  # Evidence subcollections
 ```
 
@@ -151,7 +151,7 @@ npm run deploy:rules        # Security rules only
 ```javascript
 // Agreement number patterns determine source organization
 // CESO: specific format patterns
-// APHIS-USDA: different numbering convention
+// APHIS-USDA/SENASICA: different numbering convention
 // Parse Excel date serial numbers to JavaScript Date objects
 ```
 
