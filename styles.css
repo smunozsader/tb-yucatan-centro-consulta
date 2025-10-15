@@ -66,29 +66,29 @@
   border-collapse: collapse;
   width: 100%;
   margin-bottom: 1rem;
-  color: #212529;
-  background-color: #fff;
-  border: 1px solid #dee2e6;
+  color: var(--color-texto-principal);
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-gobierno-gris);
 }
 
 .table-gobierno th,
 .table-gobierno td {
   padding: 0.75rem;
   vertical-align: top;
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid var(--color-gobierno-gris);
   text-align: left;
 }
 
 .table-gobierno thead th {
   vertical-align: bottom;
-  border-bottom: 2px solid #dee2e6;
+  border-bottom: 2px solid var(--color-gobierno-gris);
   background-color: var(--color-gobierno-principal);
-  color: white;
+  color: #FFFFFF;
   font-weight: 600;
 }
 
 .table-gobierno tbody + tbody {
-  border-top: 2px solid #dee2e6;
+  border-top: 2px solid var(--color-gobierno-gris);
 }
 
 /* Alerts */
@@ -101,27 +101,27 @@
 }
 
 .alert-gobierno-success {
-  color: #155724;
-  background-color: #d4edda;
-  border-color: #c3e6cb;
+  color: var(--color-gobierno-verde);
+  background-color: var(--color-gobierno-dorado-claro);
+  border-color: var(--color-gobierno-dorado);
 }
 
 .alert-gobierno-danger {
-  color: #721c24;
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
+  color: var(--color-gobierno-secundario);
+  background-color: var(--color-gobierno-dorado-claro);
+  border-color: var(--color-gobierno-principal);
 }
 
 .alert-gobierno-warning {
-  color: #856404;
-  background-color: #fff3cd;
-  border-color: #ffeaa7;
+  color: var(--color-gobierno-dorado);
+  background-color: var(--color-gobierno-dorado-claro);
+  border-color: #BC955C;
 }
 
 .alert-gobierno-info {
-  color: #0c5460;
-  background-color: #d1ecf1;
-  border-color: #bee5eb;
+  color: var(--color-gobierno-gris);
+  background-color: #FFFFFF;
+  border-color: var(--color-texto-principal);
 }
 
 /* Modals */
@@ -133,13 +133,13 @@
 
 .modal-gobierno .modal-header {
   background-color: var(--color-gobierno-principal);
-  color: white;
-  border-bottom: 1px solid #dee2e6;
+  color: #FFFFFF;
+  border-bottom: 1px solid var(--color-gobierno-gris);
   border-radius: 0.5rem 0.5rem 0 0;
 }
 
 .modal-gobierno .modal-footer {
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid var(--color-gobierno-gris);
   border-radius: 0 0 0.5rem 0.5rem;
 }
 
