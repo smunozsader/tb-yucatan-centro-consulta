@@ -205,11 +205,11 @@
           <i class="bi bi-download me-2"></i>Descargar Manuales
         </h3>
         <p class="mb-3">Descarga los manuales de usuario en formato PDF para consulta offline</p>
-        <a href="#" class="download-btn" onclick="downloadManual('short')">
-          <i class="bi bi-file-pdf me-2"></i>Manual Corto (PDF)
+        <a href="https://firebasestorage.googleapis.com/v0/b/ceso-aphis-yuc.firebasestorage.app/o/manuals%2FMANUAL_USUARIO_CORTO.pdf?alt=media&token=d68b972b-5b48-4b74-9b4a-4dbeed1c59f7" class="download-btn" target="_blank" rel="noopener">
+          <i class="bi bi-file-earmark-pdf me-2"></i>Manual Corto (.PDF)
         </a>
-        <a href="#" class="download-btn" onclick="downloadManual('complete')">
-          <i class="bi bi-file-pdf me-2"></i>Manual Completo (PDF)
+        <a href="https://firebasestorage.googleapis.com/v0/b/ceso-aphis-yuc.firebasestorage.app/o/manuals%2FMANUAL_USUARIO_COMPLETO.pdf?alt=media&token=d03aabcf-e5fe-4dfa-97b0-b0814ec7fdc9" class="download-btn" target="_blank" rel="noopener">
+          <i class="bi bi-file-earmark-pdf me-2"></i>Manual Completo (.PDF)
         </a>
       </div>
 
@@ -442,6 +442,36 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <script>
+    // Ensure marked generates heading IDs for anchors
+    // Custom slugger to encode accents and match TOC hrefs
+    function customSlugger(text) {
+  // Remove accents/diacritics, lowercase, replace spaces with hyphens, remove special chars
+  let slug = text.trim().toLowerCase();
+  slug = slug.normalize('NFD').replace(/\p{Diacritic}/gu, ''); // Remove accents
+  slug = slug.replace(/\s+/g, '-');
+  slug = slug.replace(/[!"#$%&'()*+,./:;<=>?@[\\]^_`{|}~]/g, '');
+  // Do not encodeURIComponent, just return clean slug
+  return slug;
+    }
+    marked.setOptions({
+      headerIds: true,
+      mangle: false,
+      slugger: { slug: customSlugger }
+    });
+
+    // Helper: scroll to anchor if present in hash
+    function scrollToHashAnchor() {
+      if (window.location.hash) {
+        // Remove the #
+        const id = decodeURIComponent(window.location.hash.substring(1));
+        // Try to find the element (h1/h2/h3/etc)
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+
     // Load and render markdown content
     async function loadMarkdownContent() {
       try {
@@ -457,6 +487,24 @@
         const completeHtml = marked.parse(completeText);
         document.getElementById('complete-manual-content').innerHTML = completeHtml;
 
+        // After rendering, scroll to anchor if hash is present
+        scrollToHashAnchor();
+
+        // Add click handlers to TOC links (in dynamically loaded content)
+        document.querySelectorAll('.manual-content .toc a[href^="#"]').forEach(function(link) {
+          link.addEventListener('click', function(e) {
+            const hash = this.getAttribute('href');
+            const id = decodeURIComponent(hash.substring(1));
+            // Wait for DOM update (in case of tab switch)
+            setTimeout(function() {
+              const el = document.getElementById(id);
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }, 100);
+          });
+        });
+
       } catch (error) {
         console.error('Error loading manuals:', error);
         document.getElementById('short-manual-content').innerHTML = 
@@ -468,11 +516,8 @@
 
     // Download manual function
     function downloadManual(type) {
-      const filename = type === 'short' ? 'MANUAL_USUARIO_CORTO.md' : 'MANUAL_USUARIO_COMPLETO.md';
-      const link = document.createElement('a');
-      link.href = './' + filename;
-      link.download = filename.replace('.md', '.pdf'); // In a real implementation, you'd generate PDFs
-      link.click();
+  // Deprecated: now using direct PDF links in the download section
+  alert('Por favor, use los nuevos enlaces para descargar los manuales en PDF.');
     }
 
     // Load content when page loads
@@ -485,7 +530,15 @@
       // Ensure complete manual is loaded when tab is shown
       if (document.getElementById('complete-manual-content').innerHTML.includes('spinner-border')) {
         loadMarkdownContent();
+      } else {
+        // If already loaded, scroll to hash if present
+        scrollToHashAnchor();
       }
+    });
+
+    // Also handle hashchange (user pastes a hash or clicks browser back/forward)
+    window.addEventListener('hashchange', function() {
+      scrollToHashAnchor();
     });
   </script>
 </body>

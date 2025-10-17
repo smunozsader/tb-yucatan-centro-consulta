@@ -6,7 +6,7 @@
 El **Centro de Consulta de Acuerdos Sanitarios** es una plataforma web gubernamental oficial **propiedad del Gobierno Federal de México**, desarrollada por la **Representación Estatal en Yucatán de la Secretaría de Agricultura y Desarrollo Rural (SADER)**, que permite gestionar y consultar acuerdos sanitarios pecuarios entre dos grupos de trabajo especializados en Yucatán:
 
 - **CESO** - Consejo Estatal de Seguimiento Operativo del SINIDA
-- **Grupo de Trabajo para el Seguimiento a las Recomendaciones Críticas Emitidas por el APHIS - USDA en Materia de Tuberculosis Bovina (*Mycobacterium bovis*) y al Reporte de SENASICA con Observaciones en el Estado de Yucatán**
+- **Grupo de Trabajo para el Seguimiento a las Recomendaciones Críticas Emitidas por el APHIS - USDA en Materia de Tuberculosis Bovina _Mycobacterium bovis_ y al Reporte de SENASICA con Observaciones en el Estado de Yucatán**
 
 ### 👥 Grupos de Trabajo
 

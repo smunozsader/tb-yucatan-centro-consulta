@@ -29,7 +29,7 @@ El **Centro de Consulta de Acuerdos Sanitarios** es una plataforma web gubername
 Facilitar la consulta, seguimiento y gestión de acuerdos sanitarios entre dos grupos de trabajo especializados que colaboran en la protección de la salud animal y la certificación de ganado en Yucatán:
 
 - **CESO** (Consejo Estatal de Seguimiento Operativo del SINIDA)
-- **Grupo de Trabajo para el Seguimiento a las Recomendaciones Críticas Emitidas por el APHIS - USDA en Materia de Tuberculosis Bovina (*Mycobacterium bovis*) y al Reporte de SENASICA con Observaciones en el Estado de Yucatán**
+- **Grupo de Trabajo para el Seguimiento a las Recomendaciones Críticas Emitidas por el APHIS - USDA en Materia de Tuberculosis Bovina _Mycobacterium bovis_ y al Reporte de SENASICA con Observaciones en el Estado de Yucatán**
 
 ### Importancia Estratégica
 

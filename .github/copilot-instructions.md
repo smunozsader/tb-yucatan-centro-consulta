@@ -22,7 +22,7 @@ The app serves as an **agreement monitoring system** and **document repository**
 // Dual collection structure for agreements
 firestore/
 ├── acuerdos-ceso/           # CESO agreements
-├── acuerdos-aphis/          # APHIS-USDA/SENASICA agreements  
+├── acuerdos-aphis/          # APHIS-USDA/SENASICA agreements
 └── {collection}/{docId}/evidencias/  # Evidence subcollections
 ```
 
@@ -59,6 +59,26 @@ npm run deploy:rules        # Security rules only
 - Use environment variables for paths in `.env` files
 - Rotate keys every 90 days per government security standards
 
+### Excel Data Import Pattern
+```javascript
+// Agreement number patterns determine source organization
+// CESO: CE-YUC-DDMMYY-XXX format
+// APHIS: XX-X-DDMMYY format
+// Parse Excel date serial numbers to JavaScript Date objects
+// Status normalization: Cumplido → Completado, Vencido → Vencidos
+```
+
+### Firebase Emulator Testing
+```javascript
+// Environment variables for emulator connections
+process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
+process.env.FIREBASE_AUTH_EMULATOR_HOST = '127.0.0.1:9099';
+process.env.STORAGE_EMULATOR_HOST = '127.0.0.1:9199';
+
+// Test script: tests/emulator-e2e.js
+// Validates Firestore rules, storage access, authentication flows
+```
+
 ## Project-Specific Conventions
 
 ### Official GOB.mx Framework Requirements
@@ -72,7 +92,7 @@ npm run deploy:rules        # Security rules only
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Page Title - GOB.mx</title>
-    
+
     <!-- REQUIRED: Official GOB.mx Framework -->
     <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
     <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
@@ -84,7 +104,7 @@ npm run deploy:rules        # Security rules only
         <!-- Your content here -->
       </div>
     </main>
-    
+
     <!-- REQUIRED: Framework JS (includes official header/footer) -->
     <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
   </body>
@@ -135,7 +155,7 @@ npm run deploy:rules        # Security rules only
 ### File Structure Patterns
 - `src-development/` - React source code being reconstructed
 - `static/` - Compiled production assets with hash names
-- `BASES DATOS/` - Excel databases (usuarios_aphis-usda_new_web_app.xlsx, usuarios_ceso_new_web_app.xlsx)
+- `BASES DATOS/` - Excel databases (base datos CESO.xlsx, base datos APHIS USDA.xlsx)
 - Bilingual support throughout (Spanish primary, English secondary)
 
 ### Role-Based Access Control
@@ -143,28 +163,63 @@ npm run deploy:rules        # Security rules only
 // USER_ROLES: PUBLIC, RESPONSIBLE, ADMINISTRATOR
 // Permissions: view_agreements, upload_evidence, mark_completed, manage_users
 // Auth context in src-development/context/AuthContext.jsx
+const ROLE_PERMISSIONS = {
+  PUBLIC: ['view_agreements', 'search_agreements', 'view_evidence', 'download_evidence'],
+  RESPONSIBLE: ['view_agreements', 'search_agreements', 'view_evidence', 'download_evidence', 'upload_evidence', 'mark_completed'],
+  ADMINISTRATOR: ['view_agreements', 'search_agreements', 'view_evidence', 'download_evidence', 'upload_evidence', 'mark_completed', 'manage_users', 'send_notifications', 'access_messages']
+}
+```
+
+### Vite Build Configuration
+```javascript
+// vite.config.js - Key settings for government app
+export default defineConfig({
+  build: {
+    outDir: 'dist',
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage']
+        }
+      }
+    }
+  }
+})
 ```
 
 ## Integration Points & Dependencies
 
 ### Excel Data Import Pattern
 ```javascript
-// Agreement number patterns determine source organization
-// CESO: specific format patterns
-// APHIS-USDA/SENASICA: different numbering convention
-// Parse Excel date serial numbers to JavaScript Date objects
+// batch-upload-agreements.js - Server-side data migration
+// Uses csv-parse and xlsx libraries
+// Handles Excel date serial numbers: Math.floor(dateStr - 25569) * 86400 * 1000
+// Validates agreement number formats by source organization
 ```
 
 ### Evidence Management
 - Firebase Storage paths: `acuerdos-{source}/{docId}/evidence-files/`
 - Firestore metadata: `{collection}/{docId}/evidencias/{evidId}`
 - Supported formats: PDF, JPG, PNG, Word documents
+- **CRITICAL**: Evidence modal triggers ONLY during status change from "Pendiente"/"En Progreso" to "Completado"
 - Public viewing, authenticated upload workflow
 
-### Firebase Emulator Testing
+### Firebase Security Rules
 ```javascript
-// tests/emulator-e2e.js - End-to-end testing with local emulators
-// Validates Firestore rules, storage access, authentication flows
+// firestore.rules - Public read, authenticated write
+match /{document=**} {
+  allow read: if true;  // Public agreement access
+  allow create, update: if request.auth != null;
+}
+
+// storage.rules - File upload restrictions
+match /{coll}/{docId}/{fileName} {
+  allow write: if request.auth != null
+    && request.resource.size < 20 * 1024 * 1024;  // 20MB limit
+}
 ```
 
 ## Specialized Domain Knowledge
@@ -181,6 +236,20 @@ npm run deploy:rules        # Security rules only
 - **Seguimiento**: Follow-up/monitoring of agreement status
 - **Semovientes**: Live cattle (legal term for livestock in transit)
 
+### Agreement Number Patterns
+```javascript
+// Auto-detection of source organization
+detectSource(agreementNumber) {
+  if (agreementNumber.match(/^CE-YUC-\d{6}-\d{3}$/)) {
+    return 'CESO'
+  }
+  if (agreementNumber.match(/^\d{1,2}-[A-Z]-\d{6}$/)) {
+    return 'APHIS-USDA'
+  }
+  return 'unknown'
+}
+```
+
 ## Common Patterns to Follow
 
 1. **Bilingual Support**: Always provide Spanish and English text options
@@ -188,5 +257,8 @@ npm run deploy:rules        # Security rules only
 3. **Government Branding**: Use official colors, fonts (Patria/Noto Sans), and layout patterns
 4. **Security First**: Never expose authentication tokens, always validate user permissions
 5. **Mobile Responsive**: Government accessibility requirements mandate mobile-first design
+6. **Date Handling**: Parse Excel serial numbers, handle timezone considerations for Yucatán
+7. **Error Handling**: Use Spanish error messages for government users
+8. **File Validation**: Check file types and sizes before upload (20MB limit)
 
 When working with this codebase, prioritize understanding the dual-organization structure (CESO vs APHIS) and the evidence management workflow, as these are the core business logic patterns that drive most features.

@@ -1,0 +1,64 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ----------------------------------------------------
+    // Reglas de lectura
+    // ----------------------------------------------------
+
+    // Permitir acceso de lectura público a TODOS los archivos.
+    // Esto ya cubre /evidencia-ceso y /evidencia-aphis para lecturas.
+    match /{allPaths=**} {
+      allow read: if true;
+    }
+
+    // ----------------------------------------------------
+    // Reglas de escritura (requieren autenticación)
+    // ----------------------------------------------------
+
+    // Reglas específicas para la nueva carpeta /evidencia-ceso/{fileName}
+    // Asumiendo un límite de 20MB para archivos de evidencia.
+    match /evidencia-ceso/{fileName} {
+      allow write: if request.auth != null
+        && request.resource.size < 20 * 1024 * 1024;
+    }
+
+    // Reglas específicas para la nueva carpeta /evidencia-aphis/{fileName}
+    // Asumiendo un límite de 20MB para archivos de evidencia.
+    match /evidencia-aphis/{fileName} {
+      allow write: if request.auth != null
+        && request.resource.size < 20 * 1024 * 1024;
+    }
+
+    // Reglas existentes para rutas de evidencias generales: <collection>/<docId>/{fileName}
+    // Un archivo como /evidencia-ceso/ID_documento/mi_imagen.jpg también podría coincidir aquí,
+    // dependiendo de cómo se defina {coll} en tu implementación.
+    // Si necesitas reglas diferentes para este patrón dentro de /evidencia-ceso, lo podemos ajustar.
+    match /{coll}/{docId}/{fileName} {
+      allow write: if request.auth != null
+        && request.resource.size < 20 * 1024 * 1024;
+    }
+
+    // Reglas existentes para archivos de repositorio - CESO específico
+    match /repositorio-ceso/{category}/{fileName} {
+      allow write: if request.auth != null
+        && request.resource.size < 50 * 1024 * 1024; // Límite de 50MB para repositorios
+    }
+
+    // Reglas existentes para archivos de repositorio - APHIS específico
+    match /repositorio-aphis/{category}/{fileName} {
+      allow write: if request.auth != null
+        && request.resource.size < 50 * 1024 * 1024; // Límite de 50MB para repositorios
+    }
+
+    // ----------------------------------------------------
+    // Denegación por defecto (si no coincide ninguna de las reglas de 'allow write' anteriores)
+    // ----------------------------------------------------
+
+    // Denegar cualquier otro intento de escritura de cliente por defecto.
+    // Esta regla actúa como un 'catch-all' para cualquier ruta de escritura no explícitamente permitida.
+    match /{allPaths=**} {
+      allow write: if false;
+    }
+  }
+}

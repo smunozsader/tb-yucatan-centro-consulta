@@ -294,10 +294,11 @@
             </div>
             <h1 class="h2 mb-2" data-es="Centro de Control APHIS-USDA/SENASICA" data-en="APHIS-USDA/SENASICA Control Center">Centro de Control APHIS-USDA/SENASICA</h1>
             <p class="user-greeting mb-0" id="userGreeting">
-              Grupo de Trabajo de Seguimiento a Recomendaciones Críticas
+              <span data-es="Grupo de Trabajo para el Seguimiento a las Recomendaciones Críticas Emitidas por el APHIS - USDA en Materia de Tuberculosis Bovina "><strong>Grupo de Trabajo para el Seguimiento a las Recomendaciones Críticas Emitidas por el APHIS - USDA en Materia de Tuberculosis Bovina <em>(Mycobacterium bovis)</em></strong></span>
+              <span data-en="Working Group for the Follow-up of Critical Recommendations Issued by APHIS - USDA on Bovine Tuberculosis "><strong>Working Group for the Follow-up of Critical Recommendations Issued by APHIS - USDA on Bovine Tuberculosis <em>(Mycobacterium bovis)</em></strong></span>
             </p>
             <p class="small mb-0 mt-2 opacity-75">
-              <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-globe-americas"></i></span> <span data-es="Servicio de Inspección de Sanidad Animal y Vegetal - Colaboración SENASICA" data-en="Animal and Plant Health Inspection Service - SENASICA Collaboration">Servicio de Inspección de Sanidad Animal y Vegetal - Colaboración SENASICA</span>
+              <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-globe-americas"></i></span> <span data-es="Colaboración Binacional SENASICA - APHIS-USDA" data-en="Binational Collaboration SENASICA - APHIS-USDA">Colaboración Binacional SENASICA - APHIS-USDA</span>
             </p>
           </div>
           <div class="col-md-4 text-end">
@@ -456,12 +457,12 @@
   <!-- Modal para mostrar acuerdos filtrados -->
   <div class="modal fade" id="agreementsModal" tabindex="-1" aria-labelledby="agreementsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-      <div class="modal-content">
+  <div class="modal-content" style="font-family: 'Noto Sans', sans-serif; font-size: 1.125rem; line-height: 1.428; color: #545454;">
         <div class="modal-header bg-gobierno-dorado text-white">
-          <h5 class="modal-title" id="agreementsModalLabel">
+          <h4 class="modal-title" id="agreementsModalLabel" style="font-family: 'Patria', serif;">
             <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-list-ul me-2"></i></span>
             <span id="modalTitle" data-es="Acuerdos" data-en="Agreements">Acuerdos</span>
-          </h5>
+          </h4>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -511,10 +512,10 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header bg-gobierno-principal text-white">
-          <h5 class="modal-title" id="agreementDetailModalLabel">
+          <h4 class="modal-title" id="agreementDetailModalLabel" style="font-family: 'Patria', serif;">
             <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-file-text me-2"></i></span>
             <span data-es="Detalle del Acuerdo" data-en="Agreement Detail">Detalle del Acuerdo</span>
-          </h5>
+          </h4>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -582,10 +583,10 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-gobierno-principal text-white">
-          <h5 class="modal-title" id="evidenceModalLabel">
+          <h4 class="modal-title" id="evidenceModalLabel" style="font-family: 'Patria', serif;">
             <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-file-earmark-text me-2"></i></span>
             <span data-es="Evidencias" data-en="Evidence">Evidencias</span>
-          </h5>
+          </h4>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -770,10 +771,10 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header bg-gobierno-principal text-white">
-          <h5 class="modal-title" id="reportsModalLabel">
+          <h4 class="modal-title" id="reportsModalLabel" style="font-family: 'Patria', serif;">
             <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-graph-up me-2"></i></span>
             <span data-es="Generador de Reportes APHIS" data-en="APHIS Report Generator">Generador de Reportes APHIS</span>
-          </h5>
+          </h4>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -972,6 +973,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
   <script src="__/firebase/init.js"></script>
   <script src="auth-system.js"></script>
   
@@ -981,6 +983,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   
   <script>
+    // Global variable to store original agreements data for filtering
+    let originalAgreements = [];
+    
     // Prevenir interferencia de navegación hash legacy
     window.addEventListener('load', function() {
       // Si hay hash #landing-aphis, limpiarlo y mantener la página limpia
@@ -1006,12 +1011,20 @@
       const userGreeting = document.getElementById('userGreeting');
       if (userGreeting) {
         // Try multiple possible name fields
-        const userName = currentUser.nombre || currentUser.name || currentUser.email || 'User';
+        const userName = currentUser.nombre || currentUser.name || currentUser.email || 'Usuario';
         userGreeting.innerHTML = `
           <i class="bi bi-person-check"></i> 
-          Welcome, <strong>${userName}</strong><br>
-          <small>Animal and Plant Health Inspection Service Working Group</small>
+          <span data-es="Bienvenido, " data-en="Welcome, "><strong>Bienvenido,</strong></span> <strong>${userName}</strong><br>
+          <span class="group-title" data-es="Grupo de Trabajo para el Seguimiento a las Recomendaciones Críticas Emitidas por el APHIS - USDA en Materia de Tuberculosis Bovina (Mycobacterium bovis) y al Reporte de SENASICA con Observaciones en el Estado de Yucatán" data-en="Working Group for the Follow-up of Critical Recommendations Issued by APHIS - USDA on Bovine Tuberculosis (Mycobacterium bovis) and the SENASICA Report with Observations in the State of Yucatán">
+            Grupo de Trabajo para el Seguimiento a las Recomendaciones Críticas Emitidas por el APHIS - USDA en Materia de Tuberculosis Bovina (Mycobacterium bovis) y al Reporte de SENASICA con Observaciones en el Estado de Yucatán
+          </span>
         `;
+        setLanguage(getCurrentLanguage());
+        // Reemplazar (Mycobacterium bovis) por <em>Mycobacterium bovis</em> en el texto visible
+        const groupTitleSpan = userGreeting.querySelector('.group-title');
+        if (groupTitleSpan) {
+          groupTitleSpan.innerHTML = groupTitleSpan.textContent.replace(/\(Mycobacterium bovis\)/g, '<em>(Mycobacterium bovis)</em>');
+        }
       }
       
       // Cargar estadísticas
@@ -1208,6 +1221,22 @@
       const currentLang = getCurrentLanguage();
       modalTitle.textContent = titles[status] ? titles[status][currentLang] : titles['all'][currentLang];
       
+      // Populate responsible filter dropdown with APHIS users
+      const filterResponsible = document.getElementById('filterResponsible');
+      if (filterResponsible && window.gobmxAuth && window.gobmxAuth.aphisUsers) {
+        filterResponsible.innerHTML = '<option value="">Todos los responsables</option>';
+        window.gobmxAuth.aphisUsers.forEach(user => {
+          const option = document.createElement('option');
+          option.value = user.nombre || user.correo || user.email;
+          option.textContent = user.nombre || user.correo || user.email;
+          filterResponsible.appendChild(option);
+        });
+      }
+      
+      // Add event listeners for real-time filtering
+      document.getElementById('searchAgreements').addEventListener('input', applyFilters);
+      document.getElementById('filterResponsible').addEventListener('change', applyFilters);
+      
       // Mostrar modal y loading
       modal.show();
       loadingIndicator.style.display = 'block';
@@ -1229,8 +1258,9 @@
         
         // Use simpler queries to avoid index requirements
         if (status !== 'all') {
-          // First try with status filter only (without orderBy to avoid composite index requirement)
-          query = collection.where('status', '==', status).limit(50);
+          // For specific statuses, get all documents and filter client-side
+          // This matches the logic used in loadStatistics()
+          query = collection.limit(100); // Get more documents to filter
         } else {
           // For 'all', just get recent documents
           query = collection.limit(50);
@@ -1240,47 +1270,83 @@
         const snapshot = await query.get();
         console.log('📦 Retrieved documents:', snapshot.size);
         
-        displayAgreements(snapshot, status);
+        // Filter documents based on status matching loadStatistics() logic
+        const filteredDocs = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const docStatus = (data.status || data.estatus || data.Estado || '').toLowerCase();
+          
+          let matchesStatus = false;
+          
+          if (status === 'all') {
+            matchesStatus = true;
+          } else if (status === 'Vencidos') {
+            const dueDate = data.complianceDate || data.fecha_cumplimiento || data['Fecha de Cumplimiento'];
+            let isOverdue = false;
+            if (dueDate) {
+              // Handle Firestore timestamps properly
+              if (dueDate.toDate) {
+                isOverdue = dueDate.toDate() < new Date();
+              } else if (typeof dueDate === 'number') {
+                // Handle Excel serial numbers
+                isOverdue = new Date((dueDate - 25569) * 86400 * 1000) < new Date();
+              } else {
+                // Handle regular date strings
+                const date = new Date(dueDate);
+                isOverdue = !isNaN(date) && date < new Date();
+              }
+            }
+            // Only show as overdue if not completed AND (has vencido status OR is past due)
+            matchesStatus = !docStatus.includes('completado') && !docStatus.includes('cumplido') && (docStatus.includes('vencido') || isOverdue);
+          } else if (status === 'Pendiente') {
+            const dueDate = data.complianceDate || data.fecha_cumplimiento || data['Fecha de Cumplimiento'];
+            let isOverdue = false;
+            if (dueDate) {
+              // Handle Firestore timestamps properly
+              if (dueDate.toDate) {
+                isOverdue = dueDate.toDate() < new Date();
+              } else if (typeof dueDate === 'number') {
+                // Handle Excel serial numbers
+                isOverdue = new Date((dueDate - 25569) * 86400 * 1000) < new Date();
+              } else {
+                // Handle regular date strings
+                const date = new Date(dueDate);
+                isOverdue = !isNaN(date) && date < new Date();
+              }
+            }
+            matchesStatus = !docStatus.includes('completado') && !docStatus.includes('cumplido') && !docStatus.includes('vencido') && !docStatus.includes('progreso') && !isOverdue;
+          } else if (status === 'En Progreso') {
+            matchesStatus = docStatus.includes('progreso');
+          } else if (status === 'Completado') {
+            matchesStatus = docStatus.includes('completado') || docStatus.includes('cumplido');
+          }
+          
+          if (matchesStatus) {
+            filteredDocs.push(doc);
+          }
+        });
+        
+        console.log('📋 Filtered documents for status', status + ':', filteredDocs.length);
+        
+        // Store original agreements for filtering
+        originalAgreements = [];
+        filteredDocs.forEach(doc => {
+          originalAgreements.push({ id: doc.id, ...doc.data() });
+        });
+        
+        displayAgreements({ 
+          empty: filteredDocs.length === 0,
+          size: filteredDocs.length,
+          forEach: (callback) => {
+            filteredDocs.forEach(doc => {
+              callback({ id: doc.id, data: () => doc.data() });
+            });
+          }
+        }, status);
         
       } catch (error) {
         console.error('❌ Error fetching agreements:', error);
         console.error('🔍 Error details:', error.code, error.message);
-        
-        // Try fallback query without filtering
-        try {
-          console.log('🔄 Attempting fallback query...');
-          const db = firebase.firestore();
-          const collection = db.collection('acuerdos-aphis');
-          const fallbackSnapshot = await collection.limit(50).get();
-          console.log('📦 Fallback retrieved documents:', fallbackSnapshot.size);
-          
-          if (fallbackSnapshot.size > 0) {
-            // Filter client-side if needed
-            const filteredDocs = [];
-            fallbackSnapshot.forEach(doc => {
-              const data = doc.data();
-              if (status === 'all' || data.status === status || data.Estado === status) {
-                filteredDocs.push({ id: doc.id, ...data });
-              }
-            });
-            
-            // Create a fake snapshot object for displayAgreements
-            const fakeSnapshot = {
-              empty: filteredDocs.length === 0,
-              size: filteredDocs.length,
-              forEach: (callback) => {
-                filteredDocs.forEach(doc => {
-                  callback({ id: doc.id, data: () => doc });
-                });
-              }
-            };
-            
-            displayAgreements(fakeSnapshot, status);
-            return;
-          }
-        } catch (fallbackError) {
-          console.error('❌ Fallback query also failed:', fallbackError);
-        }
         
         document.getElementById('loadingIndicator').style.display = 'none';
         document.getElementById('agreementsList').innerHTML = `
@@ -1305,7 +1371,7 @@
       
       loadingIndicator.style.display = 'none';
       
-      if (snapshot.empty) {
+      if (originalAgreements.length === 0) {
         agreementsList.innerHTML = `
           <div class="text-center py-4">
             <i class="bi bi-inbox display-1 text-muted"></i>
@@ -1317,9 +1383,26 @@
         return;
       }
       
-      const agreements = [];
-      snapshot.forEach(doc => {
-        agreements.push({ id: doc.id, ...doc.data() });
+      const agreements = originalAgreements;
+      
+      // Apply filters
+      const searchTerm = document.getElementById('searchAgreements').value.toLowerCase();
+      const responsibleFilter = document.getElementById('filterResponsible').value;
+      
+      let filteredAgreements = agreements.filter(agreement => {
+        // Search filter (number or description)
+        const agreementNumber = (agreement.agreementNumber || agreement.numero || agreement.Numero || agreement['Numero de Acuerdo'] || agreement['Número de Acuerdo'] || agreement.id || '').toLowerCase();
+        const description = (agreement.description || agreement.descripcion || agreement.Descripcion || agreement['Descripcion del Acuerdo'] || agreement['Descripción del Acuerdo'] || agreement.tema || agreement.Tema || '').toLowerCase();
+        
+        const matchesSearch = !searchTerm || 
+          agreementNumber.includes(searchTerm) || 
+          description.includes(searchTerm);
+        
+        // Responsible filter
+        const responsible = agreement.responsible || agreement.responsable || agreement.Responsable || agreement['Responsable del Seguimiento'] || agreement['Responsable'] || '';
+        const matchesResponsible = !responsibleFilter || responsible === responsibleFilter || responsible.includes(responsibleFilter);
+        
+        return matchesSearch && matchesResponsible;
       });
       
       // Sort agreements by date (oldest first) for better priority management
@@ -1364,7 +1447,7 @@
       // Generar HTML para la lista de acuerdos
       let html = '<div class="list-group">';
       
-      agreements.forEach(agreement => {
+      filteredAgreements.forEach(agreement => {
         console.log('🔍 Processing agreement:', agreement);
         
         // Enhanced field mapping with more alternatives
@@ -1438,10 +1521,50 @@
       html += '</div>';
       agreementsList.innerHTML = html;
       
-      const count = agreements.length;
+      const count = filteredAgreements.length;
       agreementsCount.textContent = currentLang === 'es' ? 
         `${count} acuerdo${count !== 1 ? 's' : ''} encontrado${count !== 1 ? 's' : ''}` :
         `${count} agreement${count !== 1 ? 's' : ''} found`;
+      
+      // Add event listeners for dynamic filtering
+      const searchInput = document.getElementById('searchAgreements');
+      const responsibleSelect = document.getElementById('filterResponsible');
+      
+      if (searchInput && !searchInput.hasEventListener) {
+        searchInput.addEventListener('input', applyFilters);
+        searchInput.hasEventListener = true;
+      }
+      
+      if (responsibleSelect && !responsibleSelect.hasEventListener) {
+        responsibleSelect.addEventListener('change', applyFilters);
+        responsibleSelect.hasEventListener = true;
+      }
+    }
+
+    // Función para aplicar filtros en tiempo real
+    function applyFilters() {
+      if (originalAgreements.length === 0) return;
+      
+      // Create a mock snapshot from originalAgreements for displayAgreements
+      const mockSnapshot = {
+        empty: false,
+        size: originalAgreements.length,
+        forEach: (callback) => {
+          originalAgreements.forEach(agreement => {
+            callback({ id: agreement.id, data: () => agreement });
+          });
+        }
+      };
+      
+      // Get current status from modal title or default to 'all'
+      const modalTitle = document.getElementById('modalTitle').textContent;
+      let currentStatus = 'all';
+      if (modalTitle.includes('Pendientes')) currentStatus = 'Pendiente';
+      else if (modalTitle.includes('Vencidos')) currentStatus = 'Vencidos';
+      else if (modalTitle.includes('Progreso')) currentStatus = 'En Progreso';
+      else if (modalTitle.includes('Completados')) currentStatus = 'Completado';
+      
+      displayAgreements(mockSnapshot, currentStatus);
     }
 
     // Función para obtener el badge del estado
@@ -1863,7 +1986,7 @@
       const updateBtn = document.getElementById('updateStatusBtn');
       
       // Validation
-      if (!firebase.auth().currentUser) {
+      if (!window.gobmxAuth || !window.gobmxAuth.getCurrentUser()) {
         alert('Debe estar autenticado para actualizar el estado del acuerdo');
         return;
       }
@@ -1903,16 +2026,24 @@
       try {
         const db = firebase.firestore();
         const storage = firebase.storage();
-        const user = firebase.auth().currentUser;
-        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+        const user = window.gobmxAuth.getCurrentUser();
+        console.log('🔍 USER OBJECT DEBUG:', user);
+        console.log('🔍 USER PROPERTIES:', {
+          correo: user.correo,
+          nombre: user.nombre,
+          email: user.email,
+          uid: user.uid,
+          sessionId: user.sessionId
+        });
+        const timestamp = new Date().toISOString();
         
-        // Upload evidence file first
+        // Upload evidence file to evidencia-aphis folder
         const fileName = `STATUS_CHANGE_${Date.now()}_${evidenceFile.name}`;
-        const storageRef = storage.ref(`acuerdos-${collection.split('-')[1]}/${agreementId}/status-change-evidence/${fileName}`);
+        const storageRef = storage.ref(`evidencia-aphis/${agreementId}/status-changes/${fileName}`);
         const snapshot = await storageRef.put(evidenceFile);
         const evidenceUrl = await snapshot.ref.getDownloadURL();
         
-        // Create audit trail entry
+        // Create audit trail entry (without serverTimestamp since it can't be used in arrayUnion)
         const auditEntry = {
           agreementId: agreementId,
           collection: collection,
@@ -1922,9 +2053,9 @@
           evidenceUrl: evidenceUrl,
           evidenceDescription: comment,
           digitalSignature: signature,
-          timestamp: timestamp,
-          performedBy: user.email || user.uid,
-          performedByUID: user.uid,
+          timestamp: new Date().toISOString(), // Use regular timestamp for arrayUnion
+          performedBy: (user && (user.correo || user.nombre)) || 'Sistema',
+          performedByUID: (user && user.sessionId) || 'N/A',
           ipAddress: 'CLIENT_IP', // In production, capture actual IP
           userAgent: navigator.userAgent,
           complianceChecks: {
@@ -1934,17 +2065,20 @@
           }
         };
         
-        // Update agreement status
-        await db.collection(collection).doc(agreementId).update({
+        // Update agreement status with guaranteed non-undefined values
+        const updateData = {
           status: newStatus,
           Estado: newStatus, // Also update Estado field for compatibility
-          lastStatusChangeBy: user.email || user.uid,
+          lastStatusChangeBy: (user && (user.correo || user.nombre)) || 'Sistema',
           lastStatusChangeAt: timestamp,
           statusChangeEvidence: evidenceUrl,
           statusChangeComment: comment,
           digitalSignature: signature,
           auditTrail: firebase.firestore.FieldValue.arrayUnion(auditEntry)
-        });
+        };
+        
+        console.log('🔍 UPDATE DATA DEBUG:', updateData);
+        await db.collection(collection).doc(agreementId).update(updateData);
         
         // Save evidence to evidencias subcollection with special status change flag
         await db.collection(collection).doc(agreementId).collection('evidencias').add({
@@ -1952,7 +2086,7 @@
           fileUrl: evidenceUrl,
           comment: `[CAMBIO DE ESTADO] ${currentStatus} → ${newStatus}: ${comment}`,
           createdAt: timestamp,
-          uploadedBy: user.email || user.uid,
+          uploadedBy: (user && (user.correo || user.nombre)) || 'Sistema',
           isStatusChangeEvidence: true,
           statusChangeData: auditEntry
         });
@@ -2017,7 +2151,7 @@
         return;
       }
       
-      if (!firebase.auth().currentUser) {
+      if (!window.gobmxAuth || !window.gobmxAuth.getCurrentUser()) {
         alert('Debe estar autenticado para subir evidencias');
         return;
       }
@@ -2028,7 +2162,7 @@
       try {
         const db = firebase.firestore();
         const storage = firebase.storage();
-        const user = firebase.auth().currentUser;
+        const user = window.gobmxAuth.getCurrentUser();
         
         for (let file of files) {
           // Upload file to storage

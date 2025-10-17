@@ -4,11 +4,6 @@ import react from '@vitejs/plugin-react'
 // Consolidated Vite config for this workspace
 export default defineConfig({
   plugins: [react()],
-  esbuild: {
-    loader: {
-      '.js': 'jsx'
-    }
-  },
   optimizeDeps: {
     esbuildOptions: {
       loader: {

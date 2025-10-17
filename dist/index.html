@@ -1,58 +1,645 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Centro de Consulta de Acuerdos Sanitarios - Desarrollo</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Centro de Consulta de Acuerdos Sanitarios - Gobierno de México (Yucatán)</title>
+
+  <!-- Favicon oficial -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
   
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+  <!-- Framework gob.mx v      <hr class="my-2">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="mb-0 small">© 2025 Gobierno de México. Todos los derechos reservados.</p>
+        </div>
+        <div class="col-md-6 text-end">
+          <p class="mb-0 small">Desarrollado con tecnología Firebase y Bootstrap</p>
+        </div>
+      </div> -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
   
-  <!-- Framework gob.mx v3 -->
-  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet" />
-  
-  <!-- Fuentes gubernamentales -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
-  
+  <!-- Fuentes oficiales (incluidas en framework) -->
+  <!-- Firebase SDKs intentionally omitted on the landing to keep the page minimal. -->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Patria:wght@300;400;600;700&display=swap');
-    
-    /* Variables CSS gubernamentales */
+    /* Colores oficiales según gob.mx */
     :root {
       --color-gobierno-principal: #611232;
       --color-gobierno-secundario: #9d2449;
       --color-gobierno-dorado: #a57f2c;
+      --color-gobierno-dorado-claro: #DDC9A3;
+      --color-gobierno-gris: #98989A;
       --color-gobierno-verde: #13322e;
-      --fuente-titulos: "Patria", serif;
-      --fuente-contenido: "Nunito Sans", sans-serif;
+      --color-gobierno-beige: #BC955C;
+      --color-texto-principal: #545454;
     }
-    
-    /* Aplicar fuentes gubernamentales */
-    .gm-font-patria {
-      font-family: var(--fuente-titulos) !important;
+
+    /* Estilos personalizados para el landing */
+    .hero-section {
+      /* Professional background with subtle pattern */
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(97, 18, 50, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(19, 50, 46, 0.03) 0%, transparent 50%);
+      color: var(--color-texto-principal);
+      padding: 80px 0 120px 0; /* Adjust for framework header only */
+      min-height: calc(100vh - 60px); /* Adjust min-height for framework header */
+      display: flex;
+      align-items: center;
+      position: relative;
     }
-    
-    .gm-font-nunito {
-      font-family: var(--fuente-contenido) !important;
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23611232" opacity="0.02"/><circle cx="75" cy="75" r="1" fill="%2313322e" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      opacity: 0.1;
+      pointer-events: none;
     }
-    
-    /* Estilos por defecto */
-    body {
-      font-family: var(--fuente-contenido) !important;
-      margin: 0;
-      padding: 0;
+
+    .hero-title {
+      font-family: 'Patria', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    
-    h1, h2, h3, h4, h5, h6 {
-      font-family: var(--fuente-titulos) !important;
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    /* Marco elegante para los botones principales */
+    .buttons-frame {
+      background: rgba(255, 255, 255, 0.95);
+      border: 3px solid var(--color-gobierno-principal);
+      border-radius: 16px;
+      padding: 40px 30px;
+      margin: 0 auto;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(97, 18, 50, 0.2);
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .buttons-frame::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--color-gobierno-principal), var(--color-gobierno-secundario), var(--color-gobierno-dorado));
+      border-radius: 18px;
+      z-index: -1;
+    }
+
+    /* Botones principales mejorados */
+    .btn-lg {
+      padding: 18px 40px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      min-width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .btn-lg:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .hero-section {
+        padding: 80px 0;
+        min-height: 90vh;
+      }
+      
+      .hero-title {
+        font-size: 2.2rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .buttons-frame {
+        margin: 0 15px;
+        padding: 30px 20px;
+        max-width: none;
+      }
+      
+      .btn-lg {
+        width: 100%;
+        margin-bottom: 15px;
+        min-width: auto;
+      }
+      
+      .d-flex.gap-4 {
+        flex-direction: column;
+        gap: 1rem !important;
+      }
+    }
+
+    /* Estilos específicos para formularios según gob.mx */
+    .form-control {
+      border-radius: 6px;
+      border: 2px solid #e9ecef;
+      padding: 12px 15px;
+    }
+
+    .form-control:focus {
+      border-color: var(--color-gobierno-principal);
+      box-shadow: 0 0 0 0.2rem rgba(97, 18, 50, 0.25);
+    }
+
+    .control-label {
+      font-weight: 600;
+      color: var(--color-texto-principal);
+      margin-bottom: 8px;
+    }
+
+    .logo-yucatan {
+      max-width: 120px;
+      height: auto;
+      margin: 0 20px;
+    }
+
+    .footer-info {
+      background-color: var(--color-gobierno-principal);
+      color: white;
+      padding: 40px 0;
+      margin-top: 40px;
+    }
+
+    /* Authentication button */
+    .auth-access-btn {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      z-index: 1000;
+      background-color: var(--color-gobierno-verde);
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .auth-access-btn:hover {
+      background-color: #1a4842;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Organization cards with auth integration */
+    .org-card-header {
+      position: relative;
+    }
+
+    .auth-status-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #dc3545;
+    }
+
+    .auth-status-indicator.authenticated {
+      background-color: #28a745;
     }
   </style>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="module" src="/src/index.js"></script>
+  <!-- Contenido principal -->
+  <main class="page" style="padding-top: 20px;">
+    <!-- Sección principal única y centrada -->
+    <section class="hero-section" style="padding-top: 0; padding-bottom: 0;">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            
+            <!-- Título principal mejorado -->
+            <h1 class="hero-title">Centro de Consulta de Acuerdos Sanitarios</h1>
+            <p class="hero-subtitle">
+              Plataforma oficial del Gobierno de México para la consulta y gestión de acuerdos sanitarios 
+              entre el CESO y APHIS-USDA/SENASICA en el estado de Yucatán
+            </p>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm" style="border-radius: 12px;">
+                  <div class="card-body p-3 text-center">
+                    <div class="mb-3">
+                      <div class="d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 80px; height: 80px; background-color: rgb(97, 18, 50); box-shadow: rgba(97, 18, 50, 0.2) 0px 4px 12px;">
+                        <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-shield-check text-white" style="font-size: 2rem;"></i></span>
+                      </div>
+                    </div>
+                    <h4 class="gm-font-patria mb-2" style="color: rgb(19, 50, 46); font-size: 1.5rem;">CESO</h4>
+                    <p class="gm-font-nunito text-muted mb-3" style="font-size: 0.95rem;">Consejo Estatal de Seguimiento Operativo (CESO)</p>
+                    <button class="btn btn-primary btn-lg w-100" data-bs-toggle="modal" data-bs-target="#cesoModal">
+                      <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-box-arrow-in-right me-2"></i></span>Acceder como CESO
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm" style="border-radius: 12px;">
+                  <div class="card-body p-3 text-center">
+                    <div class="mb-3">
+                      <div class="d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 80px; height: 80px; background-color: rgb(165, 127, 44); box-shadow: rgba(165, 127, 44, 0.2) 0px 4px 12px;">
+                        <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-globe-americas text-white" style="font-size: 2rem;"></i></span>
+                      </div>
+                    </div>
+                    <h4 class="gm-font-patria mb-2" style="color: rgb(19, 50, 46); font-size: 1.5rem;">APHIS-USDA/SENASICA</h4>
+                    <p class="gm-font-nunito text-muted mb-3" style="font-size: 0.95rem;">Grupo de Trabajo de Seguimiento a Recomendaciones Críticas</p>
+                    <button class="btn btn-secondary btn-lg w-100" data-bs-toggle="modal" data-bs-target="#aphisModal">
+                      <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-box-arrow-in-right me-2"></i></span>Accede como APHIS-USDA/SENASICA
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Logo institucional -->
+            <div class="mt-3">
+              <p class="text-muted">
+                <span class="bootstrap-icons" aria-hidden="true">
+                  <i class="bi bi-geo-alt"></i>
+                </span>
+                Representación en Yucatán • Secretaría de Agricultura y Desarrollo Rural
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Dashboard and evidence UI moved to organization pages (ceso.html / aphis.html).
+         The landing page should remain minimal: hero + two buttons. -->
+  </main>
+
+  <!-- Modals for CESO and APHIS login -->
+  <!-- CESO Login Modal -->
+  <div class="modal fade" id="cesoModal" tabindex="-1" aria-labelledby="cesoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+  <div class="modal-content" style="font-family: 'Noto Sans', sans-serif; font-size: 1.125rem; line-height: 1.428; color: #545454;">
+        <div class="modal-header">
+          <h4 class="modal-title" id="cesoModalLabel" style="font-family: 'Patria', serif;">
+            <span class="bootstrap-icons me-2" aria-hidden="true">
+              <i class="bi bi-building"></i>
+            </span>
+            CESO - Acceso Administrativo
+          </h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-4">
+            <img src="/assets/logo-0f65ffcf.png" alt="Gobierno de México" height="50" class="mb-3">
+            <h4 class="h5">Centro de Consulta de Acuerdos Sanitarios</h4>
+            <p class="text-muted">Secretaría de Agricultura y Desarrollo Rural - Representación en Yucatán</p>
+          </div>
+
+          <form role="form" id="cesoLoginForm">
+            <div class="form-group mb-3">
+              <label class="control-label" for="cesoEmail">Correo electrónico institucional:</label>
+              <input class="form-control" id="cesoEmail" placeholder="usuario@organizacion.gob.mx" type="email" required="">
+            </div>
+            <div class="form-group mb-3">
+              <label class="control-label" for="cesoPassword">Contraseña:</label>
+              <input class="form-control" id="cesoPassword" placeholder="Contraseña" type="password" required="">
+            </div>
+            <div class="checkbox mb-3">
+              <label>
+                <input type="checkbox" id="cesoRemember">
+                Recordarme
+              </label>
+            </div>
+            <div id="cesoAuthError" class="alert alert-danger d-none" role="alert"><span id="cesoAuthErrorMessage"></span></div>
+            <div id="cesoAuthSuccess" class="alert alert-success d-none" role="alert"><span id="cesoAuthSuccessMessage"></span></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" form="cesoLoginForm" class="btn btn-primary">Autenticar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APHIS Login Modal -->
+  <div class="modal fade" id="aphisModal" tabindex="-1" aria-labelledby="aphisModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="aphisModalLabel" style="font-family: 'Patria', serif;">
+            <span class="bootstrap-icons me-2" aria-hidden="true">
+              <i class="bi bi-globe"></i>
+            </span>
+            APHIS - Acceso Administrativo
+          </h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-4">
+            <img src="/assets/logo-0f65ffcf.png" alt="Gobierno de México" height="50" class="mb-3">
+            <h4 class="h5">Centro de Consulta de Acuerdos Sanitarios</h4>
+            <p class="text-muted">Secretaría de Agricultura y Desarrollo Rural - Representación en Yucatán</p>
+          </div>
+
+          <form role="form" id="aphisLoginForm">
+            <div class="form-group mb-3">
+              <label class="control-label" for="aphisEmail">Correo electrónico institucional:</label>
+              <input class="form-control" id="aphisEmail" placeholder="usuario@organizacion.gob.mx" type="email" required="">
+            </div>
+            <div class="form-group mb-3">
+              <label class="control-label" for="aphisPassword">Contraseña:</label>
+              <input class="form-control" id="aphisPassword" placeholder="Contraseña" type="password" required="">
+            </div>
+            <div class="checkbox mb-3">
+              <label>
+                <input type="checkbox" id="aphisRemember">
+                Recordarme
+              </label>
+            </div>
+            <div id="aphisAuthError" class="alert alert-danger d-none" role="alert"><span id="aphisAuthErrorMessage"></span></div>
+            <div id="aphisAuthSuccess" class="alert alert-success d-none" role="alert"><span id="aphisAuthSuccessMessage"></span></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" form="aphisLoginForm" class="btn btn-primary">Autenticar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer removed for government framework compliance -->
+  <!--
+      <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-2">
+          <h5 class="mb-2">Centro de Consulta de Acuerdos Sanitarios</h5>
+          <p class="mb-1">Plataforma oficial para la gestión y consulta de acuerdos sanitarios entre instituciones federales y estatales.</p>
+          <p class="small mb-0">Sistema desarrollado bajo las directrices del Gobierno de México y el marco gob.mx v3.</p>
+        </div>
+        <div class="col-lg-4 mb-2">
+          <h6 class="mb-2">Organismos</h6>
+          <ul class="list-unstyled">
+            <li class="mb-1">
+              <strong>CESO</strong><br>
+              <small>Centro Estatal de Sanidad y Calidad Agroalimentaria</small>
+            </li>
+            <li class="mb-1">
+              <strong>APHIS-USDA/SENASICA</strong><br>
+              <small>Animal and Plant Health Inspection</small>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-4 mb-2">
+          <h6 class="mb-2">Contacto</h6>
+          <p class="mb-1">
+            <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-envelope me-2"></i></span>
+            <a href="mailto:representacion.yuc@agricultura.gob.mx" class="text-white text-decoration-none">
+              representacion.yuc@agricultura.gob.mx
+            </a>
+          </p>
+          <p class="mb-1">
+            <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-geo-alt me-2"></i></span>
+            Mérida, Yucatán, México
+          </p>
+          <p class="mb-0">
+            <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-calendar me-2"></i></span>
+            Actualizado: Octubre 2025
+          </p>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="mb-0 small">&copy; 2025 Gobierno de México. Todos los derechos reservados.</p>
+        </div>
+        <div class="col-md-6 text-end">
+          <p class="mb-0 small">Desarrollado con tecnología Firebase y Bootstrap</p>
+        </div>
+      </div>
+    </div>
+  -->
+
+  <!-- Framework gob.mx JavaScript -->
+  <!-- jQuery, Popper.js and Bootstrap (required by some legacy scripts) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
+  
+  <!-- Firebase SDKs for authentication -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="__/firebase/init.js"></script>
+  <script src="auth-system.js"></script>
+  
+  <!-- Inicialización: keep simple ready handler for landing page behavior -->
+  <script>
+    // Wait for all libraries to load before initializing
+    window.addEventListener('load', function() {
+      console.log('🏛️ Centro de Consulta de Acuerdos Sanitarios - Gobierno de México');
+      console.log('🌐 Landing page: CESO and APHIS modals for authentication');
+
+      // Safe initialization of Bootstrap components
+      try {
+        // Initialize tooltips if they exist
+        if (typeof $ !== 'undefined' && typeof $.fn.tooltip !== 'undefined') {
+          $('[data-bs-toggle="tooltip"]').tooltip();
+        }
+
+        // Initialize modals if they exist
+        if (typeof bootstrap !== 'undefined' && typeof bootstrap.Modal !== 'undefined') {
+          console.log('✅ Bootstrap modals ready');
+        }
+      } catch (e) {
+        console.warn('⚠️ Bootstrap initialization warning:', e.message);
+      }
+
+      // Check if auth system is ready
+      if (typeof window.gobmxAuth === 'undefined') {
+        console.error('❌ Auth system not loaded!');
+        return;
+      } else {
+        console.log('✅ Auth system loaded and ready');
+      }
+
+      // Wait for auth system to be fully initialized
+      const checkAuthReady = () => {
+        if (window.gobmxAuth && window.gobmxAuth.usersLoaded) {
+          console.log('✅ Auth system fully initialized with users loaded');
+          attachFormHandlers();
+        } else {
+          console.log('⏳ Waiting for auth system to load users...');
+          setTimeout(checkAuthReady, 500);
+        }
+      };
+
+      const attachFormHandlers = () => {
+        // Handle CESO login form
+        const cesoForm = document.getElementById('cesoLoginForm');
+        if (cesoForm) {
+          console.log('✅ CESO form found and event listener attached');
+          cesoForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            console.log('🔥 CESO form submitted!');
+            const email = document.getElementById('cesoEmail').value.trim();
+            const password = document.getElementById('cesoPassword').value;
+            const remember = document.getElementById('cesoRemember').checked;
+
+            console.log('[LANDING] 🔐 CESO login attempt:', { email, passwordLength: password.length, remember });
+
+            // Clear messages
+            const errorDiv = document.getElementById('cesoAuthError');
+            const successDiv = document.getElementById('cesoAuthSuccess');
+            if (errorDiv) errorDiv.classList.add('d-none');
+            if (successDiv) successDiv.classList.add('d-none');
+
+            const btn = document.querySelector('#cesoModal button[type="submit"]');
+            if (!btn) {
+              console.error('CESO submit button not found');
+              return;
+            }
+
+            const orig = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = 'Verificando...';
+
+            setTimeout(async () => {
+              try {
+                console.log('[LANDING] 🔍 Calling authentication...');
+                const result = await window.gobmxAuth.authenticate(email, password, 'CESO');
+                console.log('[LANDING] 📋 Authentication result:', result);
+
+                if (result.success) {
+                  console.log('[LANDING] ✅ Authentication successful, showing success message');
+                  if (successDiv) {
+                    document.getElementById('cesoAuthSuccessMessage').textContent = result.message;
+                    successDiv.classList.remove('d-none');
+                  }
+
+                  // Authentication successful - proceed to redirect
+                  setTimeout(() => {
+                    window.location.href = 'hall-ceso.html';
+                  }, 2000);
+
+                } else {
+                  console.log('[LANDING] ❌ Authentication failed:', result.message);
+                  if (errorDiv) {
+                    document.getElementById('cesoAuthErrorMessage').textContent = result.message;
+                    errorDiv.classList.remove('d-none');
+                  }
+                }
+              } catch (authErr) {
+                console.error('[LANDING] 💥 Authentication exception:', authErr);
+                if (errorDiv) {
+                  document.getElementById('cesoAuthErrorMessage').textContent = 'Error de autenticación. Intente nuevamente.';
+                  errorDiv.classList.remove('d-none');
+                }
+              }
+              btn.disabled = false;
+              btn.innerHTML = orig;
+            }, 800);
+          });
+        }
+
+        // Handle APHIS login form
+        const aphisForm = document.getElementById('aphisLoginForm');
+        if (aphisForm) {
+          console.log('✅ APHIS form found and event listener attached');
+          aphisForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            console.log('🔥 APHIS form submitted!');
+            const email = document.getElementById('aphisEmail').value.trim();
+            const password = document.getElementById('aphisPassword').value;
+            const remember = document.getElementById('aphisRemember').checked;
+
+            console.log('[LANDING] 🔐 APHIS login attempt:', { email, passwordLength: password.length, remember });
+
+            // Clear messages
+            const errorDiv = document.getElementById('aphisAuthError');
+            const successDiv = document.getElementById('aphisAuthSuccess');
+            if (errorDiv) errorDiv.classList.add('d-none');
+            if (successDiv) successDiv.classList.add('d-none');
+
+            const btn = document.querySelector('#aphisModal button[type="submit"]');
+            if (!btn) {
+              console.error('APHIS submit button not found');
+              return;
+            }
+
+            const orig = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = 'Verificando...';
+
+            setTimeout(async () => {
+              try {
+                console.log('[LANDING] 🔍 Calling APHIS authentication...');
+                const result = await window.gobmxAuth.authenticate(email, password, 'APHIS');
+                console.log('[LANDING] 📋 APHIS Authentication result:', result);
+
+                if (result.success) {
+                  console.log('[LANDING] ✅ APHIS Authentication successful, showing success message');
+                  if (successDiv) {
+                    document.getElementById('aphisAuthSuccessMessage').textContent = result.message;
+                    successDiv.classList.remove('d-none');
+                  }
+
+                  // Authentication successful - proceed to redirect
+                  setTimeout(() => {
+                    window.location.href = 'hall-aphis.html';
+                  }, 2000);
+
+                } else {
+                  console.log('[LANDING] ❌ APHIS Authentication failed:', result.message);
+                  if (errorDiv) {
+                    document.getElementById('aphisAuthErrorMessage').textContent = result.message;
+                    errorDiv.classList.remove('d-none');
+                  }
+                }
+              } catch (authErr) {
+                console.error('[LANDING] 💥 APHIS Authentication exception:', authErr);
+                if (errorDiv) {
+                  document.getElementById('aphisAuthErrorMessage').textContent = 'Error de autenticación. Intente nuevamente.';
+                  errorDiv.classList.remove('d-none');
+                }
+              }
+              btn.disabled = false;
+              btn.innerHTML = orig;
+            }, 800);
+          });
+        }
+      };
+
+      // Start checking if auth system is ready
+      checkAuthReady();
+    });
+  </script>
 
   <!-- Framework gob.mx v3 Scripts -->
   <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>

@@ -34,16 +34,25 @@ function parseDate(dateStr) {
   return null;
 }
 
-// Función para normalizar estado
-function normalizeStatus(status) {
-  if (!status) return 'Pendiente';
-  const statusLower = status.toString().toLowerCase().trim();
+// Función para determinar estado automáticamente basado en fechas
+function determineStatusAutomatically(complianceDate, providedStatus) {
+  // Si se proporciona un estado explícito, usarlo
+  if (providedStatus && providedStatus.trim()) {
+    return normalizeStatus(providedStatus);
+  }
   
-  if (statusLower.includes('complet') || statusLower.includes('cumpl')) return 'Completado';
-  if (statusLower.includes('venc') || statusLower.includes('expi')) return 'Vencidos';
-  if (statusLower.includes('pend')) return 'Pendiente';
+  // Si no hay fecha de cumplimiento, asumir Pendiente
+  if (!complianceDate) {
+    return 'Pendiente';
+  }
   
-  return 'Pendiente';
+  // Determinar estado basado en fecha de cumplimiento
+  const now = new Date();
+  if (complianceDate < now) {
+    return 'Vencidos'; // Fecha de cumplimiento ya pasó
+  } else {
+    return 'Pendiente'; // Fecha de cumplimiento está en el futuro
+  }
 }
 
 // Función para validar número de acuerdo
@@ -168,7 +177,7 @@ async function batchUploadAgreements(csvFilePath, organizationType) {
           meetingDate: meetingDate,
           complianceDate: complianceDate,
           
-          status: normalizeStatus(status),
+          status: determineStatusAutomatically(complianceDate, status),
           
           source: source,
           createdAt: admin.firestore.FieldValue.serverTimestamp(),

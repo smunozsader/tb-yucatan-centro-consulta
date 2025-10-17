@@ -108,8 +108,8 @@
 <body>
   <!-- Language Toggle Button -->
   <button class="language-toggle" onclick="toggleLanguage()" title="Cambiar idioma / Change language">
-    <span class="flag">🇺🇸</span>
-    <span data-translate="lang-button">English</span>
+  <span class="flag" id="langFlag">🇺🇸</span>
+  <span id="langButtonText" data-es="English" data-en="Español">English</span>
   </button>
 
   <!-- Contenido -->
@@ -119,18 +119,16 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="hall-aphis.html">APHIS-USDA</a></li>
-        <li class="breadcrumb-item active" aria-current="page" data-translate="breadcrumb">Carga Masiva</li>
+  <li class="breadcrumb-item active" aria-current="page" data-es="Carga Masiva" data-en="Batch Upload">Carga Masiva</li>
       </ol>
     </nav>
 
     <!-- Main title -->
     <div class="text-center mb-5">
       <h1 class="display-4 fw-bold text-gobierno-principal">
-        <i class="bi bi-upload me-3"></i><span data-translate="main-title">Carga Masiva de Acuerdos</span>
+  <i class="bi bi-upload me-3"></i><span data-es="Carga Masiva de Acuerdos" data-en="Batch Upload Agreements">Carga Masiva de Acuerdos</span>
       </h1>
-      <p class="lead text-muted" data-translate="main-subtitle">
-        Sistema para cargar múltiples acuerdos desde archivos CSV de sesiones APHIS-USDA
-      </p>
+      <p class="lead text-muted" data-es="Sistema para cargar múltiples acuerdos desde archivos CSV de sesiones APHIS-USDA" data-en="System to upload multiple agreements from APHIS-USDA session CSV files">Sistema para cargar múltiples acuerdos desde archivos CSV de sesiones APHIS-USDA</p>
     </div>
 
     <!-- Instructions -->
@@ -138,27 +136,27 @@
       <div class="col-lg-12">
         <div class="card border-0 shadow-sm">
           <div class="card-header bg-gobierno-principal text-white">
-            <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i><span data-translate="instructions-title">Instrucciones de Uso</span></h5>
+            <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i><span data-es="Instrucciones de Uso" data-en="Usage Instructions">Instrucciones de Uso</span></h5>
           </div>
           <div class="card-body">
             <div class="row">
               <div class="col-md-6">
-                <h6 class="fw-bold text-gobierno-secundario">📋 <span data-translate="step1-title">Paso 1: Descargar Plantilla</span></h6>
-                <p data-translate="step1-desc">Descarga la plantilla CSV y completa los datos de tu sesión:</p>
+                <h6 class="fw-bold text-gobierno-secundario">📋 <span data-es="Paso 1: Descargar Plantilla" data-en="Step 1: Download Template">Paso 1: Descargar Plantilla</span></h6>
+                <p data-es="Descarga la plantilla CSV y completa los datos de tu sesión:" data-en="Download the CSV template and complete your session data:">Descarga la plantilla CSV y completa los datos de tu sesión:</p>
                 <a href="TEMPLATES/template_acuerdos_aphis.csv" class="template-download" download>
-                  <i class="bi bi-download me-2"></i><span data-translate="download-template">Descargar Plantilla APHIS</span>
+                  <i class="bi bi-download me-2"></i><span data-es="Descargar Plantilla APHIS" data-en="Download APHIS Template">Descargar Plantilla APHIS</span>
                 </a>
               </div>
               <div class="col-md-6">
-                <h6 class="fw-bold text-gobierno-secundario">📊 <span data-translate="step2-title">Paso 2: Completar Datos</span></h6>
-                <p data-translate="required-fields">Campos requeridos:</p>
+                <h6 class="fw-bold text-gobierno-secundario">📊 <span data-es="Paso 2: Completar Datos" data-en="Step 2: Complete Data">Paso 2: Completar Datos</span></h6>
+                <p data-es="Campos requeridos:" data-en="Required fields:">Campos requeridos:</p>
                 <ul class="small">
-                  <li><strong>Numero_de_Acuerdo:</strong> <span data-translate="agreement-format">NN-SESION-DDMMYY</span></li>
-                  <li><strong>Descripcion_del_Acuerdo:</strong> <span data-translate="full-text">Texto completo</span></li>
-                  <li><strong>Responsable_del_Seguimiento:</strong> <span data-translate="responsible-person">Persona responsable</span></li>
-                  <li><strong>Fecha_de_Reunion:</strong> <span data-translate="date-format">YYYY-MM-DD</span></li>
-                  <li><strong>Fecha_de_Cumplimiento:</strong> <span data-translate="date-format">YYYY-MM-DD</span></li>
-                  <li><strong>Estado:</strong> <span data-translate="status-options">Pendiente/Completado/Vencidos</span></li>
+                  <li><strong>Numero_de_Acuerdo:</strong> <span data-es="NN-SESION-DDMMYY" data-en="NN-SESION-DDMMYY">NN-SESION-DDMMYY</span></li>
+                  <li><strong>Descripcion_del_Acuerdo:</strong> <span data-es="Texto completo" data-en="Full text">Texto completo</span></li>
+                  <li><strong>Responsable_del_Seguimiento:</strong> <span data-es="Persona responsable" data-en="Responsible person">Persona responsable</span></li>
+                  <li><strong>Fecha_de_Reunion:</strong> <span data-es="YYYY-MM-DD" data-en="YYYY-MM-DD">YYYY-MM-DD</span></li>
+                  <li><strong>Fecha_de_Cumplimiento:</strong> <span data-es="YYYY-MM-DD" data-en="YYYY-MM-DD">YYYY-MM-DD</span></li>
+                  <li><strong>Estado:</strong> <span data-es="Pendiente/Completado/Vencidos" data-en="Pending/Completed/Overdue">Pendiente/Completado/Vencidos</span></li>
                 </ul>
               </div>
             </div>
@@ -179,9 +177,9 @@
             <!-- Drag and drop area -->
             <div class="upload-area" id="uploadArea" onclick="document.getElementById('csvFile').click()">
               <i class="bi bi-cloud-upload display-1 text-gobierno-principal mb-3"></i>
-              <h5 data-translate="drag-file">Arrastra tu archivo CSV aquí</h5>
-              <p class="text-muted" data-translate="or-click">o haz clic para seleccionar un archivo</p>
-              <small class="text-muted" data-translate="supported-formats">Formatos soportados: .csv (máximo 10MB)</small>
+              <h5 data-es="Arrastra tu archivo CSV aquí" data-en="Drag your CSV file here">Arrastra tu archivo CSV aquí</h5>
+              <p class="text-muted" data-es="o haz clic para seleccionar un archivo" data-en="or click to select a file">o haz clic para seleccionar un archivo</p>
+              <small class="text-muted" data-es="Formatos soportados: .csv (máximo 10MB)" data-en="Supported formats: .csv (maximum 10MB)">Formatos soportados: .csv (máximo 10MB)</small>
               <input type="file" id="csvFile" class="file-input" accept=".csv" />
             </div>
 
@@ -197,13 +195,13 @@
             <!-- Action buttons -->
             <div class="text-center mt-4">
               <button id="validateBtn" class="btn btn-primary me-2" style="display: none;" onclick="validateFile()">
-                <i class="bi bi-check-circle me-2"></i><span data-translate="validate-file">Validar Archivo</span>
+                <i class="bi bi-check-circle me-2"></i><span data-es="Validar Archivo" data-en="Validate File">Validar Archivo</span>
               </button>
               <button id="uploadBtn" class="btn btn-primary" style="display: none;" onclick="uploadFile()">
-                <i class="bi bi-upload me-2"></i><span data-translate="upload-agreements">Subir Acuerdos</span>
+                <i class="bi bi-upload me-2"></i><span data-es="Subir Acuerdos" data-en="Upload Agreements">Subir Acuerdos</span>
               </button>
               <button id="clearBtn" class="btn btn-secondary" style="display: none;" onclick="clearFile()">
-                <i class="bi bi-x-circle me-2"></i><span data-translate="clear">Limpiar</span>
+                <i class="bi bi-x-circle me-2"></i><span data-es="Limpiar" data-en="Clear">Limpiar</span>
               </button>
             </div>
 
@@ -213,12 +211,12 @@
                 <div class="progress-bar progress-bar-striped progress-bar-animated" 
                      role="progressbar" id="progressBar" style="width: 0%"></div>
               </div>
-              <small class="text-muted mt-2" id="progressText" data-translate="preparing">Preparando carga...</small>
+              <small class="text-muted mt-2" id="progressText" data-es="Preparando carga..." data-en="Preparing upload...">Preparando carga...</small>
             </div>
 
             <!-- Validation results -->
             <div id="validationResults" class="mt-4" style="display: none;">
-              <h6 class="fw-bold" data-translate="validation-results">Resultados de Validación:</h6>
+              <h6 class="fw-bold" data-es="Resultados de Validación:" data-en="Validation Results:">Resultados de Validación:</h6>
               <div class="validation-results" id="validationContent"></div>
             </div>
 
@@ -226,12 +224,12 @@
             <div id="uploadResults" class="mt-4" style="display: none;">
               <div class="alert alert-success">
                 <h6 class="fw-bold mb-2">
-                  <i class="bi bi-check-circle me-2"></i><span data-translate="upload-completed">Carga Completada Exitosamente</span>
+                  <i class="bi bi-check-circle me-2"></i><span data-es="Carga Completada Exitosamente" data-en="Upload Completed Successfully">Carga Completada Exitosamente</span>
                 </h6>
                 <div id="uploadSummary"></div>
                 <div class="mt-3">
                   <a href="acuerdos-aphis.html" class="btn btn-primary">
-                    <i class="bi bi-eye me-2"></i><span data-translate="view-uploaded">Ver Acuerdos Subidos</span>
+                    <i class="bi bi-eye me-2"></i><span data-es="Ver Acuerdos Subidos" data-en="View Uploaded Agreements">Ver Acuerdos Subidos</span>
                   </a>
                 </div>
               </div>
@@ -246,15 +244,15 @@
       <div class="col-lg-12">
         <div class="card border-0 shadow-sm">
           <div class="card-header bg-light">
-            <h5 class="mb-0"><i class="bi bi-lightbulb me-2"></i><span data-translate="examples-resources">Ejemplos y Recursos</span></h5>
+            <h5 class="mb-0"><i class="bi bi-lightbulb me-2"></i><span data-es="Ejemplos y Recursos" data-en="Examples and Resources">Ejemplos y Recursos</span></h5>
           </div>
           <div class="card-body">
             <div class="row">
               <div class="col-md-12 text-center">
-                <h6 class="fw-bold">📖 <span data-translate="documentation">Documentación</span></h6>
-                <p data-translate="complete-guides">Guías completas para el uso del sistema:</p>
+                <h6 class="fw-bold">📖 <span data-es="Documentación" data-en="Documentation">Documentación</span></h6>
+                <p data-es="Guías completas para el uso del sistema:" data-en="Complete guides for system usage:">Guías completas para el uso del sistema:</p>
                 <a href="instrucciones-carga-lote.html" class="btn btn-primary btn-sm" target="_blank">
-                  <i class="bi bi-book me-2"></i><span data-translate="complete-manual">Manual Completo</span>
+                  <i class="bi bi-book me-2"></i><span data-es="Manual Completo" data-en="Complete Manual">Manual Completo</span>
                 </a>
               </div>
             </div>
@@ -559,119 +557,44 @@
     console.log('🚀 APHIS-USDA Batch Upload Module loaded');
     console.log('📋 For full functionality, integrate with batch-upload-agreements.js backend');
 
-    // Translation system
-    let currentLanguage = 'es'; // Default to Spanish
+    // Unified bilingual toggle logic
+    let currentLanguage = localStorage.getItem('batchUploadLang') || 'es';
 
-    const translations = {
-      es: {
-        'title': 'Carga Masiva de Acuerdos - APHIS-USDA - Gobierno de México',
-        'lang-button': 'English',
-        'breadcrumb': 'Carga Masiva',
-        'main-title': 'Carga Masiva de Acuerdos',
-        'main-subtitle': 'Sistema para cargar múltiples acuerdos desde archivos CSV de sesiones APHIS-USDA',
-        'instructions-title': 'Instrucciones de Uso',
-        'step1-title': 'Paso 1: Descargar Plantilla',
-        'step1-desc': 'Descarga la plantilla CSV y completa los datos de tu sesión:',
-        'download-template': 'Descargar Plantilla APHIS',
-        'step2-title': 'Paso 2: Completar Datos',
-        'required-fields': 'Campos requeridos:',
-        'agreement-format': 'NN-SESION-DDMMYY',
-        'full-text': 'Texto completo',
-        'responsible-person': 'Persona responsable',
-        'date-format': 'YYYY-MM-DD',
-        'status-options': 'Pendiente/Completado/Vencidos',
-        'upload-csv': 'Subir Archivo CSV',
-        'drag-file': 'Arrastra tu archivo CSV aquí',
-        'or-click': 'o haz clic para seleccionar un archivo',
-        'supported-formats': 'Formatos soportados: .csv (máximo 10MB)',
-        'validate-file': 'Validar Archivo',
-        'upload-agreements': 'Subir Acuerdos',
-        'clear': 'Limpiar',
-        'preparing': 'Preparando carga...',
-        'validation-results': 'Resultados de Validación:',
-        'upload-completed': 'Carga Completada Exitosamente',
-        'view-uploaded': 'Ver Acuerdos Subidos',
-        'examples-resources': 'Ejemplos y Recursos',
-        'documentation': 'Documentación',
-        'complete-guides': 'Guías completas para el uso del sistema:',
-        'complete-manual': 'Manual Completo'
-      },
-      en: {
-        'title': 'Batch Upload Agreements - APHIS-USDA - Government of Mexico',
-        'lang-button': 'Español',
-        'breadcrumb': 'Batch Upload',
-        'main-title': 'Batch Upload Agreements',
-        'main-subtitle': 'System to upload multiple agreements from APHIS-USDA session CSV files',
-        'instructions-title': 'Usage Instructions',
-        'step1-title': 'Step 1: Download Template',
-        'step1-desc': 'Download the CSV template and complete your session data:',
-        'download-template': 'Download APHIS Template',
-        'step2-title': 'Step 2: Complete Data',
-        'required-fields': 'Required fields:',
-        'agreement-format': 'NN-SESION-DDMMYY',
-        'full-text': 'Full text',
-        'responsible-person': 'Responsible person',
-        'date-format': 'YYYY-MM-DD',
-        'status-options': 'Pendiente/Completado/Vencidos',
-        'upload-csv': 'Upload CSV File',
-        'drag-file': 'Drag your CSV file here',
-        'or-click': 'or click to select a file',
-        'supported-formats': 'Supported formats: .csv (maximum 10MB)',
-        'validate-file': 'Validate File',
-        'upload-agreements': 'Upload Agreements',
-        'clear': 'Clear',
-        'preparing': 'Preparing upload...',
-        'validation-results': 'Validation Results:',
-        'upload-completed': 'Upload Completed Successfully',
-        'view-uploaded': 'View Uploaded Agreements',
-        'examples-resources': 'Examples and Resources',
-        'documentation': 'Documentation',
-        'complete-guides': 'Complete guides for system usage:',
-        'complete-manual': 'Complete Manual'
-      }
-    };
-
-    function toggleLanguage() {
-      currentLanguage = currentLanguage === 'es' ? 'en' : 'es';
-      updateLanguage();
-      
-      // Update flag and button text
-      const langButton = document.querySelector('[data-translate="lang-button"]');
-      const flag = document.querySelector('.language-toggle .flag');
-      
-      if (currentLanguage === 'es') {
-        flag.textContent = '🇺🇸';
-        langButton.textContent = 'English';
-      } else {
-        flag.textContent = '🇲🇽';
-        langButton.textContent = 'Español';
-      }
-      
-      // Update page language attribute
-      document.documentElement.lang = currentLanguage;
-    }
-
-    function updateLanguage() {
-      const elements = document.querySelectorAll('[data-translate]');
-      elements.forEach(element => {
-        const key = element.getAttribute('data-translate');
-        if (translations[currentLanguage] && translations[currentLanguage][key]) {
-          if (element.tagName === 'TITLE') {
-            element.textContent = translations[currentLanguage][key];
-          } else {
-            element.textContent = translations[currentLanguage][key];
-          }
+    function setLanguage(lang) {
+      currentLanguage = lang;
+      localStorage.setItem('batchUploadLang', currentLanguage);
+      // Update all translatable elements
+      document.querySelectorAll('[data-es][data-en]').forEach(element => {
+        if (currentLanguage === 'es') {
+          element.textContent = element.getAttribute('data-es');
+        } else {
+          element.textContent = element.getAttribute('data-en');
         }
       });
+      // Update flag and button text
+      const flag = document.getElementById('langFlag');
+      const langButtonText = document.getElementById('langButtonText');
+      if (currentLanguage === 'es') {
+        flag.textContent = '🇺🇸';
+        langButtonText.textContent = 'English';
+      } else {
+        flag.textContent = '🇲🇽';
+        langButtonText.textContent = 'Español';
+      }
+      document.documentElement.lang = currentLanguage;
     }
 
     // Initialize language on page load
     document.addEventListener('DOMContentLoaded', function() {
-      updateLanguage();
+      setLanguage(currentLanguage);
+      // Attach toggle to button
+      const langBtn = document.querySelector('.language-toggle');
+      if (langBtn) {
+        langBtn.onclick = function() {
+          setLanguage(currentLanguage === 'es' ? 'en' : 'es');
+        };
+      }
     });
   </script>
-
-  <!-- Framework gob.mx v3 Scripts -->
-  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
 </body>
 </html>

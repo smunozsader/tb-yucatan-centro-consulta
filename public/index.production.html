@@ -59,38 +59,24 @@
     .pace-inactive {
       display: none;
     }
-  </style>
-</head>
-<body>
-  <!-- Loading indicator -->
-  <div class="pace pace-inactive">
-    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
-      <div class="pace-progress-inner"></div>
-    </div>
-    <div class="pace-activity"></div>
-  </div>
 
-  <!-- Content goes inside main.page structure -->
-  <main class="page">
-    <div id="root"></div>
-  </main>
+    /* Custom fix: Make GOB.mx logo visible on white backgrounds */
+    .navbar.navbar-dark.bg-light {
+      background-color: #611232 !important; /* Official government maroon */
+      background-image: none !important;
+    }
+    .navbar.navbar-dark.bg-light .navbar-brand img {
+      filter: none !important;
+    }
+    .navbar.navbar-dark.bg-light .navbar-nav .nav-link {
+      color: #fff !important;
+    }
+    .navbar.navbar-dark.bg-light .navbar-nav .nav-link:hover,
+    .navbar.navbar-dark.bg-light .navbar-nav .nav-link:focus {
+      color: #fff !important;
+    }
 
-  <!-- Scripts del framework gob.mx -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-  
-  <!-- Firebase Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-  <script src="__/firebase/init.js"></script>
-  
-  <!-- React App -->
-  <script src="static/js/main.f151cabb.js"></script>
-  
-  <!-- Estilos customizados para datepicker gubernamental -->
-  <style>
+    /* Estilos customizados para datepicker gubernamental */
     .ui-datepicker {
       font-family: 'Nunito Sans', sans-serif !important;
       border-radius: 8px !important;
@@ -145,7 +131,35 @@
       font-weight: bold !important;
     }
   </style>
+</head>
+<body>
+  <!-- Loading indicator -->
+  <div class="pace pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+      <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div>
+  </div>
 
+  <!-- Content goes inside main.page structure -->
+  <main class="page">
+    <div id="root"></div>
+  </main>
+
+  <!-- Scripts del framework gob.mx -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script src="__/firebase/init.js"></script>
+  
+  <!-- React App -->
+  <script src="static/js/main.f151cabb.js"></script>
+  
   <script>
     // Configuración personalizada del framework gob.mx
     window.addEventListener('DOMContentLoaded', function() {

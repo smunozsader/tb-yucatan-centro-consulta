@@ -3,7 +3,7 @@
   "version": "2.5.0",
   "description": "Centro de Consulta de Acuerdos Sanitarios - Gobierno de México (Yucatán)",
   "private": true,
-  "homepage": "https://tb-yucatan.web.app",
+  "homepage": "https://ceso-aphis-yuc.web.app",
   "dependencies": {
     "@react-pdf/renderer": "^3.1.0",
     "bootstrap": "^5.3.0",
@@ -22,6 +22,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.7.0",
@@ -41,6 +42,7 @@
     "firebase:deploy": "firebase deploy",
     "emulators:start": "firebase emulators:start --only firestore,auth,storage --import=./emulator_export --export-on-exit",
     "test:emulator": "node tests/emulator-e2e.js",
+    "test:rules": "node tests/firestore-rules.test.js",
     "deploy:rules": "firebase deploy --only firestore:rules,storage:rules",
     "deploy:hosting": "firebase deploy --only hosting",
     "deploy": "firebase deploy --only hosting,firestore:rules,storage:rules"

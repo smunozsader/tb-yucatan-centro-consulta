@@ -2,7 +2,7 @@
 
 **Sistema desarrollado por la Representación de la Secretaría de Agricultura y Desarrollo Rural (Gobierno Federal Mexicano) en Yucatán**
 
-🚀 **Live Application**: https://tb-yucatan.web.app/
+🚀 **Live Application**: https://ceso-aphis-yuc.web.app/
 
 ## 🎯 Project Purpose
 
@@ -96,7 +96,15 @@ This repository contains the **production-deployed compiled version**. The origi
 
 ## 📝 Version History
 
-- **v2.5.0**: Evidence viewing system in Dashboard
+- **v2.5.0** (October 16, 2025): Evidence viewing system in Dashboard + GOB.mx framework compliance fixes
+  - ✅ Complete GOB.mx color palette compliance (#611232, #9d2449, #a57f2c, #DDC9A3)
+  - ✅ Official button styles (btn-primary, btn-secondary, btn-danger, btn-link only)
+  - ✅ Repository authentication and multilingual support
+  - ✅ Mandatory evidence compliance system
+  - ✅ Clickable status badges with evidence modal integration
+  - ✅ TIPO DE SESIÓN column and advanced filtering
+  - ✅ Professional batch upload instructions page
+  - ✅ Complete Spanish/English translation system
 - **v2.3.1**: Simplified institutional templates
 
 ## 🤝 Contributing

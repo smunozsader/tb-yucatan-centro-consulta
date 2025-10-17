@@ -1,3 +1,6 @@
-Numero_de_Acuerdo,Descripcion_del_Acuerdo,Responsable_del_Seguimiento,Fecha_de_Reunion,Fecha_de_Cumplimiento,Estado,Tipo_de_Sesion
-CE-YUC-EJEMPLO-001,"Ejemplo de acuerdo CESO para template","MVZ. Responsable Ejemplo","2025-10-09","2025-11-09","Pendiente","Ordinaria"
-CE-YUC-EJEMPLO-002,"Segundo ejemplo de acuerdo CESO","Ing. Otro Responsable","2025-10-09","2025-12-09","Completado","Extraordinaria"
+Número de Acuerdo,Descripción del Acuerdo,Responsable del Seguimiento,Fecha de Reunión,Fecha de Cumplimiento,Estado,Tipo de Sesión
+YUC/02-OCT-25/CESO-TEST-001,"Acuerdo de prueba 001 para asignacion de estado por el sistema. MVZ. Francis A. Genovez Chanona",MVZ. Francis A. Genovez Chanona,"2 October, 2025","2 October, 2025",,21a Ordinaria - test
+YUC/02-OCT-25/CESO-TEST-002,"Acuerdo de prueba 002 para asignacion de estado por el sistema. MVZ. Francis A. Genovez Chanona",MVZ. Francis A. Genovez Chanona,"2 October, 2025","2 October, 2025",,21a Ordinaria - test
+YUC/02-OCT-25/CESO-TEST-003,"Acuerdo de prueba 003 para asignacion de estado por el sistema. MVZ. Alfredo Colin",MVZ. Alfredo Colin,"2 October, 2025","2 October, 2025",,21a Ordinaria - test
+YUC/02-OCT-25/CESO-TEST-004,"Acuerdo de prueba 004 para asignacion de estado por el sistema. Ing. Abigail Estrada Estrada",Ing. Abigail Estrada Estrada,"2 October, 2025","8 October, 2025",,21a Ordinaria - test
+YUC/02-OCT-25/CESO-TEST-005,"Acuerdo de prueba 005 para asignacion de estado por el sistema",Ing. Juan Carlos Rodriguez Andrade,"2 October, 2025","2 October, 2025",,21a Ordinaria - test
