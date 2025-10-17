@@ -6,10 +6,10 @@ service firebase.storage {
     // Reglas de lectura
     // ----------------------------------------------------
 
-    // Permitir acceso de lectura público a TODOS los archivos.
-    // Esto ya cubre todas las rutas, incluidas las nuevas de /evidencia-ceso y /evidencia-aphis, para lecturas.
+    // Restrict read access to authenticated users by default.
+    // If public access is required for certain paths, add specific exceptions.
     match /{allPaths=**} {
-      allow read: if true;
+      allow read: if request.auth != null;
     }
 
     // ----------------------------------------------------
