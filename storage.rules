@@ -2,39 +2,71 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
-    // Allow public read access to files (e.g., evidence downloads).
+    // ----------------------------------------------------
+    // Reglas de lectura
+    // ----------------------------------------------------
+
+    // Permitir acceso de lectura público a TODOS los archivos.
+    // Esto ya cubre todas las rutas, incluidas las nuevas de /evidencia-ceso y /evidencia-aphis, para lecturas.
     match /{allPaths=**} {
       allow read: if true;
     }
 
-    // Restrict writes to evidence paths: <collection>/<docId>/{filename}
+    // ----------------------------------------------------
+    // Reglas de escritura (requieren autenticación)
+    // ----------------------------------------------------
+
+    // NUEVAS REGLAS: Para la subestructura de evidencia-ceso/{agreementId}/status-changes/{fileName}
+    // Require Firebase Authentication for writes. If you use an application-level
+    // auth (gobmxAuth), perform uploads via a trusted backend that uses the Admin SDK.
+    match /evidencia-ceso/{agreementId}/status-changes/{fileName} {
+      allow read: if true; // Public read for evidence downloads (if desired)
+      allow write: if request.auth != null
+        && request.resource.size < 20 * 1024 * 1024 // limit 20MB
+        && request.resource.contentType.matches('application/pdf|image/.*');
+    }
+
+    // NUEVAS REGLAS: Para la subestructura de evidencia-aphis/{agreementId}/status-changes/{fileName}
+    match /evidencia-aphis/{agreementId}/status-changes/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.resource.size < 20 * 1024 * 1024
+        && request.resource.contentType.matches('application/pdf|image/.*');
+    }
+
+    // Regla existente: Restringir escrituras a rutas genéricas de evidencia: <collection>/<docId>/{fileName}
+    // NOTA: Esta regla NO coincide con las nuevas rutas anidadas (agreementId/status-changes es un {docId} de dos segmentos)
+    // Coincidirá con paths como /mi_coleccion/mi_documento/mi_archivo.jpg
+    // Generic pattern for collection/document/file - restrict writes to authenticated
+    // users and prefer backend mediation for sensitive writes.
     match /{coll}/{docId}/{fileName} {
+      allow read: if true;
       allow write: if request.auth != null
-        // Optional: limit file size to 20MB
+        && request.resource.size < 20 * 1024 * 1024
+        && request.resource.contentType.matches('application/pdf|image/.*');
+    }
+
+    // Regla existente: Archivos de repositorio - CESO específico
+    match /repositorio-ceso/{category}/{fileName} {
+      allow read: if true;
+      // Only admins via Firebase Auth may write to repository storage
+      allow write: if request.auth != null && request.auth.token.admin == true
         && request.resource.size < 20 * 1024 * 1024;
     }
 
-    // Repository files - CESO specific (supports nested paths)
-    // Note: Uses application-level authentication instead of Firebase Auth
-    match /repositorio-ceso/{allPaths=**} {
-      allow write: if true; // Application handles authentication
+    // Regla existente: Archivos de repositorio - APHIS específico
+    match /repositorio-aphis/{category}/{fileName} {
       allow read: if true;
-    }
-
-    // Repository files - APHIS specific (supports nested paths)  
-    // Note: Uses application-level authentication instead of Firebase Auth
-    match /repositorio-aphis/{allPaths=**} {
-      allow write: if true; // Application handles authentication
-      allow read: if true;
-    }
-
-    // Status change evidence - special evidence folder
-    match /{coll}/{docId}/status-change-evidence/{fileName} {
-      allow write: if request.auth != null
+      allow write: if request.auth != null && request.auth.token.admin == true
         && request.resource.size < 20 * 1024 * 1024;
     }
 
-    // Deny all other client write attempts by default
+    // ----------------------------------------------------
+    // Denegación por defecto (si no coincide ninguna de las reglas de 'allow write' anteriores)
+    // ----------------------------------------------------
+
+    // Denegar cualquier otro intento de escritura de cliente por defecto.
+    // Esta regla actúa como un 'catch-all' para cualquier ruta de escritura no explícitamente permitida.
     match /{allPaths=**} {
       allow write: if false;
     }
