@@ -114,3 +114,33 @@ This is a government project for the state of Yucatan, Mexico. Development follo
 ## 📄 License
 
 Government of Mexico - Secretaría de Agricultura y Desarrollo Rural
+
+---
+
+### Migration: normalize 'Permanente' to canonical status
+
+We've added a safe migration script `migrate-canonical-statuses.js` which by default runs in dry-run mode and will not write to Firestore unless `--apply --yes` is provided.
+
+Run a dry-run (recommended, will only list planned changes):
+
+```powershell
+node migrate-canonical-statuses.js
+```
+
+Run against the Firestore emulator (recommended for testing):
+
+```powershell
+$env:FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
+node migrate-canonical-statuses.js
+```
+
+To perform the updates (apply):
+
+```powershell
+node migrate-canonical-statuses.js --apply --yes
+```
+
+Notes:
+- The script will add non-destructive fields `statusCanonical` (value: `Completado`), `statusCanonicalSource` and `statusCanonicalSetAt`.
+- By default it scans `acuerdos-ceso` and `acuerdos-aphis`. Use `--collections "acuerdos-ceso,acuerdos"` to override.
+- Always run a dry-run first, test on the emulator, and backup production before applying.
