@@ -269,6 +269,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="__/firebase/init.js"></script>
   <script>
     function fmtDate(v){ try{ if(!v) return ''; if(typeof v === 'number'){ const d = new Date((v - 25569) * 86400 * 1000); return d.toLocaleDateString(); } if(v.toDate) return v.toDate().toLocaleDateString(); const d=new Date(v); return isNaN(d)? String(v): d.toLocaleDateString(); }catch(e){return String(v);} }
@@ -386,7 +387,34 @@
   function loadAcuerdos(){ document.getElementById('acuerdosContainer').innerHTML='<em>Cargando acuerdos...</em>'; tryCollections(['acuerdos_ceso','acuerdos-ceso','acuerdos']).then(result=>{ if(!result.found){ document.getElementById('acuerdosContainer').innerHTML='<div class="alert alert-gobierno alert-info">No se encontraron acuerdos en las colecciones probadas.</div>'; return; } renderTable(result.snapshot, result.name); computeSummaryAndLists(result.name); }).catch(err=>{ document.getElementById('alerts').innerHTML='<div class="alert alert-gobierno alert-danger">Error: '+(err && err.message)+'</div>'; }); }
 
     // initial load
-    loadAcuerdos();
+    // Wait for Firebase Auth to settle before loading protected CESO collections.
+    // This prevents immediate Permission Denied errors when the page attempts reads
+    // while the client is not signed into Firebase. If the SDK isn't available
+    // or auth doesn't settle within 5s, fall back to attempting the load so
+    // the page can still show publicly-readable collections if rules allow.
+    (function(){
+      if (window.firebase && firebase.auth) {
+        let called = false;
+        const timeout = setTimeout(function(){
+          if (!called) {
+            console.warn('[auth] onAuthStateChanged timeout — calling loadAcuerdos anyway');
+            called = true;
+            loadAcuerdos();
+          }
+        }, 5000);
+
+        firebase.auth().onAuthStateChanged(function(user){
+          if (called) return;
+          called = true;
+          clearTimeout(timeout);
+          console.log('[auth] Firebase onAuthStateChanged — user:', user && user.email ? user.email : null);
+          loadAcuerdos();
+        });
+      } else {
+        // No Firebase SDK available, proceed immediately
+        loadAcuerdos();
+      }
+    })();
 
     // Add filter functionality
     document.getElementById('filterInput').addEventListener('input', function() {
@@ -492,6 +520,16 @@
   </script>
 
   <!-- Government Framework JavaScript -->
+  <!-- Vendor & platform scripts: bootstrap bundle (includes Popper), Firebase SDKs -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="__/firebase/init.js"></script>
+  <script src="auth-system.js"></script>
+
+  <!-- Official GOB.mx runtime - must be included once, just before closing body -->
   <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
-</body>
+  </body>
 </html>
