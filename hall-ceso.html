@@ -274,6 +274,53 @@
     .hall-container {
       padding-top: 20px !important; /* Reduce excessive padding */
     }
+
+    /* Flashing alert animation */
+    .flashing-alert {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: linear-gradient(45deg, #fff3cd, #ffeaa7);
+      border: 2px solid #f39c12;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: flash 2s infinite;
+      font-weight: bold;
+      color: #8b4513;
+    }
+
+    .flashing-alert:hover {
+      background: linear-gradient(45deg, #ffeaa7, #fff3cd);
+      transform: scale(1.02);
+    }
+
+    .alert-count {
+      background: #e74c3c;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    @keyframes flash {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0.7; }
+    }
+
+    /* Reduce animation intensity on mobile for better UX */
+    @media (max-width: 768px) {
+      .flashing-alert {
+        animation: flash 3s infinite;
+      }
+    }
   </style>
 </head>
 <body>
@@ -325,8 +372,11 @@
 
       <!-- Alertas críticas (si las hay) -->
       <div id="criticalAlerts" class="critical-alerts d-none">
-        <h6><span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-exclamation-triangle text-warning"></i></span> <span data-es="Atención Requerida" data-en="Attention Required">Atención Requerida</span></h6>
-        <div id="alertsList"></div>
+        <div id="alertsList" class="flashing-alert" onclick="showAgreementsByStatus('Vencidos')">
+          <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-exclamation-triangle-fill text-warning"></i></span>
+          <span id="overdueCount" class="alert-count">0</span>
+          <span data-es="Vencidos" data-en="Overdue">Vencidos</span>
+        </div>
       </div>
 
       <!-- Estadísticas del grupo -->
@@ -1004,6 +1054,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="__/firebase/init.js"></script>
   <script src="auth-system.js"></script>
   
@@ -1013,8 +1064,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   
   <script>
-    // Global variable to store original agreements data for filtering
-    let originalAgreements = [];
+  // Global variable to store original agreements data for filtering
+  let originalAgreements = [];
+  // Current modal status (explicit), avoids parsing modal title text which is localization-dependent
+  let currentModalStatus = 'all';
     
     // Prevenir interferencia de navegación hash legacy
     window.addEventListener('load', function() {
@@ -1141,7 +1194,8 @@
           
           const isMyTask = responsible.includes(userEmail) || responsible.includes(currentUser?.name?.toLowerCase() || '');
           
-          if (status.includes('completado') || status.includes('cumplido')) {
+          // Treat 'permanente' as a completed-like status (enforced/permanent), so it should not be counted as pending
+          if (status.includes('completado') || status.includes('cumplido') || status.includes('perman')) {
             completed++;
             if (isMyTask) myCompleted++;
           } else if (status.includes('vencido') || (dueDate && new Date(dueDate) < now)) {
@@ -1177,14 +1231,9 @@
         // Mostrar alertas críticas si las hay
         if (criticalIssues.length > 0) {
           const alertsDiv = document.getElementById('criticalAlerts');
-          const alertsList = document.getElementById('alertsList');
+          const overdueCount = document.getElementById('overdueCount');
           
-          alertsList.innerHTML = criticalIssues.map(issue => 
-            `<div class="alert alert-warning alert-sm mb-1">
-              <strong>${issue.title}:</strong> ${issue.description}
-            </div>`
-          ).join('');
-          
+          overdueCount.textContent = criticalIssues.length;
           alertsDiv.classList.remove('d-none');
         }
         
@@ -1248,7 +1297,8 @@
       document.getElementById('searchAgreements').addEventListener('input', applyFilters);
       document.getElementById('filterResponsible').addEventListener('change', applyFilters);
       
-      // Configurar título del modal
+      // Set explicit modal status (used by display/applyFilters) and configure title
+      currentModalStatus = status || 'all';
       const titles = {
         'all': { es: 'Todos los Acuerdos', en: 'All Agreements' },
         'Pendiente': { es: 'Acuerdos Pendientes', en: 'Pending Agreements' },
@@ -1293,11 +1343,13 @@
         const snapshot = await query.get();
         console.log('📦 Retrieved documents:', snapshot.size);
         
-        // Filter documents based on status matching loadStatistics() logic
+          // Filter documents based on status matching loadStatistics() logic
         const filteredDocs = [];
         snapshot.forEach(doc => {
           const data = doc.data();
-          const docStatus = (data.status || data.estatus || data.Estado || '').toLowerCase();
+          // Normalize status value, remove diacritics and trim (fixed regex)
+          const rawStatus = data.status || data.estatus || data.Estado || '';
+          const docStatus = String(rawStatus).normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
           
           let matchesStatus = false;
           
@@ -1319,8 +1371,13 @@
                 isOverdue = !isNaN(date) && date < new Date();
               }
             }
-            // Only show as overdue if not completed AND (has vencido status OR is past due)
-            matchesStatus = !docStatus.includes('completado') && !docStatus.includes('cumplido') && (docStatus.includes('vencido') || isOverdue);
+            // Only show as overdue if not completed AND not marked permanent AND (has vencido status OR is past due)
+            // Exclude 'permanente' (and variants containing 'perman') from overdue results
+            matchesStatus = !docStatus.includes('completado')
+              && !docStatus.includes('cumplido')
+              && !docStatus.includes('permanente')
+              && !docStatus.includes('perman')
+              && (docStatus.includes('vencido') || isOverdue);
           } else if (status === 'Pendiente') {
             const dueDate = data.complianceDate || data.fecha_cumplimiento || data['Fecha de Cumplimiento'];
             let isOverdue = false;
@@ -1337,11 +1394,14 @@
                 isOverdue = !isNaN(date) && date < new Date();
               }
             }
-            matchesStatus = !docStatus.includes('completado') && !docStatus.includes('cumplido') && !docStatus.includes('vencido') && !docStatus.includes('progreso') && !isOverdue;
+            // Exclude completed/closed/archive/permanent/progress statuses from 'Pendiente'
+            const excluded = ['completado','cumplido','vencido','progreso','permanente','cerrado','finalizado','archivado'];
+            const hasExcluded = excluded.some(s => docStatus.includes(s));
+            matchesStatus = !hasExcluded && !isOverdue;
           } else if (status === 'En Progreso') {
-            matchesStatus = docStatus.includes('progreso');
+            matchesStatus = docStatus.includes('progreso') || docStatus.includes('en progreso');
           } else if (status === 'Completado') {
-            matchesStatus = docStatus.includes('completado') || docStatus.includes('cumplido');
+            matchesStatus = docStatus.includes('completado') || docStatus.includes('cumplido') || docStatus.includes('finalizado');
           }
           
           if (matchesStatus) {
@@ -1425,6 +1485,32 @@
         const responsible = agreement.responsible || agreement.responsable || agreement.Responsable || agreement['Responsable del Seguimiento'] || agreement['Responsable'] || '';
         const matchesResponsible = !responsibleFilter || responsible === responsibleFilter || responsible.includes(responsibleFilter);
         
+        // If the modal is showing 'Pendiente', explicitly exclude completed/closed/archive/permanent & overdue
+        // Use the explicit currentModalStatus rather than parsing the title text (localization-safe)
+          if (currentModalStatus === 'Pendiente') {
+          const rawStatus = agreement.status || agreement.Estado || agreement.estado || '';
+          // Normalize and strip combining marks (fix faulty regex)
+          const s = String(rawStatus).normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+          const excluded = ['completado','cumplido','vencido','progreso','permanente','cerrado','finalizado','archivado'];
+          const hasExcluded = excluded.some(x => s.includes(x));
+
+          // Determine overdue based on possible date fields
+          const dateField = agreement.complianceDate || agreement.fecha_cumplimiento || agreement['Fecha de Cumplimiento'] || agreement.fechaCumplimiento || agreement.deadline || agreement.meetingDate || agreement.fecha_reunion || agreement['Fecha de Reunión'];
+          let isOverdue = false;
+          if (dateField) {
+            if (typeof dateField === 'number') {
+              isOverdue = new Date((dateField - 25569) * 86400 * 1000) < new Date();
+            } else if (dateField.toDate) {
+              isOverdue = dateField.toDate() < new Date();
+            } else {
+              const d = new Date(dateField);
+              isOverdue = !isNaN(d) && d < new Date();
+            }
+          }
+
+          if (hasExcluded || isOverdue) return false;
+        }
+
         return matchesSearch && matchesResponsible;
       });
       
@@ -1565,14 +1651,8 @@
         }
       };
       
-      // Get current status from modal title or default to 'all'
-      const modalTitle = document.getElementById('modalTitle').textContent;
-      let currentStatus = 'all';
-      if (modalTitle.includes('Pendientes')) currentStatus = 'Pendiente';
-      else if (modalTitle.includes('Vencidos')) currentStatus = 'Vencidos';
-      else if (modalTitle.includes('Progreso')) currentStatus = 'En Progreso';
-      else if (modalTitle.includes('Completados')) currentStatus = 'Completado';
-      
+      // Use the explicit currentModalStatus set by showAgreementsByStatus
+      const currentStatus = currentModalStatus || 'all';
       displayAgreements(mockSnapshot, currentStatus);
     }
 
