@@ -18,6 +18,8 @@
   <!-- Estilos personalizados -->
   <link href="gobmx.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
+  <!-- Fallback fonts (CDN) to ensure gov icons/fonts load when local assets are missing -->
+  <link href="/static/gobmx-font-fallback.css" rel="stylesheet">
 
   <style>
     .upload-area {
@@ -88,6 +90,14 @@
         <li class="breadcrumb-item active" aria-current="page" data-es="Carga en Lote" data-en="Batch Upload">Carga en Lote</li>
       </ol>
     </nav>
+
+    <!-- Back button -->
+    <div class="mb-3">
+      <a href="hall-ceso.html" class="btn btn-secondary" id="backToHall">
+        <i class="bi bi-arrow-left-circle me-1"></i>
+        <span data-es="Volver a CESO" data-en="Back to CESO">Volver a CESO</span>
+      </a>
+    </div>
 
     <!-- Language Toggle -->
     <div class="text-end mb-3">

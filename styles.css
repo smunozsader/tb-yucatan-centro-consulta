@@ -1,9 +1,14 @@
-/*
-	Project-wide styles and utility classes for gob.mx v3 compliance.
-	This file centralizes the government color palette and button utilities
-	so pages avoid inline styles and follow the official design tokens.
+/* Load CDN fallback fonts for gov.mx and icon fonts to ensure icons render
+   even if local font assets are missing on the hosting environment. This
+   import applies site-wide to all pages that include `styles.css`. */
+@import url('/static/gobmx-font-fallback.css');
 
-	Note: keep this file small and use the framework's main.css for base styles.
+/*
+  Project-wide styles and utility classes for gob.mx v3 compliance.
+  This file centralizes the government color palette and button utilities
+  so pages avoid inline styles and follow the official design tokens.
+
+  Note: keep this file small and use the framework's main.css for base styles.
 */
 
 :root{
