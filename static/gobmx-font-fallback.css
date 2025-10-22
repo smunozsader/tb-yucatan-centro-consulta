@@ -1,8 +1,7 @@
 /* Fallback/override font-face rules to ensure icon and gov fonts load from CDN */
 @font-face {
   font-family: 'icogobmx';
-  src: url('https://framework-gb.cdn.gob.mx/gm/v3/assets/fonts/icogobmx.woff2') format('woff2'),
-       url('https://framework-gb.cdn.gob.mx/gm/v3/assets/fonts/icogobmx.woff') format('woff'),
+  src: url('https://framework-gb.cdn.gob.mx/gm/v3/assets/fonts/icogobmx.woff') format('woff'),
        url('https://framework-gb.cdn.gob.mx/gm/v3/assets/fonts/icogobmx.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
