@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "ceso-aphis-yuc"
-  }
+  },
+  "targets": {
+    "ceso-aphis-yuc": {
+      "storage": {
+        "default": [
+          "ceso-aphis-yuc.appspot.com"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
