@@ -45,7 +45,7 @@ function parseExcelDate(serial) {
 function normalizeStatus(status) {
   if (!status) return 'Pendiente';
   const statusLower = status.toString().toLowerCase().trim();
-  if (statusLower.includes('complet') || statusLower.includes('cumpl')) return 'Completado';
+  if (statusLower.includes('complet') || statusLower.includes('cumpl') || statusLower.includes('perman')) return 'Completado';
   if (statusLower.includes('venc') || statusLower.includes('expi')) return 'Vencidos';
   return 'Pendiente';
 }

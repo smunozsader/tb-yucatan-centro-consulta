@@ -676,24 +676,54 @@
       }); 
     });
 
-    // Logout functionality
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-      const btn = this;
-      const originalText = btn.innerHTML;
-      
-      // Show loading state
-      btn.disabled = true;
-      btn.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span> <span data-es="Cerrando Sesión..." data-en="Signing Out...">Cerrando Sesión...</span>';
-      
-      firebase.auth().signOut().then(() => {
+    // Logout functionality (robust): use Firebase signOut if available, else fallback to GobMX shim
+    (function(){
+      const btn = document.getElementById('logoutBtn');
+      if (!btn) return;
+      btn.addEventListener('click', function() {
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span> <span data-es="Cerrando Sesión..." data-en="Signing Out...">Cerrando Sesión...</span>';
+
+        // Try Firebase signOut if usable
+        try {
+          if (typeof firebase !== 'undefined' && firebase.auth) {
+            try {
+              const fbAuth = firebase.auth();
+              if (fbAuth) {
+                fbAuth.signOut().then(() => {
+                  try { window.gobmxAuth && window.gobmxAuth.logout && window.gobmxAuth.logout(); } catch (e) {}
+                  window.location.href = 'index.html';
+                }).catch(err => {
+                  console.error('Error signing out via Firebase:', err);
+                  showAlert('Error al cerrar sesión: ' + (err && err.message ? err.message : String(err)), 'danger');
+                  btn.disabled = false;
+                  btn.innerHTML = originalText;
+                });
+                return;
+              }
+            } catch (e) {
+              console.warn('firebase.auth() not usable, falling back to shim logout', e);
+            }
+          }
+        } catch (outer) {
+          console.warn('Error while attempting Firebase logout, will try shim logout:', outer);
+        }
+
+        // Fallback to GobMX shim logout
+        try {
+          if (window.gobmxAuth && typeof window.gobmxAuth.logout === 'function') {
+            window.gobmxAuth.logout();
+            return;
+          }
+        } catch (shimErr) {
+          console.warn('GobMX shim logout failed:', shimErr);
+        }
+
+        // Last resort: redirect
         window.location.href = 'index.html';
-      }).catch((error) => {
-        console.error('Error signing out:', error);
-        showAlert('Error al cerrar sesión: ' + error.message, 'danger');
-        btn.disabled = false;
-        btn.innerHTML = originalText;
       });
-    });
+    })();
 
     // Language switching functionality
     function getCurrentLanguage() {

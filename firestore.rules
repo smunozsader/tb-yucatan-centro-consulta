@@ -1,112 +1,125 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // ---------------------------------------------------------------------
+    // Simple, easy-to-read ruleset for the TB Yucatán app
+    // - Public reads for agreements and evidence metadata (so the public UI can list)
+    // - Writes (create/update) allowed only for authenticated users with custom
+    //   claims: role == 'RESPONSABLE' or admin == true
+    // - Admins can delete; clients cannot delete documents directly
+    // ---------------------------------------------------------------------
 
-    // Restrict read access to authenticated users only.
-    // If you need public reads for some collections, add explicit exceptions.
-    match /{document=**} {
-      allow read: if request.auth != null;
+
+
+    // --------------------------- Movilizaciones -------------------------------
+    // Movilizaciones data: public read for summary/reporting, writes only by ADMINISTRATOR or RESPONSIBLE
+    match /movilizaciones/{ventanilla}/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin() || isResponsible();
     }
 
-    // Users collections - allow read access for authentication
+    // ---------------------------------------------------------------------
+    // Simple, easy-to-read ruleset for the TB Yucatán app
+    // - Public reads for agreements and evidence metadata (so the public UI can list)
+    // - Writes (create/update) allowed only for authenticated users with custom
+    //   claims: role == 'RESPONSABLE' or admin == true
+    // - Admins can delete; clients cannot delete documents directly
+    // ---------------------------------------------------------------------
+
+    function isAuthenticated() { return request.auth != null; }
+    function isAdmin() { return isAuthenticated() && (request.auth.token.admin == true || request.auth.token.role == 'ADMINISTRATOR'); }
+    function isResponsible() { return isAuthenticated() && request.auth.token.role == 'RESPONSABLE'; }
+
+    // --------------------------- Agreements -------------------------------
+    // CESO agreements: public reads, writes by RESPONSABLE or admin
+    match /acuerdos-ceso/{docId} {
+      allow read: if true;
+      allow create, update: if isAdmin() || isResponsible();
+      allow delete: if isAdmin();
+    }
+
+    // APHIS agreements: public reads, writes by RESPONSABLE or admin
+    match /acuerdos-aphis/{docId} {
+      allow read: if true;
+      allow create, update: if isAdmin() || isResponsible();
+      allow delete: if isAdmin();
+    }
+
+    // --------------------------- Users ----------------------------------
+          // --------------------------- Movilizaciones -------------------------------
+          // Movilizaciones data: public read for summary/reporting, writes only by ADMINISTRATOR or RESPONSIBLE
+          match /movilizaciones/{ventanilla}/{docId} {
+            allow read: if true;
+            allow create, update, delete: if isAdmin() || isResponsible();
+          }
+    // Users collection: readable by authenticated users; creation/deletion only by admin
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin();
+      // Users may update their own profile; admins may update any user
+      allow update: if isAdmin() || (isAuthenticated() && request.auth.uid == userId);
+      allow delete: if isAdmin();
+    }
+
+    // Org-specific user collections used by the client (users_ceso, users_aphis)
+    // Allow authenticated reads so the client can load the user list for UI purposes.
+    // Creation and updates remain restricted to admins or the user themselves.
     match /users_ceso/{userId} {
-      // Users list is only readable by authenticated users
-      allow read: if request.auth != null;
-      allow create, update: if request.auth != null;
-      allow delete: if false;
+      allow read: if isAuthenticated();
+      allow create: if isAdmin();
+      allow update: if isAdmin() || (isAuthenticated() && request.auth.uid == userId);
+      allow delete: if isAdmin();
     }
 
     match /users_aphis/{userId} {
-      allow read: if request.auth != null;
-      allow create, update: if request.auth != null;
-      allow delete: if false;
+      allow read: if isAuthenticated();
+      allow create: if isAdmin();
+      allow update: if isAdmin() || (isAuthenticated() && request.auth.uid == userId);
+      allow delete: if isAdmin();
     }
 
-    // Consolidated users collection (if used in future)
-    match /users/{userId} {
-      allow read: if request.auth != null;
-      allow create, update: if request.auth != null;
-      allow delete: if false;
-    }
-
-    // Agreement documents - CESO
-    // Writes are restricted to authenticated users with appropriate custom claims
-    // or performed via a trusted backend service using the Admin SDK.
-    match /acuerdos-ceso/{docId} {
-  // Read access restricted to authenticated users
-  allow read: if request.auth != null;
-      // Allow create/update only for authenticated users with role 'RESPONSABLE' or admin claim
-      allow create: if request.auth != null && (
-        request.auth.token.role == 'RESPONSABLE' || request.auth.token.admin == true
-      );
-      allow update: if request.auth != null && (
-        request.auth.token.role == 'RESPONSABLE' || request.auth.token.admin == true
-      );
-      allow delete: if false;
-    }
-
-    // Agreement documents - APHIS
-    // Writes are restricted to authenticated users with appropriate custom claims
-    // or performed via a trusted backend service using the Admin SDK.
-    match /acuerdos-aphis/{docId} {
-      allow read: if true;
-      allow create: if request.auth != null && (
-        request.auth.token.role == 'RESPONSABLE' || request.auth.token.admin == true
-      );
-      allow update: if request.auth != null && (
-        request.auth.token.role == 'RESPONSABLE' || request.auth.token.admin == true
-      );
-      allow delete: if false;
-    }
-
-    // Repository documents - CESO specific
-    // Prefer authenticated writes; if using application-level auth (gobmxAuth), use a
-    // backend service to create/modify these documents via Admin SDK instead of allowing
-    // unauthenticated client writes.
-    match /repositorio-ceso/{docId} {
-      allow read: if true;
-      allow create: if request.auth != null && request.auth.token.admin == true
-        && request.resource.data.keys().hasAll(['category','title','filename','storagePath','uploader','createdAt'])
-        && request.resource.data.category is string
-        && request.resource.data.title is string
-        && request.resource.data.filename is string
-        && request.resource.data.storagePath is string
-        && request.resource.data.uploader is string;
-      // Allow update only for admins (prevent arbitrary client-side updates)
-      allow update: if request.auth != null && request.auth.token.admin == true;
-      allow delete: if false;
-    }
-
-    // Repository documents - APHIS specific
-    match /repositorio-aphis/{docId} {
-      allow read: if true;
-      allow create: if request.auth != null && request.auth.token.admin == true
-        && request.resource.data.keys().hasAll(['category','title','filename','storagePath','uploader','createdAt'])
-        && request.resource.data.category is string
-        && request.resource.data.title is string
-        && request.resource.data.filename is string
-        && request.resource.data.storagePath is string
-        && request.resource.data.uploader is string;
-      allow update: if request.auth != null && request.auth.token.admin == true;
-      allow delete: if false;
-    }
-
-    // Evidencias subcollection: metadata describing uploaded evidence files
-    match /{coll}/{docId}/evidencias/{evidId} {
-      // Anyone may read evidence metadata (public), but creating evidence metadata
-      // requires authentication. Also ensure uploader matches the authenticated user.
+    // --------------------------- Evidencias -----------------------------
+    // Evidence metadata stored as a subcollection under each agreement:
+    //   /acuerdos-ceso/{docId}/evidencias/{evidId}
+    // Public read so that listings work without auth; creating evidence metadata
+    // requires authentication and a matching uploader email.
+    match /{collection}/{docId}/evidencias/{evidId} {
       allow read: if true;
 
-      allow create: if request.auth != null
-        && request.resource.data.keys().hasAll(['filename','storagePath','uploader','createdAt'])
+      allow create: if isAdmin() || (isResponsible() &&
+        // basic shape validation
+        request.resource.data.keys().hasAll(['filename','storagePath','uploader','createdAt'])
         && request.resource.data.filename is string
         && request.resource.data.storagePath is string
         && request.resource.data.uploader is string
         && request.resource.data.createdAt is timestamp
-        && request.resource.data.uploader == request.auth.token.email;
 
-      // Disallow updates/deletes from clients; handle via admin processes if needed.
-      allow update, delete: if false;
+        // uploader must match authenticated user's email (prevent forging)
+        && request.resource.data.uploader == request.auth.token.email
+      );
+
+      // Only admins may update or delete evidence metadata from the client-side
+      allow update, delete: if isAdmin();
+    }
+
+    // --------------------------- Repositorio ----------------------------
+    // Repository files metadata: read-by-all, writes only by admin
+    match /repositorio-ceso/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /repositorio-aphis/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ------------------------------------------------------------------
+    // Default deny for anything not explicitly allowed above (writes are denied)
+    match /{document=**} {
+      allow read: if false;
+      allow write: if false;
     }
   }
+
 }

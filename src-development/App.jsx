@@ -58,6 +58,7 @@ function App() {
                 <Route path="/repository" element={<Repository />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/messages" element={<Messages />} />
+                <Route path="/movilizaciones" element={React.createElement(require('./pages/Movilizaciones.jsx').default)} />
               </Routes>
             </main>
             <Footer />

@@ -412,29 +412,54 @@ function updatePagePermissions() {
   });
 }
 
-// Logout handler
+// Logout handler (robust)
 document.getElementById('logoutBtn').addEventListener('click', function() {
-  window.gobmxAuth.logout();
-  updateAuthenticationUI();
-  
-  // Show logout notification
-  const toast = document.createElement('div');
-  toast.className = 'toast position-fixed bottom-0 start-50 translate-middle-x mb-3';
-  toast.innerHTML = `
-    <div class="toast-body bg-info text-white">
-      <span class="bootstrap-icons" aria-hidden="true">
-        <i class="bi bi-check-circle"></i>
-      </span>
-      Sesión cerrada correctamente
-    </div>
-  `;
-  document.body.appendChild(toast);
-  const bsToast = new bootstrap.Toast(toast);
-  bsToast.show();
-  
-  setTimeout(() => {
-    document.body.removeChild(toast);
-  }, 3000);
+  const doToast = () => {
+    updateAuthenticationUI();
+    // Show logout notification
+    const toast = document.createElement('div');
+    toast.className = 'toast position-fixed bottom-0 start-50 translate-middle-x mb-3';
+    toast.innerHTML = `
+      <div class="toast-body bg-info text-white">
+        <span class="bootstrap-icons" aria-hidden="true">
+          <i class="bi bi-check-circle"></i>
+        </span>
+        Sesión cerrada correctamente
+      </div>
+    `;
+    document.body.appendChild(toast);
+    const bsToast = new bootstrap.Toast(toast);
+    bsToast.show();
+    setTimeout(() => { document.body.removeChild(toast); }, 3000);
+  };
+
+  // Try Firebase signOut first
+  try {
+    if (typeof firebase !== 'undefined' && firebase.auth) {
+      try {
+        const fbAuth = firebase.auth();
+        if (fbAuth) {
+          fbAuth.signOut().then(() => {
+            try { window.gobmxAuth && window.gobmxAuth.logout && window.gobmxAuth.logout(); } catch(e){}
+            doToast();
+          }).catch(err => {
+            console.warn('Firebase signOut failed, falling back to gobmxAuth.logout():', err);
+            try { window.gobmxAuth && window.gobmxAuth.logout && window.gobmxAuth.logout(); } catch(e){}
+            doToast();
+          });
+          return;
+        }
+      } catch (e) {
+        console.warn('firebase.auth() not usable, falling back to gobmxAuth.logout()', e);
+      }
+    }
+  } catch (outer) {
+    console.warn('Error attempting Firebase signOut, falling back to gobmxAuth.logout():', outer);
+  }
+
+  // Fallback
+  try { window.gobmxAuth && window.gobmxAuth.logout && window.gobmxAuth.logout(); } catch(e){}
+  doToast();
 });
 
 // Initialize authentication UI on page load
