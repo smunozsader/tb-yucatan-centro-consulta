@@ -1,0 +1,150 @@
+[
+  {
+    "destino": "Destino",
+    "guias": {
+      "Enero": "Guias Realizadas",
+      "Febrero": "Guias Realizadas",
+      "Marzo": "Guias Realizadas",
+      "Abril": "Guias Realizadas",
+      "Mayo": "Guias Realizadas",
+      "Junio": "Guias Realizadas",
+      "Julio": "Guias Realizadas",
+      "Agosto": "Guias Realizadas",
+      "Septiembre": "Guias Realizadas",
+      "Octubre": "Guias Realizadas",
+      "Noviembre": "Guias Realizadas",
+      "Diciembre": "Guias Realizadas"
+    }
+  },
+  {
+    "destino": "1. Rastro en Yucatán",
+    "guias": {
+      "Enero": 475.0,
+      "Febrero": 402.0,
+      "Marzo": 442.0,
+      "Abril": 463.0,
+      "Mayo": 452.0
+    }
+  },
+  {
+    "destino": "2. Rastro Fuera del Estado",
+    "guias": {
+      "Enero": 4.0,
+      "Febrero": 8.0,
+      "Marzo": 13.0,
+      "Abril": 4.0,
+      "Mayo": 2.0
+    }
+  },
+  {
+    "destino": "3. UPP/PSG en el Estado",
+    "guias": {
+      "Enero": 5083.0,
+      "Febrero": 4936.0,
+      "Marzo": 4040.0,
+      "Abril": 4473.0,
+      "Mayo": 4553.0
+    }
+  },
+  {
+    "destino": "4. UPP/PSG Fuera del Estado",
+    "guias": {
+      "Enero": 77.0,
+      "Febrero": 67.0,
+      "Marzo": 47.0,
+      "Abril": 58.0,
+      "Mayo": 50.0
+    }
+  },
+  {
+    "destino": "TOTAL",
+    "guias": {
+      "Enero": 5639,
+      "Febrero": 5413,
+      "Marzo": 4542,
+      "Abril": 4998,
+      "Mayo": 5057,
+      "Junio": 0,
+      "Julio": 0,
+      "Agosto": 0,
+      "Septiembre": 0,
+      "Octubre": 0,
+      "Noviembre": 0,
+      "Diciembre": 0
+    }
+  },
+  {
+    "destino": "Destino",
+    "guias": {
+      "Enero": "Cabezas Movilizadas",
+      "Febrero": "Cabezas Movilizadas",
+      "Marzo": "Cabezas Movilizadas",
+      "Abril": "Cabezas Movilizadas",
+      "Mayo": "Cabezas Movilizadas",
+      "Junio": "Cabezas Movilizadas",
+      "Julio": "Cabezas Movilizadas",
+      "Agosto": "Cabezas Movilizadas",
+      "Septiembre": "Cabezas Movilizadas",
+      "Octubre": "Cabezas Movilizadas",
+      "Noviembre": "Cabezas Movilizadas",
+      "Diciembre": "Cabezas Movilizadas"
+    }
+  },
+  {
+    "destino": "1. Rastro en Yucatán",
+    "guias": {
+      "Enero": 3579.0,
+      "Febrero": 3122.0,
+      "Marzo": 3197.0,
+      "Abril": 3218.0,
+      "Mayo": 3317.0
+    }
+  },
+  {
+    "destino": "2. Rastro Fuera del Estado",
+    "guias": {
+      "Enero": 141.0,
+      "Febrero": 241.0,
+      "Marzo": 413.0,
+      "Abril": 81.0,
+      "Mayo": 30.0
+    }
+  },
+  {
+    "destino": "3. UPP/PSG en el Estado",
+    "guias": {
+      "Enero": 18019.0,
+      "Febrero": 18236.0,
+      "Marzo": 15098.0,
+      "Abril": 14711.0,
+      "Mayo": 15486.0
+    }
+  },
+  {
+    "destino": "4. UPP/PSG Fuera del Estado",
+    "guias": {
+      "Enero": 2838.0,
+      "Febrero": 2381.0,
+      "Marzo": 1412.0,
+      "Abril": 1615.0,
+      "Mayo": 1262.0
+    }
+  },
+  {
+    "destino": "TOTAL",
+    "guias": {
+      "Enero": 24577,
+      "Febrero": 23980,
+      "Marzo": 20120,
+      "Abril": 19625,
+      "Mayo": 20095,
+      "Junio": 0,
+      "Julio": 0,
+      "Agosto": 0,
+      "Septiembre": 0,
+      "Octubre": 0,
+      "Noviembre": 0,
+      "Diciembre": 0
+    }
+  }
+]

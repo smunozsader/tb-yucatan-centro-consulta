@@ -1,0 +1,90 @@
+[
+  {
+    "actividad": "Engordador",
+    "tipo": "P01",
+    "historico": 1403.0,
+    "opinion_positiva": 770.0,
+    "proceso_concluido": 672.0,
+    "nuevo_ingreso": 174.0
+  },
+  {
+    "actividad": "Acopiador",
+    "tipo": "P02",
+    "historico": 73.0,
+    "opinion_positiva": 16.0,
+    "proceso_concluido": 11.0,
+    "nuevo_ingreso": 2.0
+  },
+  {
+    "actividad": "Establecimiento de sacrificio",
+    "tipo": "P03",
+    "historico": 2.0,
+    "opinion_positiva": 0.0,
+    "proceso_concluido": 0.0,
+    "nuevo_ingreso": 0.0
+  },
+  {
+    "actividad": "Comercializadoras",
+    "tipo": "P05",
+    "historico": 2.0,
+    "opinion_positiva": 0.0,
+    "proceso_concluido": 0.0,
+    "nuevo_ingreso": 0.0
+  },
+  {
+    "actividad": "Ferias y Exposiciones",
+    "tipo": "P08",
+    "historico": 10.0,
+    "opinion_positiva": 0.0,
+    "proceso_concluido": 0.0,
+    "nuevo_ingreso": 0.0
+  },
+  {
+    "actividad": "Acopiador de productos y subproductos",
+    "tipo": "P09",
+    "historico": 40.0,
+    "opinion_positiva": 40.0,
+    "proceso_concluido": 37.0,
+    "nuevo_ingreso": 8.0
+  },
+  {
+    "actividad": "Introductor de Ganado",
+    "tipo": "P10",
+    "historico": 36.0,
+    "opinion_positiva": 16.0,
+    "proceso_concluido": 10.0,
+    "nuevo_ingreso": 2.0
+  },
+  {
+    "actividad": "Predio de Repasto",
+    "tipo": "P14",
+    "historico": 51.0,
+    "opinion_positiva": 51.0,
+    "proceso_concluido": 48.0,
+    "nuevo_ingreso": 20.0
+  },
+  {
+    "actividad": "Corrales de Acopio para Exportación",
+    "tipo": "P17",
+    "historico": 3.0,
+    "opinion_positiva": 2.0,
+    "proceso_concluido": 2.0,
+    "nuevo_ingreso": 1.0
+  },
+  {
+    "actividad": "Organizaciones Ganaderas",
+    "tipo": "P18",
+    "historico": 22.0,
+    "opinion_positiva": 0.0,
+    "proceso_concluido": 0.0,
+    "nuevo_ingreso": 0.0
+  },
+  {
+    "actividad": "Subasta Ganadera",
+    "tipo": "P19",
+    "historico": 0.0,
+    "opinion_positiva": 1.0,
+    "proceso_concluido": 1.0,
+    "nuevo_ingreso": 1.0
+  }
+]

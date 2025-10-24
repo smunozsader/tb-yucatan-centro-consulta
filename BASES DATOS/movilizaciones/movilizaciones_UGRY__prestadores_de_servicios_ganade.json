@@ -1,0 +1,90 @@
+[
+  {
+    "actividad": "Engordador",
+    "tipo": "P01",
+    "historico": 485.0,
+    "opinion_positiva": 149.0,
+    "proceso_concluido": 115.0,
+    "nuevo_ingreso": 31.0
+  },
+  {
+    "actividad": "Acopiador",
+    "tipo": "P02",
+    "historico": 150.0,
+    "opinion_positiva": 9.0,
+    "proceso_concluido": 9.0,
+    "nuevo_ingreso": 3.0
+  },
+  {
+    "actividad": "Establecimiento de sacrificio",
+    "tipo": "P03",
+    "historico": 44.0,
+    "opinion_positiva": 0.0,
+    "proceso_concluido": 0.0,
+    "nuevo_ingreso": 0.0
+  },
+  {
+    "actividad": "Comercializadoras",
+    "tipo": "P05",
+    "historico": 5.0,
+    "opinion_positiva": 0.0,
+    "proceso_concluido": 0.0,
+    "nuevo_ingreso": 0.0
+  },
+  {
+    "actividad": "Ferias y Exposiciones",
+    "tipo": "P08",
+    "historico": 42.0,
+    "opinion_positiva": 1.0,
+    "proceso_concluido": 1.0,
+    "nuevo_ingreso": 1.0
+  },
+  {
+    "actividad": "Acopiador de productos y subproductos",
+    "tipo": "P09",
+    "historico": 41.0,
+    "opinion_positiva": 58.0,
+    "proceso_concluido": 41.0,
+    "nuevo_ingreso": 17.0
+  },
+  {
+    "actividad": "Introductor de Ganado",
+    "tipo": "P10",
+    "historico": 5.0,
+    "opinion_positiva": 1.0,
+    "proceso_concluido": 1.0,
+    "nuevo_ingreso": 1.0
+  },
+  {
+    "actividad": "Predio de Repasto",
+    "tipo": "P14",
+    "historico": 0.0,
+    "opinion_positiva": 1.0,
+    "proceso_concluido": 0.0,
+    "nuevo_ingreso": 1.0
+  },
+  {
+    "actividad": "Corrales de Acopio para Exportación",
+    "tipo": "P17",
+    "historico": 0.0,
+    "opinion_positiva": 0.0,
+    "proceso_concluido": 0.0,
+    "nuevo_ingreso": 0.0
+  },
+  {
+    "actividad": "Organizaciones Ganaderas",
+    "tipo": "P18",
+    "historico": 0.0,
+    "opinion_positiva": 0.0,
+    "proceso_concluido": 0.0,
+    "nuevo_ingreso": 0.0
+  },
+  {
+    "actividad": "Subasta Ganadera",
+    "tipo": "P19",
+    "historico": 0.0,
+    "opinion_positiva": 0.0,
+    "proceso_concluido": 0.0,
+    "nuevo_ingreso": 0.0
+  }
+]

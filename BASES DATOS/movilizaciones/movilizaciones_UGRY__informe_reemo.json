@@ -1,0 +1,182 @@
+[
+  {
+    "destino": "Destino",
+    "guias": {
+      "Enero": "Guias Realizadas",
+      "Febrero": "Guias Realizadas",
+      "Marzo": "Guias Realizadas",
+      "Abril": "Guias Realizadas",
+      "Mayo": "Guias Realizadas",
+      "Junio": "Guias Realizadas",
+      "Julio": "Guias Realizadas",
+      "Agosto": "Guias Realizadas",
+      "Septiembre": "Guias Realizadas",
+      "Octubre": "Guias Realizadas",
+      "Noviembre": "Guias Realizadas",
+      "Diciembre": "Guias Realizadas"
+    }
+  },
+  {
+    "destino": "1. Rastro en Yucatán",
+    "guias": {
+      "Enero": 251.0,
+      "Febrero": 212.0,
+      "Marzo": 153.0,
+      "Abril": 155.0,
+      "Mayo": 220.0,
+      "Junio": 181.0,
+      "Julio": 175.0,
+      "Agosto": 164.0,
+      "Septiembre": 122.0
+    }
+  },
+  {
+    "destino": "2. Rastro Fuera del Estado",
+    "guias": {
+      "Enero": 0.0,
+      "Febrero": 0.0,
+      "Marzo": 0.0,
+      "Abril": 0.0,
+      "Mayo": 0.0,
+      "Junio": 0.0,
+      "Julio": 0.0,
+      "Agosto": 0.0,
+      "Septiembre": 0.0
+    }
+  },
+  {
+    "destino": "3. UPP/PSG en el Estado",
+    "guias": {
+      "Enero": 204.0,
+      "Febrero": 239.0,
+      "Marzo": 205.0,
+      "Abril": 213.0,
+      "Mayo": 177.0,
+      "Junio": 170.0,
+      "Julio": 229.0,
+      "Agosto": 201.0,
+      "Septiembre": 120.0
+    }
+  },
+  {
+    "destino": "4. UPP/PSG Fuera del Estado",
+    "guias": {
+      "Enero": 0.0,
+      "Febrero": 0.0,
+      "Marzo": 0.0,
+      "Abril": 0.0,
+      "Mayo": 0.0,
+      "Junio": 0.0,
+      "Julio": 0.0,
+      "Agosto": 0.0,
+      "Septiembre": 0.0
+    }
+  },
+  {
+    "destino": "TOTAL",
+    "guias": {
+      "Enero": 455,
+      "Febrero": 451,
+      "Marzo": 358,
+      "Abril": 368,
+      "Mayo": 397,
+      "Junio": 351,
+      "Julio": 404,
+      "Agosto": 365,
+      "Septiembre": 242,
+      "Octubre": 0,
+      "Noviembre": 0,
+      "Diciembre": 0
+    }
+  },
+  {
+    "destino": "Destino",
+    "guias": {
+      "Enero": "Cabezas Movilizadas",
+      "Febrero": "Cabezas Movilizadas",
+      "Marzo": "Cabezas Movilizadas",
+      "Abril": "Cabezas Movilizadas",
+      "Mayo": "Cabezas Movilizadas",
+      "Junio": "Cabezas Movilizadas",
+      "Julio": "Cabezas Movilizadas",
+      "Agosto": "Cabezas Movilizadas",
+      "Septiembre": "Cabezas Movilizadas",
+      "Octubre": "Cabezas Movilizadas",
+      "Noviembre": "Cabezas Movilizadas",
+      "Diciembre": "Cabezas Movilizadas"
+    }
+  },
+  {
+    "destino": "1. Rastro en Yucatán",
+    "guias": {
+      "Enero": 420.0,
+      "Febrero": 365.0,
+      "Marzo": 253.0,
+      "Abril": 229.0,
+      "Mayo": 315.0,
+      "Junio": 254.0,
+      "Julio": 282.0,
+      "Agosto": 291.0,
+      "Septiembre": 195.0
+    }
+  },
+  {
+    "destino": "2. Rastro Fuera del Estado",
+    "guias": {
+      "Enero": 0.0,
+      "Febrero": 0.0,
+      "Marzo": 0.0,
+      "Abril": 0.0,
+      "Mayo": 0.0,
+      "Junio": 0.0,
+      "Julio": 0.0,
+      "Agosto": 0.0,
+      "Septiembre": 0.0
+    }
+  },
+  {
+    "destino": "3. UPP/PSG en el Estado",
+    "guias": {
+      "Enero": 430.0,
+      "Febrero": 457.0,
+      "Marzo": 380.0,
+      "Abril": 451.0,
+      "Mayo": 458.0,
+      "Junio": 410.0,
+      "Julio": 570.0,
+      "Agosto": 635.0,
+      "Septiembre": 467.0
+    }
+  },
+  {
+    "destino": "4. UPP/PSG Fuera del Estado",
+    "guias": {
+      "Enero": 0.0,
+      "Febrero": 0.0,
+      "Marzo": 0.0,
+      "Abril": 0.0,
+      "Mayo": 0.0,
+      "Junio": 0.0,
+      "Julio": 0.0,
+      "Agosto": 0.0,
+      "Septiembre": 0.0
+    }
+  },
+  {
+    "destino": "TOTAL",
+    "guias": {
+      "Enero": 850,
+      "Febrero": 822,
+      "Marzo": 633,
+      "Abril": 680,
+      "Mayo": 773,
+      "Junio": 664,
+      "Julio": 852,
+      "Agosto": 926,
+      "Septiembre": 662,
+      "Octubre": 0,
+      "Noviembre": 0,
+      "Diciembre": 0
+    }
+  }
+]

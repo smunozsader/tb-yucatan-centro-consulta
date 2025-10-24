@@ -1,0 +1,119 @@
+[
+  {
+    "mes": "2025-01",
+    "upp": null,
+    "solicitados": null,
+    "entregados": null,
+    "devueltos": null,
+    "capturados": null,
+    "avance": null
+  },
+  {
+    "mes": "2025-02",
+    "upp": null,
+    "solicitados": null,
+    "entregados": null,
+    "devueltos": null,
+    "capturados": null,
+    "avance": null
+  },
+  {
+    "mes": "2025-03",
+    "upp": null,
+    "solicitados": null,
+    "entregados": null,
+    "devueltos": null,
+    "capturados": null,
+    "avance": null
+  },
+  {
+    "mes": "2025-04",
+    "upp": 112.0,
+    "solicitados": 831.0,
+    "entregados": 831.0,
+    "devueltos": 831.0,
+    "capturados": 1,
+    "avance": null
+  },
+  {
+    "mes": "2025-05",
+    "upp": 64.0,
+    "solicitados": 472.0,
+    "entregados": 472.0,
+    "devueltos": 472.0,
+    "capturados": 1,
+    "avance": null
+  },
+  {
+    "mes": "2025-06",
+    "upp": 486.0,
+    "solicitados": 5807.0,
+    "entregados": 5807.0,
+    "devueltos": 5807.0,
+    "capturados": 1,
+    "avance": null
+  },
+  {
+    "mes": "2025-07",
+    "upp": 171.0,
+    "solicitados": 2062.0,
+    "entregados": 2062.0,
+    "devueltos": 2062.0,
+    "capturados": 1,
+    "avance": null
+  },
+  {
+    "mes": "2025-08",
+    "upp": 244.0,
+    "solicitados": 3141.0,
+    "entregados": 3141.0,
+    "devueltos": 3141.0,
+    "capturados": 1,
+    "avance": null
+  },
+  {
+    "mes": "2025-09",
+    "upp": 116.0,
+    "solicitados": 2435.0,
+    "entregados": 2435.0,
+    "devueltos": 2435.0,
+    "capturados": 1,
+    "avance": null
+  },
+  {
+    "mes": "2025-10",
+    "upp": null,
+    "solicitados": null,
+    "entregados": null,
+    "devueltos": null,
+    "capturados": null,
+    "avance": null
+  },
+  {
+    "mes": "2025-11",
+    "upp": null,
+    "solicitados": null,
+    "entregados": null,
+    "devueltos": null,
+    "capturados": null,
+    "avance": null
+  },
+  {
+    "mes": "2025-12",
+    "upp": null,
+    "solicitados": null,
+    "entregados": null,
+    "devueltos": null,
+    "capturados": null,
+    "avance": null
+  },
+  {
+    "mes": "TOTAL",
+    "upp": 1193,
+    "solicitados": 14748,
+    "entregados": 14748,
+    "devueltos": 14748,
+    "capturados": 1,
+    "avance": null
+  }
+]

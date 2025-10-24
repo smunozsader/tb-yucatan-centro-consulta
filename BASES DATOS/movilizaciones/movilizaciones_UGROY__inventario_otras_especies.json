@@ -1,0 +1,37 @@
+[
+  {
+    "especie": "Bovinos",
+    "altas": 204.0,
+    "inventario_altas": 3394.0,
+    "actualizaciones": 4185.0,
+    "inventario_act": 155815.0
+  },
+  {
+    "especie": "Ovinos",
+    "altas": 10.0,
+    "inventario_altas": 285.0,
+    "actualizaciones": 282.0,
+    "inventario_act": 9412.0
+  },
+  {
+    "especie": "Caprinos",
+    "altas": 0.0,
+    "inventario_altas": 0.0,
+    "actualizaciones": 12.0,
+    "inventario_act": 387.0
+  },
+  {
+    "especie": "Colmenas",
+    "altas": 106.0,
+    "inventario_altas": 2299.0,
+    "actualizaciones": 667.0,
+    "inventario_act": 23519.0
+  },
+  {
+    "especie": "TOTAL",
+    "altas": 320,
+    "inventario_altas": 5978,
+    "actualizaciones": 5146,
+    "inventario_act": 189133
+  }
+]

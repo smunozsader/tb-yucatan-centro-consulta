@@ -1,0 +1,8 @@
+ventanilla,year,month,table_type,municipio,origen_destino,especie,cantidad
+ventanilla_merida,2025,09,movilizaciones_general,Mérida,origen,Bovino,120
+
+# Notes:
+# - Open this CSV in Excel if you prefer .xlsx; keep the header row unchanged.
+# - `table_type` values: movilizaciones_general | por_municipio | por_especie | time_series
+# - `origen_destino` can be 'origen' or 'destino' or a literal location.
+# - Save as .csv or .xlsx using Excel when exporting.

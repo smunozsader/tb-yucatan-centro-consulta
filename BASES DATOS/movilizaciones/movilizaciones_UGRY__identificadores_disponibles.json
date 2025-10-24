@@ -1,0 +1,22 @@
+[
+  {
+    "ventanilla": "FECHA",
+    "col1": "21/10/2025"
+  },
+  {
+    "ventanilla": "BOVINO",
+    "col1": 2730.0
+  },
+  {
+    "ventanilla": "OVINO",
+    "col1": 276.0
+  },
+  {
+    "ventanilla": "CAPRINO",
+    "col1": 124.0
+  },
+  {
+    "ventanilla": "COLMENA",
+    "col1": 4262.0
+  }
+]

@@ -1,0 +1,119 @@
+[
+  {
+    "mes": "2025-01",
+    "upp": 320.0,
+    "solicitados": 4908.0,
+    "entregados": 4908.0,
+    "devueltos": 0.0,
+    "capturados": 4908.0,
+    "avance": 1
+  },
+  {
+    "mes": "2025-02",
+    "upp": 489.0,
+    "solicitados": 5360.0,
+    "entregados": 5360.0,
+    "devueltos": 0.0,
+    "capturados": 5360.0,
+    "avance": 1
+  },
+  {
+    "mes": "2025-03",
+    "upp": 528.0,
+    "solicitados": 12174.0,
+    "entregados": 12174.0,
+    "devueltos": 0.0,
+    "capturados": 12174.0,
+    "avance": 1
+  },
+  {
+    "mes": "2025-04",
+    "upp": 315.0,
+    "solicitados": 5113.0,
+    "entregados": 5113.0,
+    "devueltos": 0.0,
+    "capturados": 5113.0,
+    "avance": 1
+  },
+  {
+    "mes": "2025-05",
+    "upp": 277.0,
+    "solicitados": 5142.0,
+    "entregados": 5142.0,
+    "devueltos": 0.0,
+    "capturados": 5142.0,
+    "avance": 1
+  },
+  {
+    "mes": "2025-06",
+    "upp": 369.0,
+    "solicitados": 5687.0,
+    "entregados": 5687.0,
+    "devueltos": 0.0,
+    "capturados": 5687.0,
+    "avance": 1
+  },
+  {
+    "mes": "2025-07",
+    "upp": 444.0,
+    "solicitados": 5509.0,
+    "entregados": 5398.0,
+    "devueltos": 111.0,
+    "capturados": 5398.0,
+    "avance": 0.9798511527
+  },
+  {
+    "mes": "2025-08",
+    "upp": 157.0,
+    "solicitados": 2017.0,
+    "entregados": 1986.0,
+    "devueltos": 31.0,
+    "capturados": 1986.0,
+    "avance": 0.9846306396
+  },
+  {
+    "mes": "2025-09",
+    "upp": 455.0,
+    "solicitados": 5881.0,
+    "entregados": 5720.0,
+    "devueltos": 161.0,
+    "capturados": 5720.0,
+    "avance": 0.9726237035
+  },
+  {
+    "mes": "2025-10",
+    "upp": null,
+    "solicitados": null,
+    "entregados": null,
+    "devueltos": null,
+    "capturados": null,
+    "avance": null
+  },
+  {
+    "mes": "2025-11",
+    "upp": null,
+    "solicitados": null,
+    "entregados": null,
+    "devueltos": null,
+    "capturados": null,
+    "avance": null
+  },
+  {
+    "mes": "2025-12",
+    "upp": null,
+    "solicitados": null,
+    "entregados": null,
+    "devueltos": null,
+    "capturados": null,
+    "avance": null
+  },
+  {
+    "mes": "TOTAL",
+    "upp": 3354,
+    "solicitados": 51791,
+    "entregados": 51488,
+    "devueltos": 303,
+    "capturados": 51488,
+    "avance": 0.9941495627
+  }
+]

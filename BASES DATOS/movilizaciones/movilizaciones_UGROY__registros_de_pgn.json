@@ -1,0 +1,106 @@
+[
+  {
+    "fecha": "2025-01-31",
+    "tipo": "Altas",
+    "UPP": 37.0,
+    "PSG": 16.0,
+    "PG_Equidos": 0.0,
+    "PG_Ganado": 0.0
+  },
+  {
+    "fecha": "2025-02-28",
+    "tipo": "Altas",
+    "UPP": 45.0,
+    "PSG": 39.0,
+    "PG_Equidos": 0.0,
+    "PG_Ganado": 0.0
+  },
+  {
+    "fecha": "2025-03-31",
+    "tipo": "Altas",
+    "UPP": 44.0,
+    "PSG": 26.0,
+    "PG_Equidos": 0.0,
+    "PG_Ganado": 0.0
+  },
+  {
+    "fecha": "2025-04-30",
+    "tipo": "Altas",
+    "UPP": 44.0,
+    "PSG": 19.0,
+    "PG_Equidos": 0.0,
+    "PG_Ganado": 0.0
+  },
+  {
+    "fecha": "2025-05-31",
+    "tipo": "Altas",
+    "UPP": 46.0,
+    "PSG": 21.0,
+    "PG_Equidos": 0.0,
+    "PG_Ganado": 0.0
+  },
+  {
+    "fecha": "2025-06-30",
+    "tipo": "Altas",
+    "UPP": 37.0,
+    "PSG": 18.0,
+    "PG_Equidos": 0.0,
+    "PG_Ganado": 0.0
+  },
+  {
+    "fecha": "2025-07-31",
+    "tipo": "Altas",
+    "UPP": 12.0,
+    "PSG": 13.0,
+    "PG_Equidos": 0.0,
+    "PG_Ganado": 0.0
+  },
+  {
+    "fecha": "2025-08-31",
+    "tipo": "Altas",
+    "UPP": 21.0,
+    "PSG": 15.0,
+    "PG_Equidos": 0.0,
+    "PG_Ganado": 0.0
+  },
+  {
+    "fecha": "2025-09-30",
+    "tipo": "Altas",
+    "UPP": 29.0,
+    "PSG": 49.0,
+    "PG_Equidos": 0.0,
+    "PG_Ganado": 0.0
+  },
+  {
+    "fecha": "2025-10-31",
+    "tipo": "Altas",
+    "UPP": null,
+    "PSG": null,
+    "PG_Equidos": null,
+    "PG_Ganado": null
+  },
+  {
+    "fecha": "2025-11-30",
+    "tipo": "Altas",
+    "UPP": null,
+    "PSG": null,
+    "PG_Equidos": null,
+    "PG_Ganado": null
+  },
+  {
+    "fecha": "2025-12-31",
+    "tipo": "Altas",
+    "UPP": null,
+    "PSG": null,
+    "PG_Equidos": null,
+    "PG_Ganado": null
+  },
+  {
+    "fecha": "Total",
+    "tipo": "Altas",
+    "UPP": 315,
+    "PSG": 216,
+    "PG_Equidos": 0,
+    "PG_Ganado": 0
+  }
+]
