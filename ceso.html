@@ -10,52 +10,46 @@
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
-  <style>
-    body {
-      padding: 0;
-      margin: 0;
-      min-height: 100vh;
-      background: #f7f7f7;
-      display: flex;
-      flex-direction: column;
-    }
-    .main-content {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 28px;
-    }
-  </style>
 </head>
 <body>
   <!-- Contenido -->
-  <main class="page" style="padding-top: 60px;">
+  <main class="page">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-          <h1 class="h3 text-center mb-4">CESO - Acceso administrativo</h1>
+          <h1 class="h3 text-center mb-4" style="font-family: 'Patria', 'Noto Sans', Arial, sans-serif;">CESO — Acceso administrativo</h1>
           <p class="text-muted text-center mb-4">Acceso al Centro de Consulta disponible solo para usuarios autenticados.</p>
-
-          <form role="form" id="cesoLoginForm">
-            <div class="form-group">
-              <label class="control-label" for="cesoEmail">Correo electrónico institucional:</label>
-              <input class="form-control" id="cesoEmail" placeholder="usuario@organizacion.gob.mx" type="email" required="">
+          <form id="cesoLoginForm" autocomplete="on">
+            <div class="mb-3">
+              <label for="cesoEmail" class="form-label fw-bold">Correo electrónico institucional:</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-at"></i></span>
+                <input type="email" class="form-control form-control-lg" id="cesoEmail" placeholder="usuario@organizacion.gob.mx" required aria-required="true">
+              </div>
+              <div class="form-text">Use su correo oficial del gobierno</div>
             </div>
-            <div class="form-group">
-              <label class="control-label" for="cesoPassword">Contraseña:</label>
-              <input class="form-control" id="cesoPassword" placeholder="Contraseña" type="password" required="">
+            <div class="mb-3">
+              <label for="cesoPassword" class="form-label fw-bold">Contraseña:</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input type="password" class="form-control form-control-lg" id="cesoPassword" placeholder="Contraseña" required aria-required="true">
+                <button class="btn btn-secondary" type="button" id="togglePassword" aria-label="Mostrar/Ocultar contraseña"><i class="bi bi-eye"></i></button>
+              </div>
+              <div class="form-text">Contraseña del sistema</div>
             </div>
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" id="cesoRemember">
-                Recordarme
-              </label>
+            <div class="form-check mb-3">
+              <input type="checkbox" class="form-check-input" id="cesoRemember">
+              <label class="form-check-label" for="cesoRemember">Recordarme</label>
             </div>
             <div id="cesoAuthError" class="alert alert-danger d-none" role="alert"><span id="cesoAuthErrorMessage"></span></div>
             <div id="cesoAuthSuccess" class="alert alert-success d-none" role="alert"><span id="cesoAuthSuccessMessage"></span></div>
-            <button class="btn btn-primary pull-right" type="submit">Autenticar</button>
-            <a href="index.html" class="btn btn-secondary ms-2" aria-label="Volver al sitio principal">Volver</a>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-box-arrow-in-right"></i></span>
+                Autenticar
+              </button>
+              <a href="index.html" class="btn btn-secondary btn-lg ms-2" aria-label="Volver al sitio principal">Volver</a>
+            </div>
           </form>
         </div>
       </div>
@@ -69,52 +63,42 @@
   <script src="auth-system.js"></script>
   <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
   <script>
-    $gmx(document).ready(function() {
-      document.getElementById('cesoLoginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const email = document.getElementById('cesoEmail').value.trim();
-        const password = document.getElementById('cesoPassword').value;
-        const remember = document.getElementById('cesoRemember').checked;
-
-        // Clear messages
-        document.getElementById('cesoAuthError').classList.add('d-none');
-        document.getElementById('cesoAuthSuccess').classList.add('d-none');
-
-        const btn = this.querySelector('button[type="submit"]');
-        const orig = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = 'Verificando...';
-
-        setTimeout(() => {
-          const result = window.gobmxAuth.authenticate(email, password, 'CESO');
-          if (result.success) {
-            document.getElementById('cesoAuthSuccessMessage').textContent = result.message;
-            document.getElementById('cesoAuthSuccess').classList.remove('d-none');
-            // Try to sign in to Firebase Auth
-            if (window.firebase && firebase.auth) {
-              firebase.auth().signInWithEmailAndPassword(email, password)
-                .then(() => {
-                  console.log('✅ Firebase auth successful for', email);
-                  // Redirect to acuerdos-ceso.html
-                  window.location.href = 'acuerdos-ceso.html';
-                })
-                .catch((fbErr) => {
-                  console.warn('Firebase signIn failed:', fbErr && fbErr.message);
-                  // Still redirect even if Firebase fails
-                  window.location.href = 'acuerdos-ceso.html';
-                });
-            } else {
-              // No firebase SDK available; redirect anyway
-              window.location.href = 'acuerdos-ceso.html';
-            }
+    document.getElementById('togglePassword').addEventListener('click', function(){
+      const p = document.getElementById('cesoPassword');
+      const i = this.querySelector('i');
+      if (p.type === 'password') { p.type = 'text'; i.className = 'bi bi-eye-slash'; } else { p.type = 'password'; i.className = 'bi bi-eye'; }
+    });
+    document.getElementById('cesoLoginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('cesoEmail').value.trim();
+      const password = document.getElementById('cesoPassword').value;
+      const remember = document.getElementById('cesoRemember').checked;
+      document.getElementById('cesoAuthError').classList.add('d-none');
+      document.getElementById('cesoAuthSuccess').classList.add('d-none');
+      const btn = this.querySelector('button[type="submit"]');
+      const orig = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-hourglass"></i></span> Verificando...';
+      setTimeout(() => {
+        const result = window.gobmxAuth.authenticate(email, password, 'CESO');
+        if (result.success) {
+          document.getElementById('cesoAuthSuccessMessage').textContent = result.message;
+          document.getElementById('cesoAuthSuccess').classList.remove('d-none');
+          if (window.firebase && firebase.auth) {
+            firebase.auth().signInWithEmailAndPassword(email, password)
+              .then(() => {
+                window.location.href = 'acuerdos-ceso.html';
+              })
+              .catch((fbErr) => {
+                window.location.href = 'acuerdos-ceso.html';
+              });
           } else {
-            document.getElementById('cesoAuthErrorMessage').textContent = result.message;
-            document.getElementById('cesoAuthError').classList.remove('d-none');
+            window.location.href = 'acuerdos-ceso.html';
           }
-          btn.disabled = false;
-          btn.innerHTML = orig;
-        }, 800);
-      });
+        } else {
+          document.getElementById('cesoAuthErrorMessage').textContent = result.message;
+          document.getElementById('cesoAuthError').classList.remove('d-none');
+        }
+        btn.disabled = false; btn.innerHTML = orig;
+      }, 800);
     });
   </script>
 

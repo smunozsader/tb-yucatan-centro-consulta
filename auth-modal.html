@@ -1,5 +1,4 @@
-<!-- (Moved) Original shared auth modal preserved as backup. See auth-modal-ceso.html and auth-modal-aphis.html for org-specific modals. -->
-<!-- NOTE: this file is now a backup and should not be loaded by pages. -->
+<!-- Official GOB.mx Modal for Authentication -->
 <div class="modal fade modal-gobierno" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -10,9 +9,8 @@
           </span>
           Acceso Administrativo - Sistema de Acuerdos Sanitarios
         </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      
       <div class="modal-body">
         <!-- Organization Selection -->
         <div class="mb-4">
@@ -61,23 +59,42 @@
             </div>
           </div>
         </div>
-
-        <hr class="my-4">
-
+        <hr class="my-3">
         <!-- Login Form -->
         <form id="governmentLoginForm" class="form-gobierno">
           <div class="row">
             <div class="col-md-6">
               <div class="mb-3">
-                <label for="authEmail" class="form-label fw-bold">
-                  <span class="bootstrap-icons" aria-hidden="true">
-                    <i class="bi bi-envelope"></i>
-                  </span>
-                  Correo Electrónico Institucional:
-                </label>
+                <label for="authEmail" class="form-label fw-bold">Correo Electrónico Institucional:</label>
                 <div class="input-group">
-                  <span class="input-group-text">
-                    <span class="bootstrap-icons" aria-hidden="true">
+                  <span class="input-group-text"><i class="bi bi-at"></i></span>
+                  <input type="email" class="form-control form-control-lg" id="authEmail" placeholder="usuario@agricultura.gob.mx" required>
+                </div>
+                <div class="form-text">Use su correo oficial del gobierno</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="authPassword" class="form-label fw-bold">Contraseña:</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input type="password" class="form-control form-control-lg" id="authPassword" required>
+                  <button class="btn btn-secondary" type="button" id="togglePassword"><i class="bi bi-eye"></i></button>
+                </div>
+                <div class="form-text">Contraseña del sistema</div>
+              </div>
+            </div>
+          </div>
+          <div id="authError" class="alert alert-danger d-none" role="alert"><span id="authErrorMessage"></span></div>
+          <div id="authSuccess" class="alert alert-success d-none" role="alert"><span id="authSuccessMessage"></span></div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión Administrativa</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
                       <i class="bi bi-at"></i>
                     </span>
                   </span>

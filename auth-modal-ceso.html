@@ -1,37 +1,33 @@
-<!-- Organization-specific Authentication Modal for CESO -->
-<div class="modal fade modal-gobierno" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" data-org="CESO">
+<!-- Modal GOB.mx v3 compliant: CESO Authentication -->
+<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" data-org="CESO">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header" style="background: linear-gradient(135deg, var(--color-gobierno-principal), var(--color-gobierno-secundario)); color: white;">
+      <div class="modal-header bg-primary text-white">
         <h5 class="modal-title" id="authModalLabel">
           <span class="bootstrap-icons" aria-hidden="true">
             <i class="bi bi-shield-check"></i>
           </span>
           Acceso Administrativo — CESO
         </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
-        <!-- Simple organization badge (CESO) -->
         <div class="mb-3 d-flex align-items-center gap-3">
-          <div style="font-size:2rem;color:var(--color-gobierno-dorado)"><i class="bi bi-building"></i></div>
+          <div style="font-size:2rem;color:#C9B037"><i class="bi bi-building"></i></div>
           <div>
-            <strong>CESO</strong>
+            <strong class="fw-bold" style="font-family: 'Patria', 'Noto Sans', Arial, sans-serif;">CESO</strong>
             <div class="small text-muted">Consejo Estatal de Seguimiento Operativo</div>
           </div>
         </div>
-
         <hr class="my-3">
-
-        <!-- Login Form (organization fixed to CESO) -->
-        <form id="governmentLoginForm" class="form-gobierno">
+        <form id="governmentLoginForm">
           <div class="row">
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="authEmail" class="form-label fw-bold">Correo Electrónico Institucional:</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-at"></i></span>
-                  <input type="email" class="form-control form-control-lg" id="authEmail" placeholder="usuario@agricultura.gob.mx" required>
+                  <input type="email" class="form-control form-control-lg" id="authEmail" placeholder="usuario@agricultura.gob.mx" required aria-required="true">
                 </div>
                 <div class="form-text">Use su correo oficial del gobierno</div>
               </div>
@@ -41,19 +37,20 @@
                 <label for="authPassword" class="form-label fw-bold">Contraseña:</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                  <input type="password" class="form-control form-control-lg" id="authPassword" required>
-                  <button class="btn btn-secondary" type="button" id="togglePassword"><i class="bi bi-eye"></i></button>
+                  <input type="password" class="form-control form-control-lg" id="authPassword" required aria-required="true">
+                  <button class="btn btn-secondary" type="button" id="togglePassword" aria-label="Mostrar/Ocultar contraseña"><i class="bi bi-eye"></i></button>
                 </div>
                 <div class="form-text">Contraseña del sistema</div>
               </div>
             </div>
           </div>
-
-          <div id="authError" class="alert alert-gobierno alert-danger d-none" role="alert"><span id="authErrorMessage"></span></div>
-          <div id="authSuccess" class="alert alert-gobierno alert-success d-none" role="alert"><span id="authSuccessMessage"></span></div>
-
+          <div id="authError" class="alert alert-danger d-none" role="alert"><span id="authErrorMessage"></span></div>
+          <div id="authSuccess" class="alert alert-success d-none" role="alert"><span id="authSuccessMessage"></span></div>
           <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión Administrativa</button>
+            <button type="submit" class="btn btn-primary btn-lg">
+              <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-box-arrow-in-right"></i></span>
+              Iniciar Sesión Administrativa
+            </button>
           </div>
         </form>
       </div>
@@ -61,9 +58,8 @@
   </div>
 </div>
 
-<!-- Small script: use dataset.org as fixed organization -->
+<!-- Script: GOB.mx modal accessibility and auth logic -->
 <script>
-// Toggle password
 document.getElementById('togglePassword').addEventListener('click', function(){
   const p = document.getElementById('authPassword');
   const i = this.querySelector('i');
@@ -75,34 +71,28 @@ document.getElementById('governmentLoginForm').addEventListener('submit', functi
   const email = document.getElementById('authEmail').value.trim();
   const password = document.getElementById('authPassword').value;
   const organization = document.getElementById('authModal').dataset.org || 'CESO';
-  // Clear messages
   document.getElementById('authError').classList.add('d-none');
   document.getElementById('authSuccess').classList.add('d-none');
   const btn = this.querySelector('button[type="submit"]');
-  const orig = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass"></i> Verificando...';
+  const orig = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-hourglass"></i></span> Verificando...';
   setTimeout(() => {
     const result = window.gobmxAuth.authenticate(email, password, organization);
     if (result.success) {
       document.getElementById('authSuccessMessage').textContent = result.message;
       document.getElementById('authSuccess').classList.remove('d-none');
-      // Try to sign in to Firebase Auth (if SDK available) so Firestore reads that require auth will work
       if (window.firebase && firebase.auth) {
         firebase.auth().signInWithEmailAndPassword(email, password)
           .then(() => {
-            console.log('✅ Firebase auth successful for', email);
             document.getElementById('authSuccessMessage').textContent = result.message + ' — Sesión iniciada en Firebase.';
             updateAuthenticationUI();
             setTimeout(()=>{ const modal = bootstrap.Modal.getInstance(document.getElementById('authModal')); if (modal) modal.hide(); document.getElementById('governmentLoginForm').reset(); }, 900);
           })
           .catch((fbErr) => {
-            console.warn('Firebase signIn failed:', fbErr && fbErr.message);
-            // Inform user; still treat local auth as success but note Firebase is not signed in
             document.getElementById('authSuccessMessage').textContent = result.message + ' — (No se pudo iniciar sesión en Firebase: ' + (fbErr && fbErr.message) + ')';
             updateAuthenticationUI();
             setTimeout(()=>{ const modal = bootstrap.Modal.getInstance(document.getElementById('authModal')); if (modal) modal.hide(); document.getElementById('governmentLoginForm').reset(); }, 1200);
           });
       } else {
-        // No firebase SDK available; continue with local auth only
         updateAuthenticationUI();
         setTimeout(()=>{ const modal = bootstrap.Modal.getInstance(document.getElementById('authModal')); if (modal) modal.hide(); document.getElementById('governmentLoginForm').reset(); }, 1200);
       }
@@ -118,7 +108,6 @@ function updateAuthenticationUI(){
   try{
     const user = window.gobmxAuth.getCurrentUser();
     if (!user) return;
-    // show status bar if present
     const bar = document.getElementById('authStatusBar'); if(bar) bar.classList.remove('d-none');
   }catch(e){console.debug(e)}
 }
