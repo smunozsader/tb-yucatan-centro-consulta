@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Repositorio APHIS - Centro de Consulta</title>
+  
+  <!-- REQUIRED: Official GOB.mx Framework -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  <style>
+    body { padding: 24px; }
+    .card-repo { margin-bottom: 12px; }
+    .aphis-brand {
+      background: linear-gradient(135deg, #611232, #9d2449);
+      color: #FFFFFF;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .aphis-flag {
+      background: linear-gradient(90deg, #611232 50%, #9d2449 50%);
+      height: 4px;
+      width: 100%;
+      margin: 10px 0;
+    }
+    
+    /* Government-compliant navigation styling */
+    nav.row {
+      background-color: #DDC9A3;
+      border-radius: 8px;
+      margin: 0;
+    }
+    
+    @media (max-width: 768px) {
+      nav.row .col-md-8,
+      nav.row .col-md-4 {
+        text-align: center !important;
+        margin-bottom: 0.5rem;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .btn-group .btn {
+        border-radius: 0.375rem !important;
+        margin-bottom: 0.25rem;
+      }
+    }
+
+    /* Fix GOB.mx framework navbar/logo visibility for this page */
+    .navbar.navbar-dark.bg-light {
+      background-color: #611232 !important;
+      background-image: none !important;
+    }
+    .navbar.navbar-dark.bg-light .navbar-brand img {
+      filter: none !important;
+    }
+    .navbar.navbar-dark.bg-light .navbar-nav .nav-link {
+      color: #fff !important;
+    }
+    .navbar.navbar-dark.bg-light .navbar-nav .nav-link:hover,
+    .navbar.navbar-dark.bg-light .navbar-nav .nav-link:focus {
+      color: #fff !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Content goes inside main.page structure -->
+  <main class="page">
+    <div class="container" style="padding-top: 60px;">
+      <div class="row">
+      <div class="col-12">
+        <!-- APHIS Branding Section -->
+        <div class="aphis-brand text-center position-relative">
+          <!-- Language Toggle -->
+          <div class="position-absolute top-0 end-0 m-3">
+            <div class="btn-group btn-group-sm" role="group" aria-label="Language Toggle">
+              <button type="button" class="btn btn-secondary active" id="btnSpanish" onclick="setLanguage('es')">
+                🇲🇽 ESPAÑOL
+              </button>
+              <button type="button" class="btn btn-secondary" id="btnEnglish" onclick="setLanguage('en')">
+                🇺🇸 ENGLISH
+              </button>
+            </div>
+          </div>
+          
+          <h1><span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-globe-americas"></i></span> <span data-es="Repositorio APHIS-USDA/SENASICA" data-en="APHIS-USDA/SENASICA Repository">Repositorio APHIS-USDA/SENASICA</span></h1>
+          <div class="aphis-flag"></div>
+          <p class="mb-0" data-es="Servicio de Inspección de Sanidad Animal y Vegetal" data-en="Animal and Plant Health Inspection Service">Servicio de Inspección de Sanidad Animal y Vegetal</p>
+          <small data-es="Gestión de documentos para cooperación sanitaria México-Estados Unidos" data-en="Document management for Mexico-United States health cooperation">Gestión de documentos para cooperación sanitaria México-Estados Unidos</small>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="row align-items-center mb-4 py-3 border-bottom">
+          <div class="col-md-8">
+            <div class="btn-group" role="group" aria-label="Navegación principal">
+              <a href="hall-aphis.html" class="btn btn-primary" target="_self">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-house"></i></span>
+                <span data-es="Panel APHIS" data-en="APHIS Panel">Panel APHIS</span>
+              </a>
+              <a href="acuerdos-aphis.html" class="btn btn-secondary" target="_self">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-file-text"></i></span>
+                <span data-es="Acuerdos APHIS" data-en="APHIS Agreements">Acuerdos APHIS</span>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-4 text-end">
+            <button class="btn btn-danger" id="logoutBtn" type="button">
+              <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span>
+              <span data-es="Cerrar Sesión" data-en="Sign Out">Cerrar Sesión</span>
+            </button>
+          </div>
+        </nav>
+
+        <div id="repoAlerts"></div>
+
+        <!-- Upload Section -->
+        <div class="card card-repo border-info">
+          <div class="card-header bg-info text-white">
+            <h5 class="card-title mb-0"><span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-cloud-upload"></i></span> <span data-es="Subir Documento APHIS-USDA/SENASICA" data-en="Upload APHIS-USDA/SENASICA Document">Subir Documento APHIS-USDA/SENASICA</span></h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label" data-es="Categoría" data-en="Category">Categoría</label>
+                <select id="repoCategory" class="form-select">
+                  <option value="actas-aphis" data-es="Actas de Reuniones" data-en="Meeting Minutes">Actas de Reuniones</option>
+                  <option value="normativas-aphis" data-es="Normativa y comunicados Oficiales SENASICA" data-en="SENASICA Official Regulations and Communications">Normativa y comunicados Oficiales SENASICA</option>
+                  <option value="recomendaciones-aphis" data-es="Recomendaciones APHIS-USDA" data-en="APHIS-USDA Recommendations">Recomendaciones APHIS-USDA</option>
+                  <option value="formatos-aphis" data-es="Formatos y Documentos diversos" data-en="Forms and Miscellaneous Documents">Formatos y Documentos diversos</option>
+                  <option value="presentaciones-aphis" data-es="Presentaciones Anexas a Reuniones (PPT's)" data-en="Meeting Presentations (PPT's)">Presentaciones Anexas a Reuniones (PPT's)</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Título del Documento</label>
+                <input type="text" id="repoTitle" class="form-control" placeholder="Ej: Protocolo TB Bovine Export 2024">
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-8">
+                <label class="form-label">Archivo</label>
+                <input type="file" id="repoFile" class="form-control" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*">
+                <small class="text-muted">Formatos permitidos: PDF, Word, imágenes</small>
+              </div>
+              <div class="col-md-4 d-flex align-items-end">
+                <button id="repoUploadBtn" class="btn btn-primary w-100">
+                  <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-upload"></i></span> Subir Documento
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Documents Classification Landing Page -->
+        <div class="card mt-4">
+          <div class="card-header" style="background-color: #DDC9A3;">
+            <div class="text-center">
+              <h5 class="card-title mb-0">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-files"></i></span> 
+                <span data-es="Biblioteca de Documentos APHIS-USDA/SENASICA" data-en="APHIS-USDA/SENASICA Document Library">Biblioteca de Documentos APHIS-USDA/SENASICA</span>
+              </h5>
+            </div>
+          </div>
+          <div class="card-body">
+            
+            <!-- Category Grid View -->
+            <div id="categoryView" class="row">
+              <!-- Actas de Reuniones -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('actas-aphis')" style="cursor: pointer;">
+                  <div class="card h-100 border-primary">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-journal-text text-primary" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Actas de Reuniones" data-en="Meeting Minutes">
+                        Actas de Reuniones
+                      </h6>
+                      <p class="card-text text-muted" data-es="Actas oficiales del grupo de trabajo APHIS-USDA/SENASICA" data-en="Official APHIS-USDA/SENASICA working group minutes">
+                        Actas oficiales del grupo de trabajo APHIS-USDA/SENASICA
+                      </p>
+                      <div class="badge bg-primary" id="count-actas-aphis">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Normativas y comunicados Oficiales SENASICA -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('normativas-aphis')" style="cursor: pointer;">
+                  <div class="card h-100 border-warning">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-clipboard-check text-warning" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Normativa y comunicados Oficiales SENASICA" data-en="SENASICA Official Regulations and Communications">
+                        Normativa y comunicados Oficiales SENASICA
+                      </h6>
+                      <p class="card-text text-muted" data-es="Regulaciones y comunicados oficiales del servicio nacional" data-en="National service official regulations and communications">
+                        Regulaciones y comunicados oficiales del servicio nacional
+                      </p>
+                      <div class="badge bg-warning" id="count-normativas-aphis">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recomendaciones APHIS-USDA -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('recomendaciones-aphis')" style="cursor: pointer;">
+                  <div class="card h-100 border-success">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-lightbulb text-success" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Recomendaciones APHIS-USDA" data-en="APHIS-USDA Recommendations">
+                        Recomendaciones APHIS-USDA
+                      </h6>
+                      <p class="card-text text-muted" data-es="Recomendaciones técnicas y operativas del USDA" data-en="USDA technical and operational recommendations">
+                        Recomendaciones técnicas y operativas del USDA
+                      </p>
+                      <div class="badge bg-success" id="count-recomendaciones-aphis">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Formatos y Documentos diversos -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('formatos-aphis')" style="cursor: pointer;">
+                  <div class="card h-100 border-info">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-file-earmark-spreadsheet text-info" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Formatos y Documentos diversos" data-en="Forms and Miscellaneous Documents">
+                        Formatos y Documentos diversos
+                      </h6>
+                      <p class="card-text text-muted" data-es="Formatos oficiales y documentos misceláneos" data-en="Official forms and miscellaneous documents">
+                        Formatos oficiales y documentos misceláneos
+                      </p>
+                      <div class="badge bg-info" id="count-formatos-aphis">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Presentaciones Anexas a Reuniones -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="category-card h-100" onclick="showCategory('presentaciones-aphis')" style="cursor: pointer;">
+                  <div class="card h-100 border-secondary">
+                    <div class="card-body text-center">
+                      <div class="category-icon mb-3">
+                        <i class="bi bi-easel text-secondary" style="font-size: 3rem;"></i>
+                      </div>
+                      <h6 class="card-title" data-es="Presentaciones Anexas a Reuniones (PPT's)" data-en="Meeting Presentations (PPT's)">
+                        Presentaciones Anexas a Reuniones (PPT's)
+                      </h6>
+                      <p class="card-text text-muted" data-es="Presentaciones PowerPoint y materiales de reuniones" data-en="PowerPoint presentations and meeting materials">
+                        Presentaciones PowerPoint y materiales de reuniones
+                      </p>
+                      <div class="badge bg-secondary" id="count-presentaciones-aphis">0 documentos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Detail View -->
+            <div id="categoryDetail" style="display: none;">
+              <div class="mb-3">
+                <button class="btn btn-secondary btn-sm mb-2" onclick="showCategoryView()">
+                  <i class="bi bi-arrow-left"></i>
+                  <span data-es="Volver a Categorías" data-en="Back to Categories">Volver a Categorías</span>
+                </button>
+                <h6 id="categoryTitle" class="mb-0">Categoría</h6>
+              </div>
+              <div id="categoryDocuments">
+                <!-- Documents for selected category will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Traditional List View (Hidden by default) -->
+            <div id="listView" style="display: none;">
+              <div id="repoList">
+                <div class="text-center">
+                  <div class="spinner-border text-info" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                  </div>
+                  <p class="mt-2">Cargando documentos...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script src="__/firebase/init.js"></script>
+  <script src="auth-system.js"></script>
+  <script>
+    // Global variables for categorized view
+    let allDocuments = [];
+    let currentView = 'category'; // 'category' or 'list'
+    
+    // Category configuration for APHIS
+    const categories = {
+      'actas-aphis': {
+        name: 'Actas de Reuniones',
+        nameEn: 'Meeting Minutes',
+        icon: 'bi-journal-text',
+        color: 'primary'
+      },
+      'normativas-aphis': {
+        name: 'Normativa y comunicados Oficiales SENASICA',
+        nameEn: 'SENASICA Official Regulations and Communications',
+        icon: 'bi-clipboard-check',
+        color: 'warning'
+      },
+      'recomendaciones-aphis': {
+        name: 'Recomendaciones APHIS-USDA',
+        nameEn: 'APHIS-USDA Recommendations',
+        icon: 'bi-lightbulb',
+        color: 'success'
+      },
+      'formatos-aphis': {
+        name: 'Formatos y Documentos diversos',
+        nameEn: 'Forms and Miscellaneous Documents',
+        icon: 'bi-file-earmark-spreadsheet',
+        color: 'info'
+      },
+      'presentaciones-aphis': {
+        name: 'Presentaciones Anexas a Reuniones (PPT\'s)',
+        nameEn: 'Meeting Presentations (PPT\'s)',
+        icon: 'bi-easel',
+        color: 'secondary'
+      }
+    };
+
+    function fmtDate(v){ 
+      try{ 
+        if(!v) return ''; 
+        if(v.toDate) return v.toDate().toLocaleDateString('es-MX'); 
+        const d=new Date(v); 
+        return isNaN(d)? String(v): d.toLocaleDateString('es-MX'); 
+      }catch(e){
+        return String(v);
+      } 
+    }
+
+    function showAlert(message, type = 'info') {
+      const alerts = document.getElementById('repoAlerts');
+      alerts.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>`;
+      setTimeout(() => alerts.innerHTML = '', 5000);
+    }
+
+    // Toggle between category and list view
+    function toggleView() {
+      const categoryView = document.getElementById('categoryView');
+      const listView = document.getElementById('listView');
+      const categoryDetail = document.getElementById('categoryDetail');
+      const viewIcon = document.getElementById('viewIcon');
+      const viewText = document.getElementById('viewText');
+      
+      if (currentView === 'category') {
+        // Switch to list view
+        categoryView.style.display = 'none';
+        categoryDetail.style.display = 'none';
+        listView.style.display = 'block';
+        viewIcon.className = 'bi bi-grid-3x3-gap';
+        viewText.textContent = 'Vista de Categorías';
+        viewText.setAttribute('data-es', 'Vista de Categorías');
+        viewText.setAttribute('data-en', 'Category View');
+        currentView = 'list';
+        loadRepo(); // Load traditional list
+      } else {
+        // Switch to category view
+        listView.style.display = 'none';
+        categoryDetail.style.display = 'none';
+        categoryView.style.display = 'block';
+        viewIcon.className = 'bi bi-list-ul';
+        viewText.textContent = 'Vista de Lista';
+        viewText.setAttribute('data-es', 'Vista de Lista');
+        viewText.setAttribute('data-en', 'List View');
+        currentView = 'category';
+        loadCategorizedDocuments();
+      }
+    }
+
+    // Show category view
+    function showCategoryView() {
+      document.getElementById('categoryDetail').style.display = 'none';
+      document.getElementById('categoryView').style.display = 'block';
+    }
+
+    // Show specific category
+    function showCategory(categoryId) {
+      const category = categories[categoryId];
+      if (!category) return;
+      
+      document.getElementById('categoryView').style.display = 'none';
+      document.getElementById('categoryDetail').style.display = 'block';
+      document.getElementById('categoryTitle').textContent = category.name;
+      
+      // Filter documents for this category
+      const categoryDocs = allDocuments.filter(doc => doc.category === categoryId);
+      const documentsContainer = document.getElementById('categoryDocuments');
+      
+      if (categoryDocs.length === 0) {
+        documentsContainer.innerHTML = `
+          <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle"></i> 
+            <span data-es="No hay documentos en esta categoría" data-en="No documents in this category">
+              No hay documentos en esta categoría
+            </span>
+          </div>`;
+        return;
+      }
+      
+      let html = '<div class="list-group">';
+      categoryDocs.forEach(doc => {
+        const iconClass = getFileIcon(doc.filename);
+        html += `
+          <div class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between align-items-start">
+              <div class="flex-grow-1">
+                <h6 class="mb-1">
+                  <i class="${iconClass} text-primary"></i> ${doc.filename}
+                </h6>
+                <p class="mb-1 text-muted">${category.name.toUpperCase()}</p>
+                <small class="text-muted">
+                  Subido: ${fmtDate(doc.createdAt)} • Por: ${doc.uploader || 'Usuario'}
+                </small>
+              </div>
+              <div class="ms-3">
+                <button class="btn btn-primary btn-sm repo-download" data-path="${doc.storagePath}">
+                  <i class="bi bi-download"></i> Descargar
+                </button>
+              </div>
+            </div>
+          </div>`;
+      });
+      html += '</div>';
+      documentsContainer.innerHTML = html;
+      
+      // Attach download handlers
+      attachDownloadHandlers();
+    }
+
+    // Get file icon based on extension
+    function getFileIcon(filename) {
+      const ext = filename.toLowerCase().split('.').pop();
+      switch (ext) {
+        case 'pdf': return 'bi-file-earmark-pdf';
+        case 'doc': case 'docx': return 'bi-file-earmark-word';
+        case 'xls': case 'xlsx': return 'bi-file-earmark-excel';
+        case 'ppt': case 'pptx': return 'bi-file-earmark-ppt';
+        case 'jpg': case 'jpeg': case 'png': case 'gif': return 'bi-file-earmark-image';
+        default: return 'bi-file-earmark-text';
+      }
+    }
+
+    // Load documents with categorization
+    function loadCategorizedDocuments() {
+      // Reset category counts
+      Object.keys(categories).forEach(categoryId => {
+        const countEl = document.getElementById(`count-${categoryId}`);
+        if (countEl) countEl.textContent = '0 documentos';
+      });
+      
+      db.collection('repositorio-aphis').orderBy('createdAt','desc').get().then(snap => {
+        allDocuments = [];
+        const categoryCounts = {};
+        
+        // Initialize counts
+        Object.keys(categories).forEach(categoryId => {
+          categoryCounts[categoryId] = 0;
+        });
+        
+        if (snap.size) {
+          snap.forEach(doc => {
+            const data = doc.data();
+            allDocuments.push({
+              id: doc.id,
+              filename: data.filename || 'Sin nombre',
+              category: data.category || 'otros',
+              storagePath: data.storagePath || '',
+              createdAt: data.createdAt,
+              uploader: data.uploader || 'Usuario'
+            });
+            
+            // Count documents per category
+            const category = data.category || 'otros';
+            if (categoryCounts.hasOwnProperty(category)) {
+              categoryCounts[category]++;
+            }
+          });
+        }
+        
+        // Update category counts
+        Object.keys(categoryCounts).forEach(categoryId => {
+          const countEl = document.getElementById(`count-${categoryId}`);
+          if (countEl) {
+            const count = categoryCounts[categoryId];
+            countEl.textContent = `${count} documento${count !== 1 ? 's' : ''}`;
+          }
+        });
+        
+      }).catch(err => {
+        console.error('Error loading documents:', err);
+        showAlert('Error al cargar documentos: ' + err.message, 'danger');
+      });
+    }
+
+    function loadRepo(){ 
+      const list = document.getElementById('repoList'); 
+      list.innerHTML = '<div class="text-center"><div class="spinner-border text-info" role="status"><span class="visually-hidden">Cargando...</span></div><p class="mt-2">Cargando documentos...</p></div>'; 
+      
+      db.collection('repositorio-aphis').orderBy('createdAt','desc').get().then(snap=>{
+        if(!snap.size){ 
+          list.innerHTML = '<div class="alert alert-info text-center"><i class="bi bi-info-circle"></i> No hay documentos APHIS-USDA/SENASICA disponibles.</div>'; 
+          return; 
+        }
+        
+        let html = '<div class="list-group">'; 
+        snap.forEach(d=>{ 
+          const md = d.data(); 
+          const categoryIcon = {
+            'actas-aphis': 'bi-file-earmark-text',
+            'normativas-aphis': 'bi-shield-check',
+            'recomendaciones-aphis': 'bi-lightbulb',
+            'formatos-aphis': 'bi-file-earmark',
+            'presentaciones-aphis': 'bi-presentation'
+          };
+          const icon = categoryIcon[md.category] || 'bi-file-earmark';
+          
+          html += `<div class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between align-items-start">
+              <div class="flex-grow-1">
+                <h6 class="mb-1"><i class="${icon} text-info"></i> ${md.title || md.filename || 'Documento'}</h6>
+                <p class="mb-1 text-muted">${md.category ? md.category.replace('-aphis', '').toUpperCase() : 'GENERAL'}</p>
+                <small class="text-muted">Subido: ${fmtDate(md.createdAt)} • Por: ${md.uploader || 'Usuario'}</small>
+              </div>
+              <div class="ms-3">
+                <button class="btn btn-primary btn-sm repo-download" data-path="${md.storagePath || ''}">
+                  <i class="bi bi-download"></i> Descargar
+                </button>
+              </div>
+            </div>
+          </div>`; 
+        }); 
+        html += '</div>'; 
+        list.innerHTML = html; 
+        
+        // Add download handlers
+        Array.from(list.querySelectorAll('button.repo-download')).forEach(b=> 
+          b.addEventListener('click', function(ev){ 
+            ev.preventDefault(); 
+            const p=b.getAttribute('data-path'); 
+            if(!p) return showAlert('Ruta del archivo faltante', 'danger'); 
+            
+            b.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span> Cargando...';
+            b.disabled = true;
+            
+            firebase.storage().ref(p).getDownloadURL().then(u=> {
+              window.open(u,'_blank');
+              b.innerHTML = '<i class="bi bi-download"></i> Descargar';
+              b.disabled = false;
+            }).catch(err=> {
+              showAlert('Error abriendo archivo: ' + err.message, 'danger');
+              b.innerHTML = '<i class="bi bi-download"></i> Descargar';
+              b.disabled = false;
+            }); 
+          })
+        ); 
+      }).catch(err=> {
+        list.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle"></i> Error cargando documentos: '+err.message+'</div>';
+      }); 
+    }
+
+    // Reusable download handler for categorized view
+    function attachDownloadHandlers() {
+      document.querySelectorAll('button.repo-download').forEach(button => {
+        // Remove existing event listeners by cloning the element
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', function(ev) {
+          ev.preventDefault();
+          const path = newButton.getAttribute('data-path');
+          if (!path) return showAlert('Ruta del archivo faltante', 'danger');
+          
+          newButton.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span> Cargando...';
+          newButton.disabled = true;
+          
+          firebase.storage().ref(path).getDownloadURL().then(url => {
+            window.open(url, '_blank');
+            newButton.innerHTML = '<i class="bi bi-download"></i> Descargar';
+            newButton.disabled = false;
+          }).catch(err => {
+            showAlert('Error abriendo archivo: ' + err.message, 'danger');
+            newButton.innerHTML = '<i class="bi bi-download"></i> Descargar';
+            newButton.disabled = false;
+          });
+        });
+      });
+    }
+
+    // Upload functionality
+    document.getElementById('repoUploadBtn').addEventListener('click', function(){ 
+      const fileEl = document.getElementById('repoFile'); 
+      const cat = document.getElementById('repoCategory').value || 'otros-aphis'; 
+      const title = document.getElementById('repoTitle').value || ''; 
+      const files = fileEl.files||[]; 
+      
+      if(!files.length) return showAlert('Por favor seleccione un archivo', 'warning'); 
+      
+      // Check authentication using gobmxAuth system
+      const user = window.gobmxAuth && window.gobmxAuth.getCurrentUser();
+      if(!user) return showAlert('Debe estar autenticado para subir documentos', 'danger'); 
+      
+      // Repository uploads use application-level auth (no Firebase Auth required) 
+      
+      const file = files[0]; 
+      const storagePath = 'repositorio-aphis/'+cat+'/'+Date.now()+'_'+file.name; 
+      const ref = firebase.storage().ref(storagePath); 
+      
+      // Show upload progress
+      this.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span> Subiendo...';
+      this.disabled = true;
+      showAlert('Subiendo archivo...', 'info');
+      
+      ref.put(file).then(()=> ref.getMetadata()).then(()=> {
+        return db.collection('repositorio-aphis').add({ 
+          category: cat, 
+          title: title||file.name, 
+          filename: file.name, 
+          storagePath: storagePath, 
+          uploader: user.email || user.nombre || 'Usuario', 
+          createdAt: firebase.firestore.FieldValue.serverTimestamp() 
+        })
+      }).then(()=>{ 
+        showAlert('¡Documento subido exitosamente!', 'success'); 
+        document.getElementById('repoFile').value = ''; 
+        document.getElementById('repoTitle').value = ''; 
+        this.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-upload"></i></span> Subir Documento';
+        this.disabled = false;
+        
+        // Reload the appropriate view
+        if (currentView === 'category') {
+          loadCategorizedDocuments();
+        } else {
+          loadRepo();
+        }
+      }).catch(err=> {
+        showAlert('Error subiendo archivo: ' + err.message, 'danger');
+        this.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-upload"></i></span> Subir Documento';
+        this.disabled = false;
+      }); 
+    });
+
+    // Logout functionality (robust): use Firebase signOut if available, else fallback to GobMX shim
+    (function(){
+      const btn = document.getElementById('logoutBtn');
+      if (!btn) return;
+      btn.addEventListener('click', function() {
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span> <span data-es="Cerrando Sesión..." data-en="Signing Out...">Cerrando Sesión...</span>';
+
+        // Try Firebase signOut if usable
+        try {
+          if (typeof firebase !== 'undefined' && firebase.auth) {
+            try {
+              const fbAuth = firebase.auth();
+              if (fbAuth) {
+                fbAuth.signOut().then(() => {
+                  try { window.gobmxAuth && window.gobmxAuth.logout && window.gobmxAuth.logout(); } catch (e) {}
+                  window.location.href = 'index.html';
+                }).catch(err => {
+                  console.error('Error signing out via Firebase:', err);
+                  showAlert('Error al cerrar sesión: ' + (err && err.message ? err.message : String(err)), 'danger');
+                  btn.disabled = false;
+                  btn.innerHTML = originalText;
+                });
+                return;
+              }
+            } catch (e) {
+              console.warn('firebase.auth() not usable, falling back to shim logout', e);
+            }
+          }
+        } catch (outer) {
+          console.warn('Error while attempting Firebase logout, will try shim logout:', outer);
+        }
+
+        // Fallback to GobMX shim logout
+        try {
+          if (window.gobmxAuth && typeof window.gobmxAuth.logout === 'function') {
+            window.gobmxAuth.logout();
+            return;
+          }
+        } catch (shimErr) {
+          console.warn('GobMX shim logout failed:', shimErr);
+        }
+
+        // Last resort: redirect
+        window.location.href = 'index.html';
+      });
+    })();
+
+    // Language switching functionality
+    function getCurrentLanguage() {
+      return localStorage.getItem('preferredLanguage') || 'es';
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('preferredLanguage', lang);
+      
+      // Update button states
+      document.getElementById('btnSpanish').classList.toggle('active', lang === 'es');
+      document.getElementById('btnEnglish').classList.toggle('active', lang === 'en');
+      
+      // Update all translatable elements
+      document.querySelectorAll('[data-es][data-en]').forEach(element => {
+        if (lang === 'es') {
+          element.textContent = element.getAttribute('data-es');
+        } else {
+          element.textContent = element.getAttribute('data-en');
+        }
+      });
+
+      // Update select options
+      document.querySelectorAll('option[data-es][data-en]').forEach(option => {
+        if (lang === 'es') {
+          option.textContent = option.getAttribute('data-es');
+        } else {
+          option.textContent = option.getAttribute('data-en');
+        }
+      });
+    }
+
+    // Initialize language on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentLang = getCurrentLanguage();
+      setLanguage(currentLang);
+    });
+
+    // Initial load - Start with categorized view
+    loadCategorizedDocuments();
+  </script>
+
+  <!-- Vendor & platform scripts: bootstrap bundle (includes Popper), Firebase SDKs -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script src="__/firebase/init.js"></script>
+  <script src="auth-system.js"></script>
+
+  <!-- Official GOB.mx runtime - must be included once, just before closing body -->
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
+
+</body>
+</html>

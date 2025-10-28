@@ -1,0 +1,16 @@
+/* GOB.mx font fallback for government branding */
+@font-face {
+  font-family: 'Patria';
+  src: local('Patria'), url('https://framework-gb.cdn.gob.mx/gm/v3/assets/fonts/Patria-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Noto Sans';
+  src: local('Noto Sans'), url('https://framework-gb.cdn.gob.mx/gm/v3/assets/fonts/NotoSans-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  font-family: 'Patria', 'Noto Sans', Arial, sans-serif;
+}

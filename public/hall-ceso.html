@@ -1,0 +1,2980 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CESO - Centro de Control | TB-Yucatán</title>
+  
+  <!-- REQUIRED: Official GOB.mx Framework -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  
+  <style>
+    .hall-container {
+      min-height: 80vh;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(97, 18, 50, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(19, 50, 46, 0.05) 0%, transparent 50%);
+    }
+    
+    .welcome-header {
+      background: linear-gradient(135deg, var(--color-gobierno-principal), var(--color-gobierno-secundario));
+      color: white;
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(97, 18, 50, 0.2);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-left: 4px solid var(--color-gobierno-principal);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+    
+    .clickable-stat {
+      cursor: pointer;
+    }
+    
+    .clickable-stat:hover {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-left-color: var(--color-gobierno-dorado);
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--color-gobierno-principal);
+      display: block;
+    }
+    
+    .stat-label {
+      color: #495057; /* Darker color for better contrast */
+      font-size: 1rem; /* Increased from 0.9rem to meet 16px minimum */
+      margin-top: 0.5rem;
+      font-family: 'Noto Sans', sans-serif; /* Official government typeface */
+    }
+    
+    .doors-section {
+      margin-top: 3rem;
+    }
+    
+    .door-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2.5rem 2rem; /* Increased vertical padding for larger text */
+      text-align: center;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      height: 240px; /* Increased from 200px to accommodate larger typography */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    /* Responsive card heights */
+    @media (max-width: 768px) {
+      .door-card {
+        height: auto; /* Auto height on mobile for better content flow */
+        min-height: 220px; /* Minimum height to maintain consistency */
+        padding: 2rem 1.5rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .door-card {
+        min-height: 200px;
+        padding: 1.5rem 1rem;
+      }
+    }
+    
+    .door-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+      border-color: var(--color-gobierno-principal);
+      text-decoration: none;
+    }
+    
+    .door-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--color-gobierno-principal);
+    }
+    
+    .door-title {
+      font-size: 1.75rem; /* Increased from 1.3rem for better readability */
+      font-weight: 600; /* Semi-bold following government standards */
+      color: var(--color-gobierno-principal);
+      margin-bottom: 0.75rem;
+      font-family: 'Noto Sans', 'Patria', sans-serif; /* Official government typeface */
+      line-height: 1.3; /* Better line spacing */
+    }
+    
+    .door-description {
+      color: #495057; /* Darker color for better contrast following government standards */
+      font-size: 1.1rem; /* Increased from 0.9rem to meet 16px minimum (17.6px) */
+      font-family: 'Noto Sans', sans-serif; /* Official government typeface */
+      line-height: 1.5; /* Better line spacing for readability */
+      margin-bottom: 0;
+    }
+    
+    /* Responsive typography for mobile devices */
+    @media (max-width: 768px) {
+      .door-title {
+        font-size: 1.5rem; /* Larger on mobile for better touch accessibility */
+      }
+      
+      .door-description {
+        font-size: 1rem; /* Exactly 16px minimum on mobile */
+        line-height: 1.6; /* Increased line spacing for mobile readability */
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .door-title {
+        font-size: 1.4rem; /* Slightly smaller but still readable on small screens */
+      }
+      
+      .door-description {
+        font-size: 1rem; /* Maintain 16px minimum even on smallest screens */
+      }
+    }
+    
+    /* Official GOB.mx Typography Standards */
+    /* Based on https://www.gob.mx/guias/grafica/v3/tipografia.html */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Noto Sans', 'Patria', sans-serif;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--color-gobierno-principal);
+    }
+    
+    h1, .h1 {
+      font-size: 2.5rem; /* Large headings for better hierarchy */
+    }
+    
+    h2, .h2 {
+      font-size: 2rem; /* Section headings */
+    }
+    
+    h3, .h3 {
+      font-size: 1.75rem; /* Subsection headings */
+    }
+    
+    p, .lead, body {
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 1rem; /* Minimum 16px as per government standards */
+      line-height: 1.6; /* Optimal line spacing for readability */
+      color: #495057; /* Better contrast than default gray */
+    }
+    
+    .lead {
+      font-size: 1.25rem; /* Larger lead text */
+      font-weight: 400;
+    }
+    
+    /* Mobile typography adjustments */
+    @media (max-width: 768px) {
+      h1, .h1 { font-size: 2rem; }
+      h2, .h2 { font-size: 1.75rem; }
+      h3, .h3 { font-size: 1.5rem; }
+      .lead { font-size: 1.125rem; }
+    }
+    
+    @media (max-width: 576px) {
+      h1, .h1 { font-size: 1.75rem; }
+      h2, .h2 { font-size: 1.5rem; }
+      h3, .h3 { font-size: 1.25rem; }
+    }
+    
+    .organization-badge {
+      background: var(--color-gobierno-principal);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-weight: bold;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    
+    .critical-alerts {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    
+    .user-greeting {
+      color: white !important; /* Force white color for readability */
+      opacity: 1 !important; /* Remove transparency */
+      font-size: 1.2rem; /* Slightly larger for better readability */
+      font-weight: 400; /* Regular weight for clarity */
+    }
+    
+    /* Fix GOB.mx framework navbar styling conflicts */
+    .navbar.navbar-dark.bg-light {
+      background-color: #9a2149 !important; /* Official government burgundy */
+      background-image: none !important;
+    }
+    
+    .navbar.navbar-dark.bg-light .navbar-brand img {
+      filter: brightness(0) invert(1); /* Make logo white for dark background */
+    }
+    
+    .navbar.navbar-dark.bg-light .navbar-nav .nav-link {
+      color: rgba(255, 255, 255, 0.9) !important;
+    }
+    
+    .navbar.navbar-dark.bg-light .navbar-nav .nav-link:hover,
+    .navbar.navbar-dark.bg-light .navbar-nav .nav-link:focus {
+      color: #ffffff !important;
+    }
+    
+    .navbar.navbar-dark.bg-light .navbar-toggler {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .navbar.navbar-dark.bg-light .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='m4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    /* Fix top spacing issues with GOB.mx framework */
+    body {
+      padding-top: 0 !important;
+      margin-top: 0 !important;
+    }
+    
+    .page {
+      padding-top: 70px !important; /* Account for fixed navbar */
+      margin-top: 0 !important;
+    }
+    
+    .hall-container {
+      padding-top: 20px !important; /* Reduce excessive padding */
+    }
+
+    /* Flashing alert animation */
+    .flashing-alert {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: linear-gradient(45deg, #fff3cd, #ffeaa7);
+      border: 2px solid #f39c12;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: flash 2s infinite;
+      font-weight: bold;
+      color: #8b4513;
+    }
+
+    .flashing-alert:hover {
+      background: linear-gradient(45deg, #ffeaa7, #fff3cd);
+      transform: scale(1.02);
+    }
+
+    .alert-count {
+      background: #e74c3c;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    @keyframes flash {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0.7; }
+    }
+
+    /* Reduce animation intensity on mobile for better UX */
+    @media (max-width: 768px) {
+      .flashing-alert {
+        animation: flash 3s infinite;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="container py-4 hall-container">
+      
+      <!-- Header de bienvenida -->
+      <div class="welcome-header">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <div class="organization-badge">
+              <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-building"></i></span> CESO
+            </div>
+            <h1 class="h2 mb-2" data-es="Centro de Control CESO" data-en="CESO Control Center">Centro de Control CESO</h1>
+            <p class="user-greeting mb-0" id="userGreeting" data-es="Consejo Estatal de Seguimiento Operativo del SINIDA" data-en="State Council for SINIDA Operational Monitoring">
+              Consejo Estatal de Seguimiento Operativo del SINIDA
+            </p>
+            <p class="mb-0 mt-2" style="color: white; font-size: 1.1rem; font-weight: 400; opacity: 1;">
+              <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-geo-alt"></i></span> <span data-es="Sistema Nacional de Identificación y Registro de la Movilización de Animales" data-en="National System for Identification and Registration of Animal Movement">Sistema Nacional de Identificación y Registro de la Movilización de Animales</span>
+            </p>
+          </div>
+          <div class="col-md-4 text-end">
+            <!-- Language Toggle -->
+            <div class="mb-3">
+              <div class="btn-group btn-group-sm mb-2" role="group" aria-label="Selector de idioma">
+                <button type="button" class="btn btn-secondary active" id="btnSpanish" onclick="setLanguage('es')" aria-pressed="true">
+                  <span aria-hidden="true">🇲🇽</span> ESPAÑOL
+                </button>
+                <button type="button" class="btn btn-secondary" id="btnEnglish" onclick="setLanguage('en')" aria-pressed="false">
+                  <span aria-hidden="true">🇺🇸</span> ENGLISH
+                </button>
+              </div>
+              
+              <!-- Logout Button -->
+              <div class="d-block">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="handleLogout()" id="logoutBtn">
+                  <span class="bootstrap-icons me-1" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span>
+                  <span data-es="Cerrar Sesión" data-en="Logout">Cerrar Sesión</span>
+                </button>
+              </div>
+            </div>
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white" 
+                 style="width: 80px; height: 80px;">
+              <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-building text-primary" style="font-size: 2.5rem;"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alertas críticas (si las hay) -->
+      <div id="criticalAlerts" class="critical-alerts d-none">
+        <div id="alertsList" class="flashing-alert" onclick="showAgreementsByStatus('Vencidos')">
+          <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-exclamation-triangle-fill text-warning"></i></span>
+          <span id="overdueCount" class="alert-count">0</span>
+          <span data-es="Vencidos" data-en="Overdue">Vencidos</span>
+        </div>
+      </div>
+
+      <!-- Estadísticas del grupo -->
+      <div class="stats-grid">
+        <div class="stat-card clickable-stat" onclick="showAgreementsByStatus('Vencidos')">
+          <span class="stat-number text-danger" id="overdueAgreements">...</span>
+          <div class="stat-label" data-es="Vencidos" data-en="Overdue">Vencidos</div>
+          <small class="text-muted" id="myOverdueCount"></small>
+        </div>
+        <div class="stat-card clickable-stat" onclick="showAgreementsByStatus('Pendiente')">
+          <span class="stat-number text-warning" id="pendingAgreements">...</span>
+          <div class="stat-label" data-es="Pendientes" data-en="Pending">Pendientes</div>
+          <small class="text-muted" id="myPendingCount"></small>
+        </div>
+        <div class="stat-card clickable-stat" onclick="showAgreementsByStatus('En Progreso')">
+          <span class="stat-number text-info" id="inProgressAgreements">...</span>
+          <div class="stat-label" data-es="En Progreso" data-en="In Progress">En Progreso</div>
+          <small class="text-muted" id="myInProgressCount"></small>
+        </div>
+        <div class="stat-card clickable-stat" onclick="showAgreementsByStatus('Completado')">
+          <span class="stat-number text-success" id="completedAgreements">...</span>
+          <div class="stat-label" data-es="Completados" data-en="Completed">Completados</div>
+          <small class="text-muted" id="myCompletedCount"></small>
+        </div>
+        <div class="stat-card" onclick="showAgreementsByStatus('all')">
+          <span class="stat-number" id="totalAgreements">...</span>
+          <div class="stat-label" data-es="Acuerdos Totales" data-en="Total Agreements">Acuerdos Totales</div>
+        </div>
+      </div>
+
+      <!-- Sección de "Puertas" -->
+      <div class="doors-section">
+        <h3 class="mb-4 text-center">
+          <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-door-open text-primary"></i></span>
+          <span data-es="Seleccione su Destino" data-en="Select Your Destination">Seleccione su Destino</span>
+        </h3>
+        
+        <div class="row g-4">
+          <!-- Dashboard de Acuerdos -->
+          <div class="col-md-4">
+            <a href="acuerdos-ceso.html" class="door-card text-decoration-none">
+              <div class="door-icon">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>
+              </div>
+              <div class="door-title" data-es="Panel de Acuerdos" data-en="Agreements Dashboard">Panel de Acuerdos</div>
+              <div class="door-description" data-es="Vista completa de todos los acuerdos, filtros y gestión de evidencias" data-en="Complete view of all agreements, filters and evidence management">
+                Vista completa de todos los acuerdos, filtros y gestión de evidencias
+              </div>
+            </a>
+          </div>
+
+          <!-- Repositorio CESO -->
+          <div class="col-md-4">
+            <a href="repositorio-ceso.html" class="door-card text-decoration-none">
+              <div class="door-icon">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-archive"></i></span>
+              </div>
+              <div class="door-title" data-es="Repositorio CESO" data-en="CESO Repository">Repositorio CESO</div>
+              <div class="door-description" data-es="Biblioteca de documentos SINIDA, manuales operativos y recursos administrativos" data-en="SINIDA document library, operational manuals and administrative resources">
+                Biblioteca de documentos SINIDA, manuales operativos y recursos administrativos
+              </div>
+            </a>
+          </div>
+
+          <!-- Panel Administrativo -->
+          <div class="col-md-4">
+            <a href="#" class="door-card text-decoration-none" onclick="showComingSoon('Panel Administrativo')">
+              <div class="door-icon">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-gear"></i></span>
+              </div>
+              <div class="door-title" data-es="Panel de Configuración" data-en="Configuration Panel">Panel de Configuración</div>
+              <div class="door-description" data-es="Configuración de usuarios, permisos y parámetros del sistema" data-en="User configuration, permissions and system parameters">
+                Configuración de usuarios, permisos y parámetros del sistema
+              </div>
+            </a>
+          </div>
+
+          <!-- Reportes y Métricas -->
+          <div class="col-md-4">
+            <a href="#" class="door-card text-decoration-none" onclick="openReportsModal()">
+              <div class="door-icon">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-graph-up"></i></span>
+              </div>
+              <div class="door-title" data-es="Reportes y Métricas" data-en="Reports & Metrics">Reportes y Métricas</div>
+              <div class="door-description" data-es="Generar reportes en PDF y Excel con filtros personalizados" data-en="Generate PDF and Excel reports with custom filters">
+                Generar reportes en PDF y Excel con filtros personalizados
+              </div>
+            </a>
+          </div>
+
+          <!-- Carga en Lote -->
+          <div class="col-md-4">
+            <a href="batch-upload-ceso.html" class="door-card text-decoration-none">
+              <div class="door-icon">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-upload"></i></span>
+              </div>
+              <div class="door-title" data-es="Carga en Lote" data-en="Batch Upload">Carga en Lote</div>
+              <div class="door-description" data-es="Carga masiva de acuerdos desde archivos CSV de sesiones" data-en="Mass upload of agreements from CSV session files">
+                Carga masiva de acuerdos desde archivos CSV de sesiones
+              </div>
+            </a>
+          </div>
+
+          <!-- Centro de Ayuda -->
+          <div class="col-md-4">
+            <a href="centro-ayuda.html" class="door-card text-decoration-none">
+              <div class="door-icon">
+                <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-question-circle"></i></span>
+              </div>
+              <div class="door-title" data-es="Centro de Ayuda" data-en="Help Center">Centro de Ayuda</div>
+              <div class="door-description" data-es="Tutoriales, preguntas frecuentes y soporte técnico para usuarios" data-en="Tutorials, FAQ and technical support for users">
+                Tutoriales, preguntas frecuentes y soporte técnico para usuarios
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Modal para mostrar acuerdos filtrados -->
+  <div class="modal fade" id="agreementsModal" tabindex="-1" aria-labelledby="agreementsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+  <div class="modal-content" style="font-family: 'Noto Sans', sans-serif; font-size: 1.125rem; line-height: 1.428; color: #545454;">
+        <div class="modal-header bg-gobierno-principal text-white">
+          <h4 class="modal-title" id="agreementsModalLabel" style="font-family: 'Patria', serif;">
+            <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-list-ul me-2"></i></span>
+            <span id="modalTitle" data-es="Acuerdos" data-en="Agreements">Acuerdos</span>
+          </h4>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Filtros de búsqueda -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="searchAgreements" placeholder="Buscar por número o descripción...">
+            </div>
+            <div class="col-md-6">
+              <select class="form-select" id="filterResponsible">
+                <option value="" data-es="Todos los responsables" data-en="All responsible parties">Todos los responsables</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Loading indicator -->
+          <div id="loadingIndicator" class="text-center py-4" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2" data-es="Cargando acuerdos..." data-en="Loading agreements...">Cargando acuerdos...</p>
+          </div>
+
+          <!-- Lista de acuerdos -->
+          <div id="agreementsList">
+            <!-- Los acuerdos se cargarán aquí dinámicamente -->
+          </div>
+
+          <!-- Paginación -->
+          <nav aria-label="Paginación" id="paginationContainer" style="display: none;">
+            <ul class="pagination justify-content-center" id="pagination">
+              <!-- La paginación se generará dinámicamente -->
+            </ul>
+          </nav>
+        </div>
+        <div class="modal-footer">
+          <span class="text-muted me-auto" id="agreementsCount">0 acuerdos encontrados</span>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-es="Cerrar" data-en="Close">Cerrar</button>
+          <a href="acuerdos-ceso.html" class="btn btn-primary" data-es="Ver Todos los Acuerdos" data-en="View All Agreements">Ver Todos los Acuerdos</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para mostrar detalle de acuerdo individual -->
+  <div class="modal fade" id="agreementDetailModal" tabindex="-1" aria-labelledby="agreementDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-gobierno-principal text-white">
+          <h4 class="modal-title" id="agreementDetailModalLabel" style="font-family: 'Patria', serif;">
+            <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-file-text me-2"></i></span>
+            <span data-es="Detalle del Acuerdo" data-en="Agreement Detail">Detalle del Acuerdo</span>
+          </h4>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Loading indicator for detail -->
+          <div id="detailLoadingIndicator" class="text-center py-4" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2" data-es="Cargando detalle..." data-en="Loading detail...">Cargando detalle...</p>
+          </div>
+
+          <!-- Agreement detail content -->
+          <div id="agreementDetailContent">
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="text-primary" data-es="Número de Acuerdo" data-en="Agreement Number">Número de Acuerdo</h6>
+                <p id="detailAgreementNumber" class="fw-bold">-</p>
+              </div>
+              <div class="col-md-6">
+                <h6 class="text-primary" data-es="Estado" data-en="Status">Estado</h6>
+                <p id="detailStatus" class="clickable-status" style="cursor: pointer;" 
+                   title="Haz clic para gestionar evidencias y cambiar estado">-</p>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="text-primary" data-es="Fecha de Cumplimiento" data-en="Compliance Date">Fecha de Cumplimiento</h6>
+                <p id="detailDate">-</p>
+              </div>
+              <div class="col-md-6">
+                <h6 class="text-primary" data-es="Responsable" data-en="Responsible">Responsable</h6>
+                <p id="detailResponsible">-</p>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-12">
+                <h6 class="text-primary" data-es="Descripción del Acuerdo" data-en="Agreement Description">Descripción del Acuerdo</h6>
+                <p id="detailDescription" class="text-wrap">-</p>
+              </div>
+            </div>
+
+            <!-- Evidence section -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <h6 class="text-primary" data-es="Evidencias" data-en="Evidence">Evidencias</h6>
+                <div id="detailEvidenceList" class="border rounded p-3 bg-light">
+                  <p class="text-muted mb-0" data-es="Cargando evidencias..." data-en="Loading evidence...">Cargando evidencias...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-es="Cerrar" data-en="Close">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="viewEvidenceBtn" data-es="Ver Evidencias" data-en="View Evidence">Ver Evidencias</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Evidence Modal -->
+  <div class="modal fade" id="evidenceModal" tabindex="-1" aria-labelledby="evidenceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-gobierno-principal text-white">
+          <h4 class="modal-title" id="evidenceModalLabel" style="font-family: 'Patria', serif;">
+            <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-file-earmark-text me-2"></i></span>
+            <span data-es="Evidencias" data-en="Evidence">Evidencias</span>
+          </h4>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Evidence List -->
+          <div id="evidenceList" class="mb-4">
+            <div class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando evidencias...</span>
+              </div>
+              <p class="mt-2" data-es="Cargando evidencias..." data-en="Loading evidence...">Cargando evidencias...</p>
+            </div>
+          </div>
+          
+          <!-- Status Update Section - COMPLIANCE CRITICAL -->
+          <div class="border rounded p-3 mb-4" style="background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); border-color: #856404 !important; border-width: 2px !important;">
+            <div class="alert alert-warning mb-3" role="alert">
+              <h6 class="alert-heading mb-2">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <strong data-es="CAMBIO DE ESTADO - EVIDENCIA OBLIGATORIA" data-en="STATUS CHANGE - EVIDENCE REQUIRED">
+                  CAMBIO DE ESTADO - EVIDENCIA OBLIGATORIA
+                </strong>
+              </h6>
+              <p class="mb-0 small" data-es="Para cambiar el estado de este acuerdo DEBE proporcionar evidencia documental válida y firmar la declaración de conformidad." data-en="To change the status of this agreement you MUST provide valid documentary evidence and sign the compliance statement.">
+                Para cambiar el estado de este acuerdo DEBE proporcionar evidencia documental válida y firmar la declaración de conformidad.
+              </p>
+            </div>
+            
+            <h6 class="text-danger mb-3">
+              <i class="bi bi-shield-check me-1"></i>
+              <span data-es="Actualización de Estado con Evidencia Obligatoria" data-en="Status Update with Mandatory Evidence">
+                Actualización de Estado con Evidencia Obligatoria
+              </span>
+            </h6>
+            
+            <!-- Current vs New Status Display -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-bold" data-es="Estado Actual:" data-en="Current Status:">Estado Actual:</label>
+                <div id="currentStatusDisplay" class="p-2 border rounded bg-white">
+                  <!-- Current status badge will be populated here -->
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="statusSelect" class="form-label fw-bold text-danger" data-es="Nuevo Estado:" data-en="New Status:">Nuevo Estado: *</label>
+                <select id="statusSelect" class="form-select border-danger">
+                  <option value="" data-es="-- Seleccionar nuevo estado --" data-en="-- Select new status --">-- Seleccionar nuevo estado --</option>
+                  <option value="Pendiente" data-es="Pendiente" data-en="Pending">Pendiente</option>
+                  <option value="En Progreso" data-es="En Progreso" data-en="In Progress">En Progreso</option>
+                  <option value="Completado" data-es="Completado" data-en="Completed">Completado</option>
+                  <option value="Vencidos" data-es="Vencidos" data-en="Overdue">Vencidos</option>
+                </select>
+              </div>
+            </div>
+            
+            <!-- Evidence Upload for Status Change -->
+            <div class="mb-3">
+              <label class="form-label fw-bold text-danger" data-es="Evidencia de Cambio de Estado:" data-en="Evidence of Status Change:">
+                Evidencia de Cambio de Estado: *
+              </label>
+              <input type="file" id="statusChangeEvidence" class="form-control border-danger" required
+                     accept="application/pdf,image/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+              <div class="form-text text-danger">
+                <strong data-es="OBLIGATORIO:" data-en="MANDATORY:">OBLIGATORIO:</strong>
+                <span data-es="PDF, Imagen, Word o Excel que compruebe el cambio de estado" data-en="PDF, Image, Word or Excel proving the status change">
+                  PDF, Imagen, Word o Excel que compruebe el cambio de estado
+                </span>
+              </div>
+            </div>
+            
+            <!-- Evidence Description -->
+            <div class="mb-3">
+              <label for="statusChangeComment" class="form-label fw-bold text-danger" data-es="Descripción de la Evidencia:" data-en="Evidence Description:">
+                Descripción de la Evidencia: *
+              </label>
+              <textarea id="statusChangeComment" rows="3" class="form-control border-danger" required
+                        data-es="Describa cómo este documento comprueba el cambio de estado..." data-en="Describe how this document proves the status change..."
+                        placeholder="Describa cómo este documento comprueba el cambio de estado..."></textarea>
+            </div>
+            
+            <!-- COMPLIANCE AFFIDAVIT -->
+            <div class="border rounded p-3 mb-3" style="background-color: #f8f9fa; border-color: #dc3545 !important;">
+              <h6 class="text-danger mb-3">
+                <i class="bi bi-clipboard-check me-1"></i>
+                <span data-es="DECLARACIÓN JURADA DE CONFORMIDAD" data-en="COMPLIANCE AFFIDAVIT">
+                  DECLARACIÓN JURADA DE CONFORMIDAD
+                </span>
+              </h6>
+              
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="evidenceValidityCheck" required>
+                <label class="form-check-label fw-bold" for="evidenceValidityCheck">
+                  <span data-es="Certifico que la evidencia proporcionada es auténtica y válida" data-en="I certify that the evidence provided is authentic and valid">
+                    Certifico que la evidencia proporcionada es auténtica y válida
+                  </span>
+                </label>
+              </div>
+              
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="statusChangeJustificationCheck" required>
+                <label class="form-check-label fw-bold" for="statusChangeJustificationCheck">
+                  <span data-es="Confirmo que la evidencia justifica el cambio de estado solicitado" data-en="I confirm that the evidence justifies the requested status change">
+                    Confirmo que la evidencia justifica el cambio de estado solicitado
+                  </span>
+                </label>
+              </div>
+              
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="auditTrailConsentCheck" required>
+                <label class="form-check-label fw-bold" for="auditTrailConsentCheck">
+                  <span data-es="Entiendo que esta acción será registrada para auditoría" data-en="I understand this action will be logged for audit purposes">
+                    Entiendo que esta acción será registrada para auditoría
+                  </span>
+                </label>
+              </div>
+              
+              <!-- Digital Signature -->
+              <div class="mb-3">
+                <label for="digitalSignature" class="form-label fw-bold text-danger" data-es="Firma Digital (Nombre Completo):" data-en="Digital Signature (Full Name):">
+                  Firma Digital (Nombre Completo): *
+                </label>
+                <input type="text" id="digitalSignature" class="form-control border-danger" required
+                       data-es="Escriba su nombre completo como firma digital" data-en="Type your full name as digital signature"
+                       placeholder="Escriba su nombre completo como firma digital">
+              </div>
+            </div>
+            
+            <!-- Action Button -->
+            <button id="updateStatusBtn" class="btn btn-danger w-100" disabled>
+              <i class="bi bi-shield-exclamation me-1"></i>
+              <span data-es="PROCESAR CAMBIO DE ESTADO CON EVIDENCIA" data-en="PROCESS STATUS CHANGE WITH EVIDENCE">
+                PROCESAR CAMBIO DE ESTADO CON EVIDENCIA
+              </span>
+            </button>
+            
+            <div class="mt-2">
+              <small class="text-muted">
+                <i class="bi bi-info-circle me-1"></i>
+                <span data-es="El botón se habilitará cuando complete todos los campos obligatorios y las declaraciones" data-en="Button will be enabled when you complete all required fields and statements">
+                  El botón se habilitará cuando complete todos los campos obligatorios y las declaraciones
+                </span>
+              </small>
+            </div>
+          </div>
+          
+          <!-- Upload Additional Evidence Section (Optional) -->
+          <div class="border rounded p-3 bg-light">
+            <h6 class="text-primary mb-3">
+              <i class="bi bi-cloud-upload me-1"></i>
+              <span data-es="Subir Evidencia Adicional (Opcional)" data-en="Upload Additional Evidence (Optional)">Subir Evidencia Adicional (Opcional)</span>
+              <small class="text-muted">(<span data-es="requiere autenticación" data-en="requires authentication">requiere autenticación</span>)</small>
+            </h6>
+            <p class="text-muted small mb-3" data-es="Use esta sección para subir documentación adicional sin cambiar el estado del acuerdo." data-en="Use this section to upload additional documentation without changing the agreement status.">
+              Use esta sección para subir documentación adicional sin cambiar el estado del acuerdo.
+            </p>
+            <div class="mb-3">
+              <input type="file" id="evidenceFiles" multiple class="form-control" 
+                     accept="application/pdf,image/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+              <div class="form-text" data-es="Formatos permitidos: PDF, imágenes, documentos Word, Excel" data-en="Allowed formats: PDF, images, Word documents, Excel">
+                Formatos permitidos: PDF, imágenes, documentos Word, Excel
+              </div>
+            </div>
+            <div class="mb-3">
+              <textarea id="evidenceComment" rows="3" class="form-control" 
+                        data-es="Comentario (opcional)" data-en="Comment (optional)"
+                        placeholder="Comentario (opcional)"></textarea>
+            </div>
+            <button id="evidenceUploadBtn" class="btn btn-primary">
+              <i class="bi bi-upload me-1"></i>
+              <span data-es="Subir Evidencia Adicional" data-en="Upload Additional Evidence">Subir Evidencia Adicional</span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-es="Cerrar" data-en="Close">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Reportes -->
+  <div class="modal fade" id="reportsModal" tabindex="-1" aria-labelledby="reportsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-gobierno-principal text-white">
+          <h4 class="modal-title" id="reportsModalLabel" style="font-family: 'Patria', serif;">
+            <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-graph-up me-2"></i></span>
+            <span data-es="Generador de Reportes CESO" data-en="CESO Report Generator">Generador de Reportes CESO</span>
+          </h4>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <!-- Report Template Selection -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h6 class="text-primary mb-3" data-es="Plantillas de Reportes" data-en="Report Templates">Plantillas de Reportes</h6>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        <span class="bootstrap-icons text-danger me-2"><i class="bi bi-exclamation-triangle"></i></span>
+                        <span data-es="Acuerdos Vencidos" data-en="Overdue Agreements">Acuerdos Vencidos</span>
+                      </h6>
+                      <p class="card-text small" data-es="Reporte de acuerdos que han superado su fecha de cumplimiento" data-en="Report of agreements that have exceeded their compliance date">
+                        Reporte de acuerdos que han superado su fecha de cumplimiento
+                      </p>
+                      <button class="btn btn-danger btn-sm" onclick="loadReportTemplate('overdue')">
+                        <span class="bootstrap-icons me-1"><i class="bi bi-file-earmark-pdf"></i></span>
+                        <span data-es="Generar" data-en="Generate">Generar</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        <span class="bootstrap-icons text-info me-2"><i class="bi bi-person-check"></i></span>
+                        <span data-es="Actividad por Responsable" data-en="Activity by Responsible Person">Actividad por Responsable</span>
+                      </h6>
+                      <p class="card-text small" data-es="Reporte de acuerdos agrupados por persona responsable" data-en="Report of agreements grouped by responsible person">
+                        Reporte de acuerdos agrupados por persona responsable
+                      </p>
+                      <button class="btn btn-info btn-sm" onclick="loadReportTemplate('responsible')">
+                        <span class="bootstrap-icons me-1"><i class="bi bi-file-earmark-pdf"></i></span>
+                        <span data-es="Generar" data-en="Generate">Generar</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Report Filters -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h6 class="text-primary mb-3" data-es="Reporte Personalizado" data-en="Custom Report">Reporte Personalizado</h6>
+              <div class="card">
+                <div class="card-body">
+                  <form id="reportFiltersForm">
+                    <div class="row">
+                      <!-- Status Filter -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Estado del Acuerdo" data-en="Agreement Status">Estado del Acuerdo</label>
+                        <select class="form-select" id="reportStatusFilter" multiple>
+                          <option value="Pendiente">Pendiente</option>
+                          <option value="En Progreso">En Progreso</option>
+                          <option value="Vencidos">Vencidos</option>
+                          <option value="Completado">Completado</option>
+                        </select>
+                        <small class="text-muted" data-es="Mantén Ctrl para seleccionar múltiples" data-en="Hold Ctrl to select multiple">Mantén Ctrl para seleccionar múltiples</small>
+                      </div>
+                      
+                      <!-- Responsible Person Filter -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Responsable" data-en="Responsible Person">Responsable</label>
+                        <select class="form-select" id="reportResponsibleFilter">
+                          <option value="" data-es="Todos los responsables" data-en="All responsible persons">Todos los responsables</option>
+                          <!-- Will be populated dynamically -->
+                        </select>
+                      </div>
+                      
+                      <!-- Date Range -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Fecha Desde" data-en="Date From">Fecha Desde</label>
+                        <input type="date" class="form-control" id="reportDateFrom">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Fecha Hasta" data-en="Date To">Fecha Hasta</label>
+                        <input type="date" class="form-control" id="reportDateTo">
+                      </div>
+                      
+                      <!-- Agreement Number -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Número de Acuerdo" data-en="Agreement Number">Número de Acuerdo</label>
+                        <input type="text" class="form-control" id="reportAgreementNumber" placeholder="Ej: 01-IV-070624">
+                      </div>
+                      
+                      <!-- Session Number -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Número de Sesión" data-en="Session Number">Número de Sesión</label>
+                        <input type="text" class="form-control" id="reportSessionNumber" placeholder="Ej: Sesión IV">
+                      </div>
+                      
+                      <!-- Session Type -->
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" data-es="Tipo de Sesión" data-en="Session Type">Tipo de Sesión</label>
+                        <select class="form-select" id="reportSessionType">
+                          <option value="" data-es="Todos los tipos" data-en="All types">Todos los tipos</option>
+                          <option value="Ordinaria" data-es="Ordinaria" data-en="Regular">Ordinaria</option>
+                          <option value="Extraordinaria" data-es="Extraordinaria" data-en="Extraordinary">Extraordinaria</option>
+                          <option value="Especial" data-es="Especial" data-en="Special">Especial</option>
+                          <option value="Urgente" data-es="Urgente" data-en="Urgent">Urgente</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <!-- Saved Configurations -->
+                    <div class="row mt-3">
+                      <div class="col-md-8 mb-3">
+                        <label class="form-label" data-es="Configuración Guardada" data-en="Saved Configuration">Configuración Guardada</label>
+                        <select class="form-select" id="savedConfigurations">
+                          <option value="" data-es="Seleccionar configuración guardada..." data-en="Select saved configuration...">Seleccionar configuración guardada...</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="form-label" data-es="Guardar Como" data-en="Save As">Guardar Como</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control" id="configurationName" placeholder="Nombre de configuración">
+                          <button class="btn btn-secondary" type="button" onclick="saveConfiguration()">
+                            <span class="bootstrap-icons"><i class="bi bi-save"></i></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Report Preview -->
+          <div class="row">
+            <div class="col-12">
+              <h6 class="text-primary mb-3" data-es="Vista Previa del Reporte" data-en="Report Preview">Vista Previa del Reporte</h6>
+              <div class="card">
+                <div class="card-body">
+                  <div id="reportPreview" class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <p class="text-muted text-center py-4" data-es="Configure los filtros y haga clic en 'Generar Vista Previa' para ver el reporte" data-en="Configure filters and click 'Generate Preview' to see the report">
+                      Configure los filtros y haga clic en "Generar Vista Previa" para ver el reporte
+                    </p>
+                  </div>
+                  
+                  <!-- Report Summary -->
+                  <div id="reportSummary" class="mt-3 p-3 bg-light rounded" style="display: none;">
+                    <h6 class="text-primary mb-2" data-es="Resumen del Reporte" data-en="Report Summary">Resumen del Reporte</h6>
+                    <div class="row text-center">
+                      <div class="col-md-3">
+                        <div class="fw-bold text-warning" id="summaryPending">0</div>
+                        <small data-es="Pendientes" data-en="Pending">Pendientes</small>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="fw-bold text-info" id="summaryInProgress">0</div>
+                        <small data-es="En Progreso" data-en="In Progress">En Progreso</small>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="fw-bold text-danger" id="summaryOverdue">0</div>
+                        <small data-es="Vencidos" data-en="Overdue">Vencidos</small>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="fw-bold text-success" id="summaryCompleted">0</div>
+                        <small data-es="Completados" data-en="Completed">Completados</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-es="Cerrar" data-en="Close">Cerrar</button>
+          <button type="button" class="btn btn-primary" onclick="generateReportPreview()">
+            <span class="bootstrap-icons me-1"><i class="bi bi-eye"></i></span>
+            <span data-es="Generar Vista Previa" data-en="Generate Preview">Generar Vista Previa</span>
+          </button>
+          <button type="button" class="btn btn-success" onclick="exportToExcel()" disabled id="exportExcelBtn">
+            <span class="bootstrap-icons me-1"><i class="bi bi-file-earmark-excel"></i></span>
+            <span data-es="Exportar Excel" data-en="Export Excel">Exportar Excel</span>
+          </button>
+          <button type="button" class="btn btn-primary" onclick="exportToPDF()" disabled id="exportPDFBtn">
+            <span class="bootstrap-icons me-1"><i class="bi bi-file-earmark-pdf"></i></span>
+            <span data-es="Exportar PDF" data-en="Export PDF">Exportar PDF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer gubernamental oficial -->
+  <!-- Footer removed for government framework compliance -->
+  <!--
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5><span data-es="CESO - Centro de Control" data-en="CESO - Control Center">CESO - Centro de Control</span></h5>
+          <p><span data-es="Consejo Estatal de Seguimiento Operativo del SINIDA" data-en="State Council for SINIDA Operational Monitoring">Consejo Estatal de Seguimiento Operativo del SINIDA</span></p>
+          <img src="https://framework-gb.cdn.gob.mx/gobmx/img/logo_blanco.svg" alt="Gobierno de México" height="30" class="my-2">
+        </div>
+        <div class="col-md-4">
+          <h5><span data-es="Enlaces CESO" data-en="CESO Links">Enlaces CESO</span></h5>
+          <ul class="list-unstyled">
+            <li><a href="index.html" class="text-white"><span data-es="Inicio" data-en="Home">Inicio</span></a></li>
+            <li><a href="hall-ceso.html" class="text-white"><span data-es="Panel CESO" data-en="CESO Panel">Panel CESO</span></a></li>
+            <li><a href="acuerdos-ceso.html" class="text-white"><span data-es="Acuerdos CESO" data-en="CESO Agreements">Acuerdos CESO</span></a></li>
+            <li><a href="repositorio-ceso.html" class="text-white"><span data-es="Repositorio CESO" data-en="CESO Repository">Repositorio CESO</span></a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5><span data-es="Contacto" data-en="Contact">Contacto</span></h5>
+          <p><span data-es="CESO - Yucatán<br>Consejo Estatal de Seguimiento Operativo<br>SINIDA - México" data-en="CESO - Yucatan<br>State Council for Operational Monitoring<br>SINIDA - Mexico">CESO - Yucatán<br>Consejo Estatal de Seguimiento Operativo<br>SINIDA - México</span></p>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p><span data-es="&copy; 2024 Gobierno de México. Todos los derechos reservados." data-en="&copy; 2024 Government of Mexico. All rights reserved.">&copy; 2024 Gobierno de México. Todos los derechos reservados.</span></p>
+        <div class="d-flex justify-content-center gap-3 mt-2">
+          <a href="https://www.gob.mx/" target="_blank" class="text-white">gob.mx</a>
+          <a href="https://www.gob.mx/agricultura" target="_blank" class="text-white">AGRICULTURA</a>
+          <a href="https://www.gob.mx/senasica" target="_blank" class="text-white">SENASICA</a>
+        </div>
+      </div>
+    </div>
+  -->
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="__/firebase/init.js"></script>
+  <script src="auth-system.js"></script>
+  <script src="admin-config.js"></script>
+  
+  <!-- PDF and Excel export libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  
+  <script>
+  // Global variable to store original agreements data for filtering
+  let originalAgreements = [];
+  // Current modal status (explicit), avoids parsing modal title text which is localization-dependent
+  let currentModalStatus = 'all';
+    
+    // Prevenir interferencia de navegación hash legacy
+    window.addEventListener('load', function() {
+      // Si hay hash #landing-ceso, limpiarlo y mantener la página limpia
+      if (window.location.hash === '#landing-ceso') {
+        console.log('🧹 Cleaning legacy hash navigation');
+        window.history.replaceState(null, null, window.location.pathname);
+      }
+    });
+    
+    // Verificar autenticación
+    document.addEventListener('DOMContentLoaded', function() {
+      // Verificar si el usuario está autenticado
+      const currentUser = window.gobmxAuth ? window.gobmxAuth.getCurrentUser() : null;
+      if (!currentUser || currentUser.organization !== 'CESO') {
+        alert('Acceso no autorizado. Redirigiendo al login.');
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      console.log('🔍 Debug - Current user object:', currentUser);
+      
+      // Personalizar saludo
+      const userGreeting = document.getElementById('userGreeting');
+      if (userGreeting) {
+        // Try multiple possible name fields
+        const userName = currentUser.nombre || currentUser.name || currentUser.email || 'Usuario';
+        userGreeting.innerHTML = `
+          <i class="bi bi-person-check"></i> 
+          Bienvenido/a, <strong>${userName}</strong><br>
+          <small>Consejo Estatal de Seguimiento Operativo del SINIDA</small>
+        `;
+      }
+      
+      // Cargar estadísticas
+      loadStatistics();
+    });
+
+    // Logout functionality
+    function handleLogout() {
+      const logoutBtn = document.getElementById('logoutBtn');
+      
+      if (logoutBtn) {
+        logoutBtn.disabled = true;
+        logoutBtn.innerHTML = `
+          <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+          <span data-es="Cerrando..." data-en="Logging out...">Cerrando...</span>
+        `;
+      }
+      
+      try {
+        // Clear authentication data
+        if (window.gobmxAuth) {
+          window.gobmxAuth.logout();
+        }
+        
+        // Clear any local storage
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('authToken');
+        
+        // Redirect to login
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1000);
+        
+      } catch (error) {
+        console.error('Error during logout:', error);
+        
+        // Reset button state
+        if (logoutBtn) {
+          logoutBtn.disabled = false;
+          logoutBtn.innerHTML = `
+            <span class="bootstrap-icons me-1" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span>
+            <span data-es="Cerrar Sesión" data-en="Logout">Cerrar Sesión</span>
+          `;
+        }
+        
+        alert('Error al cerrar sesión. Intentando nuevamente...');
+        
+        // Force redirect as fallback
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 2000);
+      }
+    }
+
+    async function loadStatistics() {
+      try {
+        // Cargar datos de acuerdos CESO
+        const collections = ['acuerdos-ceso', 'acuerdos_ceso', 'acuerdos'];
+        let snapshot = null;
+        for (const collName of collections) {
+          try {
+            snapshot = await db.collection(collName).get();
+            if (snapshot.size > 0) break;
+          } catch (e) {
+            console.log(`Collection ${collName} not found, trying next...`);
+          }
+        }
+        if (!snapshot || snapshot.size === 0) {
+          showError('No se encontraron datos de acuerdos');
+          return;
+        }
+        // Analizar estadsticas
+        const currentUser = window.gobmxAuth.getCurrentUser();
+        const userEmail = currentUser?.email?.toLowerCase() || '';
+        let total = 0, pending = 0, overdue = 0, inProgress = 0, completed = 0;
+        let myPending = 0, myOverdue = 0, myInProgress = 0, myCompleted = 0;
+        const criticalIssues = [];
+        const now = new Date();
+        function parseDate(dueDate) {
+          if (!dueDate) return null;
+          if (typeof dueDate === 'number') {
+            // Excel serial date (days since 1900-01-01)
+            const excelEpoch = new Date(1900, 0, 1);
+            return new Date(excelEpoch.getTime() + (dueDate - 1) * 24 * 60 * 60 * 1000);
+          }
+          if (typeof dueDate === 'string') {
+            // Try ISO or locale string
+            const parsed = Date.parse(dueDate);
+            return isNaN(parsed) ? null : new Date(parsed);
+          }
+          return dueDate instanceof Date ? dueDate : null;
+        }
+        function normalizeStatus(status) {
+          if (!status) return 'Pendiente';
+          status = status.toLowerCase();
+          if (status.includes('completado') || status.includes('cumplido') || status.includes('perman')) return 'Completado';
+          if (status.includes('vencido')) return 'Vencido';
+          if (status.includes('progreso')) return 'En Progreso';
+          return 'Pendiente';
+        }
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const statusRaw = data.status || data.estatus || data.Estado || '';
+          const status = normalizeStatus(statusRaw);
+          const responsible = (data.responsible || data.responsable || data['Responsable del Seguimiento'] || '').toLowerCase();
+          const dueDateRaw = data.complianceDate || data.fecha_cumplimiento || data['Fecha de Cumplimiento'];
+          const dueDate = parseDate(dueDateRaw);
+          total++;
+          const isMyTask = responsible.includes(userEmail) || responsible.includes(currentUser?.name?.toLowerCase() || '');
+          if (status === 'Completado') {
+            completed++;
+            if (isMyTask) myCompleted++;
+          } else if (status === 'Vencido' || (dueDate && dueDate < now)) {
+            overdue++;
+            if (isMyTask) {
+              myOverdue++;
+              criticalIssues.push({
+                title: data.numero || data.agreementNumber || 'Acuerdo',
+                description: 'Acuerdo vencido requiere atencin inmediata'
+              });
+            }
+          } else if (status === 'En Progreso') {
+            inProgress++;
+            if (isMyTask) myInProgress++;
+          } else {
+            pending++;
+            if (isMyTask) myPending++;
+          }
+        });
+        // Actualizar UI
+        document.getElementById('totalAgreements').textContent = total;
+        document.getElementById('pendingAgreements').textContent = pending;
+        document.getElementById('overdueAgreements').textContent = overdue;
+        document.getElementById('inProgressAgreements').textContent = inProgress;
+        document.getElementById('completedAgreements').textContent = completed;
+        document.getElementById('myPendingCount').textContent = `${myPending} a tu cargo`;
+        document.getElementById('myOverdueCount').textContent = `${myOverdue} a tu cargo`;
+        document.getElementById('myInProgressCount').textContent = `${myInProgress} a tu cargo`;
+        document.getElementById('myCompletedCount').textContent = `${myCompleted} a tu cargo`;
+        // Mostrar alertas crticas si las hay
+        if (criticalIssues.length > 0) {
+          const alertsDiv = document.getElementById('criticalAlerts');
+          const overdueCount = document.getElementById('overdueCount');
+          overdueCount.textContent = criticalIssues.length;
+          alertsDiv.classList.remove('d-none');
+        }
+      } catch (error) {
+        console.error('Error loading statistics:', error);
+        showError('Error al cargar estadsticas');
+      }
+    }
+    
+    function showError(message) {
+      document.getElementById('totalAgreements').textContent = 'Error';
+      document.getElementById('pendingAgreements').textContent = 'Error';
+      document.getElementById('overdueAgreements').textContent = 'Error';
+      document.getElementById('inProgressAgreements').textContent = 'Error';
+      document.getElementById('completedAgreements').textContent = 'Error';
+    }
+    
+    function logout() {
+      if (window.gobmxAuth) {
+        window.gobmxAuth.logout();
+      }
+      window.location.href = 'index.html';
+    }
+    
+    function showComingSoon(feature) {
+      const msg = getCurrentLanguage() === 'es' ? 
+        `${feature} estará disponible próximamente.` : 
+        `${feature} will be available soon.`;
+      alert(msg);
+    }
+    
+    function showBatchUpload() {
+      const msg = getCurrentLanguage() === 'es' ?
+        'Módulo de Carga en Lote: Disponible vía línea de comandos.\n\nUsar: node batch-upload-agreements.js --file archivo.csv --type ceso' :
+        'Batch Upload Module: Available via command line.\n\nUse: node batch-upload-agreements.js --file file.csv --type ceso';
+      alert(msg);
+    }
+
+    // Función para mostrar acuerdos filtrados por estado
+    function showAgreementsByStatus(status) {
+      const modal = new bootstrap.Modal(document.getElementById('agreementsModal'));
+      const modalTitle = document.getElementById('modalTitle');
+      const loadingIndicator = document.getElementById('loadingIndicator');
+      const agreementsList = document.getElementById('agreementsList');
+      const agreementsCount = document.getElementById('agreementsCount');
+      
+      // Populate responsible filter dropdown
+      const filterResponsible = document.getElementById('filterResponsible');
+      filterResponsible.innerHTML = '<option value="" data-es="Todos los responsables" data-en="All responsible parties">Todos los responsables</option>';
+      
+      if (window.gobmxAuth && window.gobmxAuth.cesoUsers) {
+        window.gobmxAuth.cesoUsers.forEach(user => {
+          const option = document.createElement('option');
+          option.value = user.correo || user.nombre;
+          option.textContent = user.nombre || user.correo;
+          filterResponsible.appendChild(option);
+        });
+      }
+      
+      // Add event listeners for real-time filtering
+      document.getElementById('searchAgreements').addEventListener('input', applyFilters);
+      document.getElementById('filterResponsible').addEventListener('change', applyFilters);
+      
+      // Set explicit modal status (used by display/applyFilters) and configure title
+      currentModalStatus = status || 'all';
+      const titles = {
+        'all': { es: 'Todos los Acuerdos', en: 'All Agreements' },
+        'Pendiente': { es: 'Acuerdos Pendientes', en: 'Pending Agreements' },
+        'Vencidos': { es: 'Acuerdos Vencidos', en: 'Overdue Agreements' },
+        'En Progreso': { es: 'Acuerdos en Progreso', en: 'In Progress Agreements' },
+        'Completado': { es: 'Acuerdos Completados', en: 'Completed Agreements' }
+      };
+      
+      const currentLang = getCurrentLanguage();
+      modalTitle.textContent = titles[status] ? titles[status][currentLang] : titles['all'][currentLang];
+      
+      // Mostrar modal y loading
+      modal.show();
+      loadingIndicator.style.display = 'block';
+      agreementsList.innerHTML = '';
+      agreementsCount.textContent = currentLang === 'es' ? 'Cargando...' : 'Loading...';
+      
+      // Obtener acuerdos de Firestore
+      fetchAgreementsByStatus(status);
+    }
+
+    // Función para obtener acuerdos de Firestore
+    async function fetchAgreementsByStatus(status) {
+      try {
+        console.log('🔍 Fetching agreements for status:', status);
+  if (!window.db) { window.db = firebase.firestore(); }
+  var db = window.db;
+        const collection = db.collection('acuerdos-ceso');
+        
+        let query = collection;
+        
+        // Use simpler queries to avoid index requirements
+        if (status !== 'all') {
+          // For specific statuses, get all documents and filter client-side
+          // This matches the logic used in loadStatistics()
+          query = collection.limit(100); // Get more documents to filter
+        } else {
+          // For 'all', just get recent documents
+          query = collection.limit(50);
+        }
+        
+        console.log('📊 Executing Firestore query...');
+        const snapshot = await query.get();
+        console.log('📦 Retrieved documents:', snapshot.size);
+        
+          // Filter documents based on status matching loadStatistics() logic
+        const filteredDocs = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          // Normalize status value, remove diacritics and trim (fixed regex)
+          const rawStatus = data.status || data.estatus || data.Estado || '';
+          const docStatus = String(rawStatus).normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+          
+          let matchesStatus = false;
+          
+          if (status === 'all') {
+            matchesStatus = true;
+          } else if (status === 'Vencidos') {
+            const dueDate = data.complianceDate || data.fecha_cumplimiento || data['Fecha de Cumplimiento'];
+            let isOverdue = false;
+            if (dueDate) {
+              // Handle Firestore timestamps properly
+              if (dueDate.toDate) {
+                isOverdue = dueDate.toDate() < new Date();
+              } else if (typeof dueDate === 'number') {
+                // Handle Excel serial numbers
+                isOverdue = new Date((dueDate - 25569) * 86400 * 1000) < new Date();
+              } else {
+                // Handle regular date strings
+                const date = new Date(dueDate);
+                isOverdue = !isNaN(date) && date < new Date();
+              }
+            }
+            // Only show as overdue if not completed AND not marked permanent AND (has vencido status OR is past due)
+            // Exclude 'permanente' (and variants containing 'perman') from overdue results
+            matchesStatus = !docStatus.includes('completado')
+              && !docStatus.includes('cumplido')
+              && !docStatus.includes('permanente')
+              && !docStatus.includes('perman')
+              && (docStatus.includes('vencido') || isOverdue);
+          } else if (status === 'Pendiente') {
+            const dueDate = data.complianceDate || data.fecha_cumplimiento || data['Fecha de Cumplimiento'];
+            let isOverdue = false;
+            if (dueDate) {
+              // Handle Firestore timestamps properly
+              if (dueDate.toDate) {
+                isOverdue = dueDate.toDate() < new Date();
+              } else if (typeof dueDate === 'number') {
+                // Handle Excel serial numbers
+                isOverdue = new Date((dueDate - 25569) * 86400 * 1000) < new Date();
+              } else {
+                // Handle regular date strings
+                const date = new Date(dueDate);
+                isOverdue = !isNaN(date) && date < new Date();
+              }
+            }
+            // Exclude completed/closed/archive/permanent/progress statuses from 'Pendiente'
+            const excluded = ['completado','cumplido','vencido','progreso','permanente','cerrado','finalizado','archivado'];
+            const hasExcluded = excluded.some(s => docStatus.includes(s));
+            matchesStatus = !hasExcluded && !isOverdue;
+          } else if (status === 'En Progreso') {
+            matchesStatus = docStatus.includes('progreso') || docStatus.includes('en progreso');
+          } else if (status === 'Completado') {
+            matchesStatus = docStatus.includes('completado') || docStatus.includes('cumplido') || docStatus.includes('finalizado');
+          }
+          
+          if (matchesStatus) {
+            filteredDocs.push(doc);
+          }
+        });
+        
+        console.log('📋 Filtered documents for status', status + ':', filteredDocs.length);
+        // Keep the overdue alert badge in sync when the user opens the 'Vencidos' modal.
+        try {
+          if (status === 'Vencidos') {
+            var overdueBadge = document.getElementById('overdueCount');
+            if (overdueBadge) overdueBadge.textContent = String(filteredDocs.length);
+          }
+        } catch (syncErr) {
+          console.warn('Could not sync overdue badge:', syncErr);
+        }
+        // Store original agreements for filtering
+        originalAgreements = [];
+        filteredDocs.forEach(doc => {
+          originalAgreements.push({ id: doc.id, ...doc.data() });
+        });
+        
+        displayAgreements({ 
+          empty: filteredDocs.length === 0,
+          size: filteredDocs.length,
+          forEach: (callback) => {
+            filteredDocs.forEach(doc => {
+              callback({ id: doc.id, data: () => doc.data() });
+            });
+          }
+        }, status);
+        
+      } catch (error) {
+        console.error('❌ Error fetching agreements:', error);
+        console.error('🔍 Error details:', error.code, error.message);
+        
+        document.getElementById('loadingIndicator').style.display = 'none';
+        document.getElementById('agreementsList').innerHTML = `
+          <div class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Error al cargar los acuerdos: ${error.message}<br>
+            <small class="text-muted">Verifique la consola para más detalles.</small>
+            <button class="btn btn-sm btn-danger mt-2" onclick="fetchAgreementsByStatus('${status}')">
+              <i class="bi bi-arrow-clockwise me-1"></i>Reintentar
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    // Función para mostrar los acuerdos en el modal
+    function displayAgreements(snapshot, status) {
+      const loadingIndicator = document.getElementById('loadingIndicator');
+      const agreementsList = document.getElementById('agreementsList');
+      const agreementsCount = document.getElementById('agreementsCount');
+      const currentLang = getCurrentLanguage();
+      
+      loadingIndicator.style.display = 'none';
+      
+      if (originalAgreements.length === 0) {
+        agreementsList.innerHTML = `
+          <div class="text-center py-4">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <h5 class="mt-3 text-muted">${currentLang === 'es' ? 'No se encontraron acuerdos' : 'No agreements found'}</h5>
+            <p class="text-muted">${currentLang === 'es' ? 'No hay acuerdos con este estado' : 'No agreements with this status'}</p>
+          </div>
+        `;
+        agreementsCount.textContent = currentLang === 'es' ? '0 acuerdos encontrados' : '0 agreements found';
+        return;
+      }
+      
+      const agreements = originalAgreements;
+      
+      // Apply filters
+      const searchTerm = document.getElementById('searchAgreements').value.toLowerCase();
+      const responsibleFilter = document.getElementById('filterResponsible').value;
+      
+      let filteredAgreements = agreements.filter(agreement => {
+        // Search filter (number or description)
+        const agreementNumber = (agreement.agreementNumber || agreement.numero || agreement.Numero || agreement['Numero de Acuerdo'] || agreement['Número de Acuerdo'] || agreement.id || '').toLowerCase();
+        const description = (agreement.description || agreement.descripcion || agreement.Descripcion || agreement['Descripcion del Acuerdo'] || agreement['Descripción del Acuerdo'] || agreement.tema || agreement.Tema || '').toLowerCase();
+        
+        const matchesSearch = !searchTerm || 
+          agreementNumber.includes(searchTerm) || 
+          description.includes(searchTerm);
+        
+        // Responsible filter
+        const responsible = agreement.responsible || agreement.responsable || agreement.Responsable || agreement['Responsable del Seguimiento'] || agreement['Responsable'] || '';
+        const matchesResponsible = !responsibleFilter || responsible === responsibleFilter || responsible.includes(responsibleFilter);
+        
+        // If the modal is showing 'Pendiente', explicitly exclude completed/closed/archive/permanent & overdue
+        // Use the explicit currentModalStatus rather than parsing the title text (localization-safe)
+          if (currentModalStatus === 'Pendiente') {
+          const rawStatus = agreement.status || agreement.Estado || agreement.estado || '';
+          // Normalize and strip combining marks (fix faulty regex)
+          const s = String(rawStatus).normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+          const excluded = ['completado','cumplido','vencido','progreso','permanente','cerrado','finalizado','archivado'];
+          const hasExcluded = excluded.some(x => s.includes(x));
+
+          // Determine overdue based on possible date fields
+          const dateField = agreement.complianceDate || agreement.fecha_cumplimiento || agreement['Fecha de Cumplimiento'] || agreement.fechaCumplimiento || agreement.deadline || agreement.meetingDate || agreement.fecha_reunion || agreement['Fecha de Reunión'];
+          let isOverdue = false;
+          if (dateField) {
+            if (typeof dateField === 'number') {
+              isOverdue = new Date((dateField - 25569) * 86400 * 1000) < new Date();
+            } else if (dateField.toDate) {
+              isOverdue = dateField.toDate() < new Date();
+            } else {
+              const d = new Date(dateField);
+              isOverdue = !isNaN(d) && d < new Date();
+            }
+          }
+
+          if (hasExcluded || isOverdue) return false;
+        }
+
+        return matchesSearch && matchesResponsible;
+      });
+      
+      // Sort agreements by date (oldest first) for better priority management
+      filteredAgreements.sort((a, b) => {
+        // Get the due date from various possible field names
+        const getDateValue = (agreement) => {
+          const dateField = 
+            agreement.complianceDate || 
+            agreement.fecha_cumplimiento || 
+            agreement['Fecha de Cumplimiento'] || 
+            agreement.fechaCumplimiento ||
+            agreement.deadline ||
+            agreement.meetingDate ||
+            agreement.fecha_reunion ||
+            agreement['Fecha de Reunión'] ||
+            null;
+          
+          if (!dateField) return new Date('1970-01-01'); // Very old date for agreements without dates
+          
+          // Handle Excel serial numbers
+          if (typeof dateField === 'number') {
+            return new Date((dateField - 25569) * 86400 * 1000);
+          }
+          
+          // Handle Firestore timestamps
+          if (dateField.toDate) {
+            return dateField.toDate();
+          }
+          
+          // Handle regular date strings
+          const date = new Date(dateField);
+          return isNaN(date) ? new Date('1970-01-01') : date;
+        };
+        
+        const dateA = getDateValue(a);
+        const dateB = getDateValue(b);
+        
+        // Sort newest first (descending order) - most recent agreements at the top
+        return dateB.getTime() - dateA.getTime();
+      });
+      
+      // Generar HTML para la lista de acuerdos
+      let html = '<div class="list-group">';
+      
+      filteredAgreements.forEach(agreement => {
+        console.log('🔍 Processing agreement:', agreement);
+        
+        // Enhanced field mapping with more alternatives
+        const statusBadge = getStatusBadge(
+          agreement.status || 
+          agreement.Estado || 
+          agreement.estado || 
+          agreement['Estado del Acuerdo'] ||
+          'Pendiente'
+        );
+        
+        const agreementNumber = 
+          agreement.agreementNumber || 
+          agreement.numero || 
+          agreement.Numero ||
+          agreement['Numero de Acuerdo'] || 
+          agreement['Número de Acuerdo'] ||
+          agreement.id ||
+          'N/A';
+          
+        const description = 
+          agreement.description || 
+          agreement.descripcion || 
+          agreement.Descripcion ||
+          agreement['Descripcion del Acuerdo'] || 
+          agreement['Descripción del Acuerdo'] ||
+          agreement.tema ||
+          agreement.Tema ||
+          'Sin descripción';
+          
+        const responsible = 
+          agreement.responsible || 
+          agreement.responsable || 
+          agreement.Responsable ||
+          agreement['Responsable del Seguimiento'] || 
+          agreement['Responsable'] ||
+          'No asignado';
+          
+        const dueDate = 
+          agreement.complianceDate || 
+          agreement.fecha_cumplimiento || 
+          agreement['Fecha de Cumplimiento'] || 
+          agreement.fechaCumplimiento ||
+          agreement.deadline ||
+          '';
+        
+        console.log('📋 Mapped fields:', { agreementNumber, description: description.substring(0, 50), responsible, status: agreement.status || agreement.Estado });
+        
+        html += `
+          <div class="list-group-item list-group-item-action" onclick="viewAgreementDetail('${agreement.id}')">
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="flex-grow-1">
+                <h6 class="mb-1 text-primary fw-bold">
+                  <i class="bi bi-file-text me-1"></i>
+                  ${agreementNumber}
+                </h6>
+                <p class="mb-1">${description.substring(0, 150)}${description.length > 150 ? '...' : ''}</p>
+                <small class="text-muted">
+                  <i class="bi bi-person me-1"></i>${responsible}
+                  ${dueDate ? `<i class="bi bi-calendar ms-3 me-1"></i>${formatDate(dueDate)}` : ''}
+                </small>
+              </div>
+              <div class="ms-3">
+                ${statusBadge}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      html += '</div>';
+      agreementsList.innerHTML = html;
+      
+      const count = filteredAgreements.length;
+      agreementsCount.textContent = currentLang === 'es' ? 
+        `${count} acuerdo${count !== 1 ? 's' : ''} encontrado${count !== 1 ? 's' : ''}` :
+        `${count} agreement${count !== 1 ? 's' : ''} found`;
+    }
+
+    // Función para aplicar filtros en tiempo real
+    function applyFilters() {
+      if (originalAgreements.length === 0) return;
+      
+      // Create a mock snapshot from originalAgreements for displayAgreements
+      const mockSnapshot = {
+        empty: false,
+        size: originalAgreements.length,
+        forEach: (callback) => {
+          originalAgreements.forEach(agreement => {
+            callback({ id: agreement.id, data: () => agreement });
+          });
+        }
+      };
+      
+      // Use the explicit currentModalStatus set by showAgreementsByStatus
+      const currentStatus = currentModalStatus || 'all';
+      displayAgreements(mockSnapshot, currentStatus);
+    }
+
+    // Función para obtener el badge del estado
+    function getStatusBadge(status) {
+      const statusMap = {
+        'Pendiente': { class: 'bg-warning text-dark', icon: 'clock' },
+        'Completado': { class: 'bg-success', icon: 'check-circle' },
+        'Vencidos': { class: 'bg-danger', icon: 'x-circle' },
+        'En Progreso': { class: 'bg-info', icon: 'arrow-clockwise' }
+      };
+      
+      const statusInfo = statusMap[status] || { class: 'bg-secondary', icon: 'question-circle' };
+      return `<span class="badge ${statusInfo.class}"><i class="bi bi-${statusInfo.icon} me-1"></i>${status}</span>`;
+    }
+
+    // Función para formatear fechas (compatible con Excel, Firestore y strings)
+    function formatDate(v) {
+      try {
+        if (!v) return '';
+        
+        // Handle Excel serial numbers (like 44197 for a date)
+        if (typeof v === 'number') {
+          const d = new Date((v - 25569) * 86400 * 1000);
+          return d.toLocaleDateString('es-ES');
+        }
+        
+        // Handle Firestore timestamps
+        if (v.toDate) {
+          return v.toDate().toLocaleDateString('es-ES');
+        }
+        
+        // Handle regular date strings
+        const d = new Date(v);
+        return isNaN(d) ? String(v) : d.toLocaleDateString('es-ES');
+      } catch (e) {
+        return String(v);
+      }
+    }
+
+    // Función para ver el detalle de un acuerdo
+    // Función para ver el detalle de un acuerdo en modal
+    async function viewAgreementDetail(agreementId) {
+      const detailModal = new bootstrap.Modal(document.getElementById('agreementDetailModal'));
+      const loadingIndicator = document.getElementById('detailLoadingIndicator');
+      const detailContent = document.getElementById('agreementDetailContent');
+      
+      // Show modal and loading state
+      detailModal.show();
+      loadingIndicator.style.display = 'block';
+      detailContent.style.display = 'none';
+      
+      try {
+        console.log('🔍 Fetching agreement detail for ID:', agreementId);
+  if (!window.db) { window.db = firebase.firestore(); }
+  var db = window.db;
+        const doc = await db.collection('acuerdos-ceso').doc(agreementId).get();
+        
+        if (!doc.exists) {
+          throw new Error('Agreement not found');
+        }
+        
+        const data = doc.data();
+        console.log('📋 Agreement data:', data);
+        
+        // Populate modal fields
+        document.getElementById('detailAgreementNumber').textContent = 
+          data.agreementNumber || 
+          data.numero || 
+          data.Numero ||
+          data['Numero de Acuerdo'] || 
+          data['Número de Acuerdo'] ||
+          agreementId || 'N/A';
+          
+        document.getElementById('detailDescription').textContent = 
+          data.description || 
+          data.descripcion || 
+          data.Descripcion ||
+          data['Descripcion del Acuerdo'] || 
+          data['Descripción del Acuerdo'] ||
+          data.tema ||
+          data.Tema ||
+          'Sin descripción';
+          
+        document.getElementById('detailResponsible').textContent = 
+          data.responsible || 
+          data.responsable || 
+          data.Responsable ||
+          data['Responsable del Seguimiento'] || 
+          data['Responsable'] ||
+          'No asignado';
+          
+        // Format and display date
+        const dueDate = 
+          data.complianceDate || 
+          data.fecha_cumplimiento || 
+          data['Fecha de Cumplimiento'] || 
+          data.fechaCumplimiento ||
+          data.deadline ||
+          data.meetingDate ||
+          data.fecha_reunion ||
+          data['Fecha de Reunión'] ||
+          '';
+          
+        document.getElementById('detailDate').textContent = dueDate ? formatDate(dueDate) : 'No especificada';
+        
+        // Display status with badge
+        const status = data.status || data.Estado || data.estado || 'Pendiente';
+        const statusElement = document.getElementById('detailStatus');
+        statusElement.innerHTML = getStatusBadge(status);
+        
+        // Add click handler to status element to open evidence modal
+        statusElement.onclick = function() {
+          openEvidenceModal('acuerdos-ceso', agreementId, data);
+        };
+        
+        // Load evidence
+        loadEvidenceForDetail(agreementId);
+        
+        // Hide loading, show content
+        loadingIndicator.style.display = 'none';
+        detailContent.style.display = 'block';
+        
+      } catch (error) {
+        console.error('❌ Error loading agreement detail:', error);
+        loadingIndicator.style.display = 'none';
+        detailContent.innerHTML = `
+          <div class="alert alert-danger">
+            <h6>Error al cargar el detalle</h6>
+            <p>No se pudo cargar la información del acuerdo. Por favor, intente nuevamente.</p>
+          </div>
+        `;
+        detailContent.style.display = 'block';
+      }
+    }
+    
+    // Function to load evidence for the detail modal
+    async function loadEvidenceForDetail(agreementId) {
+      const evidenceList = document.getElementById('detailEvidenceList');
+      
+      try {
+  if (!window.db) { window.db = firebase.firestore(); }
+  var db = window.db;
+        const evidenceSnapshot = await db.collection('acuerdos-ceso').doc(agreementId).collection('evidencias').get();
+        
+        if (evidenceSnapshot.empty) {
+          evidenceList.innerHTML = '<p class="text-muted mb-0" data-es="No hay evidencias cargadas" data-en="No evidence uploaded">No hay evidencias cargadas</p>';
+          return;
+        }
+        
+        let evidenceHtml = '';
+        evidenceSnapshot.forEach(doc => {
+          const evidence = doc.data();
+          const fileName = evidence.fileName || evidence.nombre || 'Archivo';
+          const uploadDate = evidence.uploadDate || evidence.fechaSubida;
+          const fileUrl = evidence.downloadURL || evidence.url;
+          
+          evidenceHtml += `
+            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+              <div>
+                <span class="bootstrap-icons me-2"><i class="bi bi-file-earmark"></i></span>
+                <strong>${fileName}</strong>
+                ${uploadDate ? `<br><small class="text-muted">Subido: ${formatDate(uploadDate)}</small>` : ''}
+              </div>
+              <div>
+                ${fileUrl ? `<a href="${fileUrl}" target="_blank" class="btn btn-sm btn-primary">Ver</a>` : ''}
+              </div>
+            </div>
+          `;
+        });
+        
+        evidenceList.innerHTML = evidenceHtml;
+        
+      } catch (error) {
+        console.error('❌ Error loading evidence:', error);
+        evidenceList.innerHTML = '<p class="text-warning mb-0">Error al cargar evidencias</p>';
+      }
+    }
+
+    // Language switching functionality
+    function getCurrentLanguage() {
+      return localStorage.getItem('preferredLanguage') || 'es';
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('preferredLanguage', lang);
+      
+      // Update button states for accessibility compliance
+      const btnSpanish = document.getElementById('btnSpanish');
+      const btnEnglish = document.getElementById('btnEnglish');
+      
+      btnSpanish.classList.toggle('active', lang === 'es');
+      btnEnglish.classList.toggle('active', lang === 'en');
+      
+      // Update aria-pressed attributes for screen readers
+      btnSpanish.setAttribute('aria-pressed', lang === 'es');
+      btnEnglish.setAttribute('aria-pressed', lang === 'en');
+      
+      // Update all translatable elements
+      document.querySelectorAll('[data-es][data-en]').forEach(element => {
+        if (lang === 'es') {
+          element.textContent = element.getAttribute('data-es');
+        } else {
+          element.textContent = element.getAttribute('data-en');
+        }
+      });
+    }
+
+    // Initialize language on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentLang = getCurrentLanguage();
+      setLanguage(currentLang);
+      loadResponsiblePersonsForReports();
+      loadSavedConfigurations();
+      
+      // ---- Safety guard: prevent unauthenticated Firebase Storage uploads ----
+      // If the Firebase client auth user is not signed in, block the evidence upload
+      // button to avoid storage/unauthorized (403) errors when the app uses
+      // placeholder users but the Firebase client isn't authenticated.
+      try {
+        const evidenceBtn = document.getElementById('evidenceUploadBtn');
+        if (evidenceBtn) {
+          // Add a capturing listener to short-circuit any click handlers bound elsewhere
+          evidenceBtn.addEventListener('click', function (ev) {
+            const fbUser = (typeof firebase !== 'undefined' && firebase.auth) ? firebase.auth().currentUser : null;
+            if (!fbUser) {
+              ev.stopImmediatePropagation && ev.stopImmediatePropagation();
+              ev.preventDefault && ev.preventDefault();
+              const msg = getCurrentLanguage && getCurrentLanguage() === 'es'
+                ? 'Debe iniciar sesión en Firebase para subir evidencias. Por favor inicie sesión en la aplicación o cree una cuenta en Firebase Authentication.'
+                : 'You must sign in to Firebase to upload evidence. Please sign in via the app or create a Firebase Authentication user.';
+              alert(msg);
+              return false;
+            }
+            return true;
+          }, { capture: true });
+
+          // Also wrap any existing inline onclick handler (if present) with an auth check
+          const oldOnclick = evidenceBtn.onclick;
+          evidenceBtn.onclick = function (e) {
+            const fbUser = (typeof firebase !== 'undefined' && firebase.auth) ? firebase.auth().currentUser : null;
+            if (!fbUser) {
+              const msg = getCurrentLanguage && getCurrentLanguage() === 'es'
+                ? 'Debe iniciar sesión en Firebase para subir evidencias. Por favor inicie sesión en la aplicación o cree una cuenta en Firebase Authentication.'
+                : 'You must sign in to Firebase to upload evidence. Please sign in via the app or create a Firebase Authentication user.';
+              alert(msg);
+              return false;
+            }
+            if (typeof oldOnclick === 'function') return oldOnclick.call(this, e);
+          };
+        }
+      } catch (guardErr) {
+        console.warn('Safety guard for evidence upload failed to attach:', guardErr);
+      }
+    });
+
+    // ============ EVIDENCE MODAL FUNCTIONALITY ============
+    
+    let currentAgreementId = null;
+    let currentCollection = null;
+    let pendingStatusChange = null;
+    
+    // Open evidence modal
+    function openEvidenceModal(collection, agreementId, agreementData) {
+      currentAgreementId = agreementId;
+      currentCollection = collection;
+      
+      // Set modal title
+      const modalTitle = document.getElementById('evidenceModalLabel');
+      const agreementNumber = agreementData?.agreementNumber || 
+                             agreementData?.numero || 
+                             agreementData?.['Número de Acuerdo'] || 
+                             agreementId;
+      modalTitle.innerHTML = `
+        <span class="bootstrap-icons" aria-hidden="true"><i class="bi bi-file-earmark-text me-2"></i></span>
+        <span data-es="Evidencias - ${agreementNumber}" data-en="Evidence - ${agreementNumber}">Evidencias - ${agreementNumber}</span>
+      `;
+      
+      // Load evidence list
+      loadEvidenceList(collection, agreementId);
+      
+      // Set current status in dropdown and display
+      const currentStatus = agreementData?.status || agreementData?.Estado || agreementData?.estado || 'Pendiente';
+      
+      // Display current status
+      const currentStatusDisplay = document.getElementById('currentStatusDisplay');
+      currentStatusDisplay.innerHTML = getStatusBadge(currentStatus);
+      
+      // Reset status dropdown to default
+      document.getElementById('statusSelect').value = '';
+      
+      // Clear all compliance fields
+      document.getElementById('statusChangeEvidence').value = '';
+      document.getElementById('statusChangeComment').value = '';
+      document.getElementById('evidenceValidityCheck').checked = false;
+      document.getElementById('statusChangeJustificationCheck').checked = false;
+      document.getElementById('auditTrailConsentCheck').checked = false;
+      document.getElementById('digitalSignature').value = '';
+      
+      // Store current status for comparison
+      document.getElementById('statusSelect').setAttribute('data-current-status', currentStatus);
+      
+      // Setup event handlers
+      setupEvidenceModalHandlers(collection, agreementId, agreementData);
+      
+      // Setup compliance validation
+      setupComplianceValidation();
+      
+      // Show modal
+      const modal = new bootstrap.Modal(document.getElementById('evidenceModal'));
+      modal.show();
+    }
+    
+    // Load evidence list
+    async function loadEvidenceList(collection, agreementId) {
+      const evidenceList = document.getElementById('evidenceList');
+      evidenceList.innerHTML = `
+        <div class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando evidencias...</span>
+          </div>
+          <p class="mt-2" data-es="Cargando evidencias..." data-en="Loading evidence...">Cargando evidencias...</p>
+        </div>
+      `;
+      
+      try {
+  if (!window.db) { window.db = firebase.firestore(); }
+  var db = window.db;
+        const evidenceSnapshot = await db.collection(collection).doc(agreementId).collection('evidencias').orderBy('createdAt', 'desc').get();
+        
+        if (evidenceSnapshot.empty) {
+          evidenceList.innerHTML = `
+            <div class="alert alert-info">
+              <i class="bi bi-info-circle me-2"></i>
+              <span data-es="No hay evidencias cargadas para este acuerdo" data-en="No evidence uploaded for this agreement">
+                No hay evidencias cargadas para este acuerdo
+              </span>
+            </div>
+          `;
+          return;
+        }
+        
+        let html = '<div class="list-group">';
+        evidenceSnapshot.forEach(doc => {
+          const evidence = doc.data();
+          const fileName = evidence.fileName || evidence.nombre || 'Archivo';
+          const uploadDate = evidence.createdAt ? formatDate(evidence.createdAt) : 'Fecha no disponible';
+          const comment = evidence.comment || evidence.comentario || '';
+          const fileUrl = evidence.fileUrl || evidence.url || '#';
+          
+          html += `
+            <div class="list-group-item">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">
+                    <i class="bi bi-file-earmark me-1"></i>
+                    <a href="${fileUrl}" target="_blank" class="text-primary">${fileName}</a>
+                  </h6>
+                  ${comment ? `<p class="mb-1 text-muted">${comment}</p>` : ''}
+                  <small class="text-muted">
+                    <i class="bi bi-calendar me-1"></i>
+                    Subido el ${uploadDate}
+                  </small>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        html += '</div>';
+        
+        evidenceList.innerHTML = html;
+        
+      } catch (error) {
+        console.error('Error loading evidence:', error);
+        evidenceList.innerHTML = `
+          <div class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <span data-es="Error al cargar las evidencias" data-en="Error loading evidence">
+              Error al cargar las evidencias
+            </span>
+          </div>
+        `;
+      }
+    }
+    
+    // Setup event handlers for evidence modal
+    function setupEvidenceModalHandlers(collection, agreementId, agreementData) {
+      // Status update handler
+      const updateStatusBtn = document.getElementById('updateStatusBtn');
+      updateStatusBtn.onclick = function() {
+        updateAgreementStatus(collection, agreementId, agreementData);
+      };
+      
+      // Evidence upload handler
+      const uploadBtn = document.getElementById('evidenceUploadBtn');
+      uploadBtn.onclick = function() {
+        uploadEvidence(collection, agreementId);
+      };
+    }
+    
+    // Setup compliance validation for status changes
+    function setupComplianceValidation() {
+      const statusSelect = document.getElementById('statusSelect');
+      const evidenceFile = document.getElementById('statusChangeEvidence');
+      const comment = document.getElementById('statusChangeComment');
+      const validityCheck = document.getElementById('evidenceValidityCheck');
+      const justificationCheck = document.getElementById('statusChangeJustificationCheck');
+      const auditCheck = document.getElementById('auditTrailConsentCheck');
+      const signature = document.getElementById('digitalSignature');
+      const updateBtn = document.getElementById('updateStatusBtn');
+      
+      function validateCompliance() {
+        const currentStatus = statusSelect.getAttribute('data-current-status');
+        const newStatus = statusSelect.value;
+        
+        // Check if status is actually changing
+        const statusChanged = newStatus && newStatus !== currentStatus;
+        
+        if (!statusChanged) {
+          updateBtn.disabled = true;
+          updateBtn.innerHTML = '<i class="bi bi-info-circle me-1"></i><span data-es="Seleccione un estado diferente" data-en="Select a different status">Seleccione un estado diferente</span>';
+          return;
+        }
+        
+        // Check all compliance requirements
+        const hasEvidence = evidenceFile.files.length > 0;
+        const hasComment = comment.value.trim().length >= 10; // Minimum 10 characters
+        const hasValidityCheck = validityCheck.checked;
+        const hasJustificationCheck = justificationCheck.checked;
+        const hasAuditCheck = auditCheck.checked;
+        const hasSignature = signature.value.trim().length >= 3;
+        
+        const allValid = hasEvidence && hasComment && hasValidityCheck && hasJustificationCheck && hasAuditCheck && hasSignature;
+        
+        updateBtn.disabled = !allValid;
+        
+        if (allValid) {
+          updateBtn.innerHTML = '<i class="bi bi-shield-exclamation me-1"></i><span data-es="PROCESAR CAMBIO DE ESTADO CON EVIDENCIA" data-en="PROCESS STATUS CHANGE WITH EVIDENCE">PROCESAR CAMBIO DE ESTADO CON EVIDENCIA</span>';
+        } else {
+          updateBtn.innerHTML = '<i class="bi bi-exclamation-triangle me-1"></i><span data-es="Complete todos los campos obligatorios" data-en="Complete all required fields">Complete todos los campos obligatorios</span>';
+        }
+      }
+      
+      // Add event listeners for real-time validation
+      statusSelect.addEventListener('change', validateCompliance);
+      evidenceFile.addEventListener('change', validateCompliance);
+      comment.addEventListener('input', validateCompliance);
+      validityCheck.addEventListener('change', validateCompliance);
+      justificationCheck.addEventListener('change', validateCompliance);
+      auditCheck.addEventListener('change', validateCompliance);
+      signature.addEventListener('input', validateCompliance);
+      
+      // Initial validation
+      validateCompliance();
+    }
+    
+    // Update agreement status with MANDATORY EVIDENCE
+    async function updateAgreementStatus(collection, agreementId, agreementData) {
+      const currentStatus = document.getElementById('statusSelect').getAttribute('data-current-status');
+      const newStatus = document.getElementById('statusSelect').value;
+      const evidenceFile = document.getElementById('statusChangeEvidence').files[0];
+      const comment = document.getElementById('statusChangeComment').value.trim();
+      const signature = document.getElementById('digitalSignature').value.trim();
+      const updateBtn = document.getElementById('updateStatusBtn');
+      
+      // Validation
+      if (!window.gobmxAuth || !window.gobmxAuth.getCurrentUser()) {
+        alert('Debe estar autenticado para actualizar el estado del acuerdo');
+        return;
+      }
+      
+      if (newStatus === currentStatus) {
+        alert('El nuevo estado debe ser diferente al estado actual');
+        return;
+      }
+      
+      if (!evidenceFile) {
+        alert('EVIDENCIA OBLIGATORIA: Debe proporcionar un archivo de evidencia');
+        return;
+      }
+      
+      if (comment.length < 10) {
+        alert('DESCRIPCIÓN OBLIGATORIA: Debe proporcionar una descripción detallada de la evidencia (mínimo 10 caracteres)');
+        return;
+      }
+      
+      if (!signature || signature.length < 3) {
+        alert('FIRMA DIGITAL OBLIGATORIA: Debe proporcionar su nombre completo como firma digital');
+        return;
+      }
+      
+      // Validate all checkboxes
+      const checks = ['evidenceValidityCheck', 'statusChangeJustificationCheck', 'auditTrailConsentCheck'];
+      for (let checkId of checks) {
+        if (!document.getElementById(checkId).checked) {
+          alert('DECLARACIÓN JURADA INCOMPLETA: Debe marcar todas las casillas de verificación');
+          return;
+        }
+      }
+      
+      updateBtn.disabled = true;
+      updateBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Procesando cambio con evidencia...';
+      
+      try {
+  if (!window.db) { window.db = firebase.firestore(); }
+  var db = window.db;
+        const storage = firebase.storage();
+        const user = window.gobmxAuth.getCurrentUser();
+        console.log('🔍 USER OBJECT DEBUG:', user);
+        console.log('🔍 USER PROPERTIES:', {
+          correo: user.correo,
+          nombre: user.nombre,
+          email: user.email,
+          uid: user.uid,
+          sessionId: user.sessionId
+        });
+        const timestamp = new Date().toISOString();
+
+        // Upload evidence via server-side endpoint (/admin-upload) to avoid client Storage permission issues
+        const fileName = evidenceFile.name;
+        // Read file as base64
+        const base64 = await new Promise((resolve, reject) => {
+          const r = new FileReader();
+          r.onload = () => resolve(String(r.result || ''));
+          r.onerror = reject;
+          r.readAsDataURL(evidenceFile);
+        });
+
+        const payload = {
+          filename: fileName,
+          title: comment || fileName,
+          fileBase64: base64.replace(/^[^,]*,/, ''),
+          contentType: evidenceFile.type || 'application/octet-stream',
+          target: 'evidence',
+          agreementId: agreementId
+        };
+
+        const headers = { 'Content-Type': 'application/json' };
+        try {
+          if (window.firebase && window.firebase.auth && window.firebase.auth().currentUser) {
+            const idToken = await window.firebase.auth().currentUser.getIdToken(true).catch(()=>null);
+            if (idToken) headers['Authorization'] = `Bearer ${idToken}`;
+          }
+        } catch (tErr) {
+          console.warn('Could not obtain Firebase ID token for server upload, will fallback to API key', tErr);
+        }
+
+        // Always attach x-admin-api-key as fallback (server accepts either)
+        try {
+          const cfg = window.__ADMIN_CONFIG__ || {};
+          const apiKey = String(cfg.ADMIN_UPLOAD_API_KEY || '').trim();
+          if (apiKey) headers['x-admin-api-key'] = apiKey;
+        } catch (e) {
+          // ignore
+        }
+
+        const res = await fetch('/admin-upload', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          const text = await res.text().catch(()=>null);
+          throw new Error(`Servidor respondió ${res.status} ${res.statusText} ${text || ''}`);
+        }
+
+        const resJson = await res.json().catch(()=>null) || {};
+        const evidenceUrl = resJson.fileUrl || null;
+        
+        // Create audit trail entry (without serverTimestamp since it can't be used in arrayUnion)
+        const auditEntry = {
+          agreementId: agreementId,
+          collection: collection,
+          previousStatus: currentStatus,
+          newStatus: newStatus,
+          evidenceFileName: evidenceFile.name,
+          evidenceUrl: evidenceUrl,
+          evidenceDescription: comment,
+          digitalSignature: signature,
+          timestamp: new Date().toISOString(), // Use regular timestamp for arrayUnion
+          performedBy: (user && (user.correo || user.nombre)) || 'Sistema',
+          performedByUID: (user && user.sessionId) || 'N/A',
+          ipAddress: 'CLIENT_IP', // In production, capture actual IP
+          userAgent: navigator.userAgent,
+          complianceChecks: {
+            evidenceValidity: true,
+            statusJustification: true,
+            auditConsent: true
+          }
+        };
+        
+        // Update agreement status with guaranteed non-undefined values
+        const updateData = {
+          status: newStatus,
+          Estado: newStatus, // Also update Estado field for compatibility
+          lastStatusChangeBy: (user && (user.correo || user.nombre)) || 'Sistema',
+          lastStatusChangeAt: timestamp,
+          statusChangeEvidence: evidenceUrl,
+          statusChangeComment: comment,
+          digitalSignature: signature,
+          auditTrail: firebase.firestore.FieldValue.arrayUnion(auditEntry)
+        };
+        
+        console.log('🔍 UPDATE DATA DEBUG:', updateData);
+        await db.collection(collection).doc(agreementId).update(updateData);
+        
+        // Save evidence to evidencias subcollection with special status change flag
+        await db.collection(collection).doc(agreementId).collection('evidencias').add({
+          fileName: evidenceFile.name,
+          fileUrl: evidenceUrl,
+          comment: `[CAMBIO DE ESTADO] ${currentStatus} → ${newStatus}: ${comment}`,
+          createdAt: timestamp,
+          uploadedBy: (user && (user.correo || user.nombre)) || 'Sistema',
+          isStatusChangeEvidence: true,
+          statusChangeData: auditEntry
+        });
+        
+        // Show success message
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success alert-dismissible fade show';
+        alertDiv.innerHTML = `
+          <i class="bi bi-check-circle me-2"></i>
+          <strong>CAMBIO DE ESTADO PROCESADO</strong><br>
+          Estado actualizado de <strong>${currentStatus}</strong> a <strong>${newStatus}</strong><br>
+          Evidencia registrada y auditoría creada
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.querySelector('#evidenceModal .modal-body').insertBefore(alertDiv, document.querySelector('#evidenceModal .modal-body').firstChild);
+        
+        // Update the status in the detail modal if it's open
+        const detailStatus = document.getElementById('detailStatus');
+        if (detailStatus) {
+          detailStatus.innerHTML = getStatusBadge(newStatus);
+          detailStatus.onclick = function() {
+            openEvidenceModal(collection, agreementId, {...agreementData, status: newStatus});
+          };
+        }
+        
+        // Refresh the hall statistics
+        fetchAgreementsData();
+        
+        // Reload evidence list to show new evidence
+        loadEvidenceList(collection, agreementId);
+        
+        // Reset form
+        document.getElementById('statusSelect').value = '';
+        document.getElementById('statusChangeEvidence').value = '';
+        document.getElementById('statusChangeComment').value = '';
+        document.getElementById('evidenceValidityCheck').checked = false;
+        document.getElementById('statusChangeJustificationCheck').checked = false;
+        document.getElementById('auditTrailConsentCheck').checked = false;
+        document.getElementById('digitalSignature').value = '';
+        
+        // Update current status reference
+        document.getElementById('statusSelect').setAttribute('data-current-status', newStatus);
+        document.getElementById('currentStatusDisplay').innerHTML = getStatusBadge(newStatus);
+        
+      } catch (error) {
+        console.error('Error updating status with evidence:', error);
+        alert('Error al procesar el cambio de estado: ' + error.message);
+      } finally {
+        setupComplianceValidation(); // Re-setup validation for next use
+      }
+    }
+    
+    // Upload evidence -> Plan C: send files to server-side /admin-upload endpoint
+    async function uploadEvidence(collection, agreementId) {
+      const filesInput = document.getElementById('evidenceFiles');
+      const files = filesInput ? filesInput.files : [];
+      const commentElem = document.getElementById('evidenceComment');
+      const comment = commentElem ? commentElem.value : '';
+      const uploadBtn = document.getElementById('evidenceUploadBtn');
+
+      if (!files || files.length === 0) {
+        alert('Por favor seleccione al menos un archivo');
+        return;
+      }
+
+      if (!window.gobmxAuth || !window.gobmxAuth.getCurrentUser()) {
+        alert('Debe estar autenticado para subir evidencias');
+        return;
+      }
+
+      // Check admin API key config (admin-config.js)
+      const cfg = window.__ADMIN_CONFIG__ || {};
+      const apiKey = String(cfg.ADMIN_UPLOAD_API_KEY || '').trim();
+      if (!apiKey) {
+        alert('La subida por servidor no está configurada. Contacte al administrador para proporcionar la API key en admin-config.js');
+        return;
+      }
+
+      uploadBtn.disabled = true;
+      const originalLabel = uploadBtn.innerHTML;
+      uploadBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Subiendo...';
+
+      try {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const base64 = await new Promise((resolve, reject) => {
+            const r = new FileReader();
+            r.onload = () => resolve(String(r.result || ''));
+            r.onerror = reject;
+            r.readAsDataURL(file);
+          });
+
+          // Build server-compatible payload
+          // Map client collection to server category names (repository folders)
+          const collectionName = collection || (currentCollection || 'acuerdos-ceso');
+          const categoryMap = {
+            'acuerdos-ceso': 'otros-ceso',
+            'repositorio-ceso': 'otros-ceso',
+            'manuales-ceso': 'manuales-ceso',
+            'actas-ceso': 'actas-ceso',
+            'normativas-ceso': 'normativas-ceso',
+            'formatos-ceso': 'formatos-ceso',
+            'reportes-ceso': 'reportes-ceso',
+            'certificaciones-ceso': 'certificaciones-ceso'
+          };
+
+          const category = categoryMap[collectionName] || 'otros-ceso';
+
+          const payload = {
+            // server expects these exact keys
+            filename: file.name,
+            category: category,
+            title: comment || file.name,
+            fileBase64: base64.replace(/^[^,]*,/, ''),
+            contentType: file.type || 'application/octet-stream'
+          };
+
+          // Prepare headers: prefer Authorization with Firebase ID token when available
+          const headers = { 'Content-Type': 'application/json' };
+          try {
+            if (window.firebase && window.firebase.auth && window.firebase.auth().currentUser) {
+              const idToken = await window.firebase.auth().currentUser.getIdToken(true).catch(()=>null);
+              if (idToken) headers['Authorization'] = `Bearer ${idToken}`;
+            }
+          } catch (tErr) {
+            console.warn('Could not obtain Firebase ID token, will fallback to API key', tErr);
+          }
+
+          // Always attach x-admin-api-key as fallback (server accepts either)
+          headers['x-admin-api-key'] = apiKey;
+
+          const res = await fetch('/admin-upload', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(payload)
+          });
+
+          if (!res.ok) {
+            const text = await res.text().catch(()=>null);
+            throw new Error(`Servidor respondió ${res.status} ${res.statusText} ${text || ''}`);
+          }
+        }
+
+        // Clear form
+        if (filesInput) filesInput.value = '';
+        if (commentElem) commentElem.value = '';
+
+        // Success UI
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-success alert-dismissible fade show';
+        alert.innerHTML = `
+          <i class="bi bi-check-circle me-2"></i>
+          ${files.length} archivo(s) subido(s) correctamente (vía servidor)
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.querySelector('#evidenceModal .modal-body').insertBefore(alert, document.querySelector('#evidenceModal .modal-body').firstChild);
+
+        // Reload evidence list (best-effort)
+        if (typeof loadEvidenceList === 'function') {
+          await loadEvidenceList(collection, agreementId);
+        }
+
+      } catch (error) {
+        console.error('Error uploading evidence via server:', error);
+        alert('Error al subir evidencias via servidor: ' + (error.message || error));
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = originalLabel;
+      }
+    }
+
+    // ============ REPORTS FUNCTIONALITY ============
+    
+    let currentReportData = [];
+    
+    // Open reports modal
+    function openReportsModal() {
+      const modal = new bootstrap.Modal(document.getElementById('reportsModal'));
+      modal.show();
+    }
+    
+    // Load responsible persons for filter dropdown
+    async function loadResponsiblePersonsForReports() {
+      try {
+  if (!window.db) { window.db = firebase.firestore(); }
+  var db = window.db;
+        const snapshot = await db.collection('acuerdos-ceso').get();
+        const responsibles = new Set();
+        
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const responsible = data.responsible || data.responsable || data.Responsable || data['Responsable del Seguimiento'] || data['Responsable'];
+          if (responsible && responsible.trim()) {
+            responsibles.add(responsible.trim());
+          }
+        });
+        
+        const select = document.getElementById('reportResponsibleFilter');
+        responsibles.forEach(responsible => {
+          const option = document.createElement('option');
+          option.value = responsible;
+          option.textContent = responsible;
+          select.appendChild(option);
+        });
+        
+      } catch (error) {
+        console.error('Error loading responsible persons:', error);
+      }
+    }
+    
+    // Load report template
+    function loadReportTemplate(templateType) {
+      const now = new Date();
+      const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+      
+      // Clear current filters
+      document.getElementById('reportFiltersForm').reset();
+      
+      if (templateType === 'overdue') {
+        // Overdue agreements template
+        document.getElementById('reportStatusFilter').value = 'Vencidos';
+        document.getElementById('reportDateTo').value = now.toISOString().split('T')[0];
+        
+      } else if (templateType === 'responsible') {
+        // Responsible person activity template
+        document.getElementById('reportDateFrom').value = oneMonthAgo.toISOString().split('T')[0];
+        document.getElementById('reportDateTo').value = now.toISOString().split('T')[0];
+      }
+      
+      // Generate preview automatically
+      setTimeout(() => generateReportPreview(), 500);
+    }
+    
+    // Generate report preview
+    async function generateReportPreview() {
+      const previewDiv = document.getElementById('reportPreview');
+      const summaryDiv = document.getElementById('reportSummary');
+      const exportPDFBtn = document.getElementById('exportPDFBtn');
+      const exportExcelBtn = document.getElementById('exportExcelBtn');
+      
+      // Show loading
+      previewDiv.innerHTML = `
+        <div class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <p class="mt-2">Generando reporte...</p>
+        </div>
+      `;
+      
+      try {
+        // Get filter values
+        const filters = getReportFilters();
+        
+        // Fetch data from Firestore
+  if (!window.db) { window.db = firebase.firestore(); }
+  var db = window.db;
+        let query = db.collection('acuerdos-ceso');
+        
+        // Apply filters
+        const snapshot = await query.get();
+        let agreements = [];
+        
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const agreement = { id: doc.id, ...data };
+          
+          // Apply client-side filters
+          if (matchesFilters(agreement, filters)) {
+            agreements.push(agreement);
+          }
+        });
+        
+        // Sort by date (oldest first for priority)
+        agreements.sort((a, b) => {
+          const dateA = getDateValue(a);
+          const dateB = getDateValue(b);
+          return dateA - dateB;
+        });
+        
+        currentReportData = agreements;
+        
+        // Generate preview HTML
+        generatePreviewHTML(agreements);
+        
+        // Generate summary
+        generateReportSummary(agreements);
+        
+        // Enable export buttons
+        exportPDFBtn.disabled = false;
+        exportExcelBtn.disabled = false;
+        summaryDiv.style.display = 'block';
+        
+      } catch (error) {
+        console.error('Error generating report:', error);
+        previewDiv.innerHTML = `
+          <div class="alert alert-danger">
+            <h6>Error al generar el reporte</h6>
+            <p>No se pudo generar el reporte. Por favor, intente nuevamente.</p>
+          </div>
+        `;
+      }
+    }
+    
+    // Get report filters from form
+    function getReportFilters() {
+      const statusSelect = document.getElementById('reportStatusFilter');
+      const selectedStatuses = Array.from(statusSelect.selectedOptions).map(option => option.value);
+      
+      return {
+        statuses: selectedStatuses.length > 0 ? selectedStatuses : null,
+        responsible: document.getElementById('reportResponsibleFilter').value || null,
+        dateFrom: document.getElementById('reportDateFrom').value || null,
+        dateTo: document.getElementById('reportDateTo').value || null,
+        agreementNumber: document.getElementById('reportAgreementNumber').value || null,
+        sessionNumber: document.getElementById('reportSessionNumber').value || null,
+        sessionType: document.getElementById('reportSessionType').value || null
+      };
+    }
+    
+    // Check if agreement matches filters
+    function matchesFilters(agreement, filters) {
+      // Status filter
+      if (filters.statuses) {
+        const status = agreement.status || agreement.Estado || agreement.estado || 'Pendiente';
+        if (!filters.statuses.includes(status)) return false;
+      }
+      
+      // Responsible person filter
+      if (filters.responsible) {
+        const responsible = agreement.responsible || agreement.responsable || agreement.Responsable || agreement['Responsable del Seguimiento'] || '';
+        if (!responsible.toLowerCase().includes(filters.responsible.toLowerCase())) return false;
+      }
+      
+      // Agreement number filter
+      if (filters.agreementNumber) {
+        const agreementNumber = agreement.agreementNumber || agreement.numero || agreement.Numero || agreement['Numero de Acuerdo'] || agreement['Número de Acuerdo'] || '';
+        if (!agreementNumber.toLowerCase().includes(filters.agreementNumber.toLowerCase())) return false;
+      }
+      
+      // Session number filter
+      if (filters.sessionNumber) {
+        const description = agreement.description || agreement.descripcion || agreement.Descripcion || '';
+        if (!description.toLowerCase().includes(filters.sessionNumber.toLowerCase())) return false;
+      }
+      
+      // Session type filter
+      if (filters.sessionType) {
+        const sessionType = agreement.sessionType || agreement['Tipo_de_Sesion'] || agreement['Tipo de Sesión'] || agreement.tipo_sesion || '';
+        if (sessionType.toLowerCase() !== filters.sessionType.toLowerCase()) return false;
+      }
+      
+      // Date range filter
+      if (filters.dateFrom || filters.dateTo) {
+        const agreementDate = getDateValue(agreement);
+        if (agreementDate) {
+          if (filters.dateFrom && agreementDate < new Date(filters.dateFrom).getTime()) return false;
+          if (filters.dateTo && agreementDate > new Date(filters.dateTo).getTime()) return false;
+        }
+      }
+      
+      return true;
+    }
+    
+    // Get date value from agreement (reusing the logic from displayAgreements)
+    function getDateValue(agreement) {
+      const dateField = 
+        agreement.complianceDate || 
+        agreement.fecha_cumplimiento || 
+        agreement['Fecha de Cumplimiento'] || 
+        agreement.fechaCumplimiento ||
+        agreement.deadline ||
+        agreement.meetingDate ||
+        agreement.fecha_reunion ||
+        agreement['Fecha de Reunión'] ||
+        null;
+      
+      if (!dateField) return new Date('1970-01-01').getTime();
+      
+      if (typeof dateField === 'number') {
+        return (dateField - 25569) * 86400 * 1000;
+      }
+      
+      if (dateField.toDate) {
+        return dateField.toDate().getTime();
+      }
+      
+      const date = new Date(dateField);
+      return isNaN(date) ? new Date('1970-01-01').getTime() : date.getTime();
+    }
+    
+    // Generate preview HTML
+    function generatePreviewHTML(agreements) {
+      const previewDiv = document.getElementById('reportPreview');
+      
+      if (agreements.length === 0) {
+        previewDiv.innerHTML = `
+          <div class="text-center py-4">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <h5 class="mt-3 text-muted">No se encontraron acuerdos</h5>
+            <p class="text-muted">No hay acuerdos que coincidan con los filtros seleccionados</p>
+          </div>
+        `;
+        return;
+      }
+      
+      let html = `
+        <table class="table table-gobierno table-bordered table-striped table-responsive" aria-label="Listado de Acuerdos CESO">
+          <thead class="table-gobierno">
+            <tr>
+              <th scope="col">Número</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Responsable</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Evidencias</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      agreements.forEach(agreement => {
+        const agreementNumber = agreement.agreementNumber || agreement.numero || agreement.Numero || agreement['Numero de Acuerdo'] || agreement['Número de Acuerdo'] || agreement.id || 'N/A';
+        const description = agreement.description || agreement.descripcion || agreement.Descripcion || agreement['Descripcion del Acuerdo'] || agreement['Descripción del Acuerdo'] || 'Sin descripción';
+        const status = agreement.status || agreement.Estado || agreement.estado || 'Pendiente';
+        const responsible = agreement.responsible || agreement.responsable || agreement.Responsable || agreement['Responsable del Seguimiento'] || 'No asignado';
+        const date = formatDate(agreement.complianceDate || agreement.fecha_cumplimiento || agreement['Fecha de Cumplimiento'] || agreement.meetingDate || '');
+        
+        html += `
+          <tr>
+            <td><strong>${agreementNumber}</strong></td>
+            <td>${description.substring(0, 100)}${description.length > 100 ? '...' : ''}</td>
+            <td>${getStatusBadge(status)}</td>
+            <td>${responsible}</td>
+            <td>${date || 'No especificada'}</td>
+            <td><span class="badge bg-secondary">Ver detalles</span></td>
+          </tr>
+        `;
+      });
+      
+      html += '</tbody></table>';
+      previewDiv.innerHTML = html;
+    }
+    
+    // Generate report summary
+    function generateReportSummary(agreements) {
+      const summary = {
+        pending: 0,
+        inProgress: 0,
+        overdue: 0,
+        completed: 0
+      };
+      
+      agreements.forEach(agreement => {
+        const status = (agreement.status || agreement.Estado || agreement.estado || 'Pendiente').toLowerCase();
+        
+        if (status.includes('pendiente') || status === '') {
+          summary.pending++;
+        } else if (status.includes('progreso')) {
+          summary.inProgress++;
+        } else if (status.includes('vencido')) {
+          summary.overdue++;
+        } else if (status.includes('completado') || status.includes('cumplido')) {
+          summary.completed++;
+        }
+      });
+      
+      document.getElementById('summaryPending').textContent = summary.pending;
+      document.getElementById('summaryInProgress').textContent = summary.inProgress;
+      document.getElementById('summaryOverdue').textContent = summary.overdue;
+      document.getElementById('summaryCompleted').textContent = summary.completed;
+    }
+    
+    // Export to PDF with Mexican government template
+    function exportToPDF() {
+      if (currentReportData.length === 0) {
+        alert('No hay datos para exportar. Genere primero una vista previa del reporte.');
+        return;
+      }
+      
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('l', 'mm', 'a4'); // Landscape orientation
+      
+      // Mexican government header
+      doc.setFillColor(97, 18, 50); // Official government color
+      doc.rect(0, 0, 297, 30, 'F');
+      
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(16);
+      doc.setFont(undefined, 'bold');
+      doc.text('GOBIERNO DE MÉXICO', 15, 12);
+      doc.text('CESO - Reporte de Acuerdos', 15, 22);
+      
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(10);
+      doc.text(`Fecha de generación: ${new Date().toLocaleDateString('es-ES')}`, 200, 12);
+      doc.text(`Total de registros: ${currentReportData.length}`, 200, 18);
+      
+      // Prepare table data
+      const tableData = currentReportData.map(agreement => {
+        return [
+          agreement.agreementNumber || agreement.numero || 'N/A',
+          agreement.sessionType || agreement['Tipo_de_Sesion'] || agreement['Tipo de Sesión'] || agreement.tipo_sesion || 'N/A',
+          (agreement.description || agreement.descripcion || 'Sin descripción').substring(0, 70),
+          agreement.status || agreement.Estado || 'Pendiente',
+          (agreement.responsible || agreement.responsable || 'No asignado').substring(0, 25),
+          formatDate(agreement.complianceDate || agreement.fecha_cumplimiento || '') || 'No especificada'
+        ];
+      });
+      
+      // Add table
+      doc.autoTable({
+        startY: 35,
+        head: [['Número', 'Tipo Sesión', 'Descripción', 'Estado', 'Responsable', 'Fecha']],
+        body: tableData,
+        styles: { fontSize: 8, cellPadding: 2 },
+        headStyles: { fillColor: [97, 18, 50], textColor: 255 },
+        alternateRowStyles: { fillColor: [245, 245, 245] },
+        columnStyles: {
+          0: { cellWidth: 25 },
+          1: { cellWidth: 20 },
+          2: { cellWidth: 80 },
+          3: { cellWidth: 20 },
+          4: { cellWidth: 50 },
+          4: { cellWidth: 30 }
+        }
+      });
+      
+      // Footer
+      const pageCount = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.text(`Página ${i} de ${pageCount}`, 240, 200);
+        doc.text('CESO - Centro de Control SINIDA', 15, 200);
+      }
+      
+      // Save PDF
+      const filename = `Reporte_CESO_${new Date().toISOString().split('T')[0]}.pdf`;
+      doc.save(filename);
+    }
+    
+    // Export to Excel
+    function exportToExcel() {
+      if (currentReportData.length === 0) {
+        alert('No hay datos para exportar. Genere primero una vista previa del reporte.');
+        return;
+      }
+      
+      // Prepare data for Excel
+      const excelData = currentReportData.map(agreement => {
+        return {
+          'Número de Acuerdo': agreement.agreementNumber || agreement.numero || 'N/A',
+          'Tipo de Sesión': agreement.sessionType || agreement['Tipo_de_Sesion'] || agreement['Tipo de Sesión'] || agreement.tipo_sesion || 'N/A',
+          'Descripción': agreement.description || agreement.descripcion || 'Sin descripción',
+          'Estado': agreement.status || agreement.Estado || 'Pendiente',
+          'Responsable': agreement.responsible || agreement.responsable || 'No asignado',
+          'Fecha de Cumplimiento': formatDate(agreement.complianceDate || agreement.fecha_cumplimiento || '') || 'No especificada',
+          'Fecha de Reunión': formatDate(agreement.meetingDate || agreement.fecha_reunion || '') || 'No especificada'
+        };
+      });
+      
+      // Create workbook and worksheet
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(excelData);
+      
+      // Set column widths
+      ws['!cols'] = [
+        { width: 20 }, // Número de Acuerdo
+        { width: 15 }, // Tipo de Sesión
+        { width: 55 }, // Descripción
+        { width: 15 }, // Estado
+        { width: 25 }, // Responsable
+        { width: 20 }, // Fecha de Cumplimiento
+        { width: 20 }  // Fecha de Reunión
+      ];
+      
+      XLSX.utils.book_append_sheet(wb, ws, 'Reporte CESO');
+      
+      // Save Excel file
+      const filename = `Reporte_CESO_${new Date().toISOString().split('T')[0]}.xlsx`;
+      XLSX.writeFile(wb, filename);
+    }
+    
+    // Save configuration
+    function saveConfiguration() {
+      const configName = document.getElementById('configurationName').value.trim();
+      if (!configName) {
+        alert('Por favor, ingrese un nombre para la configuración.');
+        return;
+      }
+      
+      const config = {
+        name: configName,
+        filters: getReportFilters(),
+        timestamp: new Date().toISOString()
+      };
+      
+      // Save to localStorage
+      const savedConfigs = JSON.parse(localStorage.getItem('cesoReportConfigs') || '[]');
+      
+      // Check if name already exists
+      const existingIndex = savedConfigs.findIndex(c => c.name === configName);
+      if (existingIndex >= 0) {
+        if (confirm('Ya existe una configuración con este nombre. ¿Desea sobrescribirla?')) {
+          savedConfigs[existingIndex] = config;
+        } else {
+          return;
+        }
+      } else {
+        savedConfigs.push(config);
+      }
+      
+      localStorage.setItem('cesoReportConfigs', JSON.stringify(savedConfigs));
+      loadSavedConfigurations();
+      
+      alert('Configuración guardada exitosamente.');
+      document.getElementById('configurationName').value = '';
+    }
+    
+    // Load saved configurations
+    function loadSavedConfigurations() {
+      const select = document.getElementById('savedConfigurations');
+      const savedConfigs = JSON.parse(localStorage.getItem('cesoReportConfigs') || '[]');
+      
+      // Clear existing options except first
+      while (select.children.length > 1) {
+        select.removeChild(select.lastChild);
+      }
+      
+      savedConfigs.forEach(config => {
+        const option = document.createElement('option');
+        option.value = JSON.stringify(config);
+        option.textContent = `${config.name} (${new Date(config.timestamp).toLocaleDateString()})`;
+        select.appendChild(option);
+      });
+      
+      // Add change event listener
+      select.addEventListener('change', function() {
+        if (this.value) {
+          const config = JSON.parse(this.value);
+          loadConfiguration(config.filters);
+        }
+      });
+    }
+    
+    // Load configuration into form
+    function loadConfiguration(filters) {
+      // Clear form first
+      document.getElementById('reportFiltersForm').reset();
+      
+      // Set filter values
+      if (filters.statuses) {
+        const statusSelect = document.getElementById('reportStatusFilter');
+        Array.from(statusSelect.options).forEach(option => {
+          option.selected = filters.statuses.includes(option.value);
+        });
+      }
+      
+      if (filters.responsible) {
+        document.getElementById('reportResponsibleFilter').value = filters.responsible;
+      }
+      
+      if (filters.dateFrom) {
+        document.getElementById('reportDateFrom').value = filters.dateFrom;
+      }
+      
+      if (filters.dateTo) {
+        document.getElementById('reportDateTo').value = filters.dateTo;
+      }
+      
+      if (filters.agreementNumber) {
+        document.getElementById('reportAgreementNumber').value = filters.agreementNumber;
+      }
+      
+      if (filters.sessionNumber) {
+        document.getElementById('reportSessionNumber').value = filters.sessionNumber;
+      }
+      
+      if (filters.sessionType) {
+        document.getElementById('reportSessionType').value = filters.sessionType;
+      }
+    }
+  </script>
+
+  <!-- Government Framework JavaScript -->
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
+
+  <!-- Fix navigation logo visibility after framework loads -->
+</body>
+</html>
