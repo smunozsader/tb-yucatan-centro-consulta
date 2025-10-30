@@ -1034,6 +1034,34 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   
   <script>
+// Global function to open modal and filter agreements by status
+function showAgreementsByStatus(status) {
+  try {
+    currentModalStatus = status || 'all';
+    const modal = new bootstrap.Modal(document.getElementById('agreementsModal'));
+    const modalTitle = document.getElementById('modalTitle');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const agreementsList = document.getElementById('agreementsList');
+    const agreementsCount = document.getElementById('agreementsCount');
+    const titles = {
+      'all': { es: 'Todos los Acuerdos', en: 'All Agreements' },
+      'Pendiente': { es: 'Acuerdos Pendientes', en: 'Pending Agreements' },
+      'Vencidos': { es: 'Acuerdos Vencidos', en: 'Overdue Agreements' },
+      'En Progreso': { es: 'Acuerdos en Progreso', en: 'In Progress Agreements' },
+      'Completado': { es: 'Acuerdos Completados', en: 'Completed Agreements' }
+    };
+    const currentLang = getCurrentLanguage();
+    modalTitle.textContent = titles[status] ? titles[status][currentLang] : titles['all'][currentLang];
+    modal.show();
+    loadingIndicator.style.display = 'block';
+    agreementsList.innerHTML = '';
+    agreementsCount.textContent = currentLang === 'es' ? 'Cargando...' : 'Loading...';
+    fetchAgreementsByStatus(status);
+  } catch (err) {
+    console.error('Error in showAgreementsByStatus:', err);
+    alert('No se pudo mostrar los acuerdos para el estado seleccionado.');
+  }
+}
   // Global variable to store original agreements data for filtering
   let originalAgreements = [];
   // Current modal status (explicit), avoids parsing modal title text which is localization-dependent
@@ -1211,8 +1239,6 @@
         document.getElementById('totalAgreements').textContent = total;
         document.getElementById('pendingAgreements').textContent = pending;
         document.getElementById('overdueAgreements').textContent = overdue;
-        document.getElementById('inProgressAgreements').textContent = inProgress;
-        document.getElementById('completedAgreements').textContent = completed;
         document.getElementById('myPendingCount').textContent = `${myPending} assigned to you`;
         document.getElementById('myOverdueCount').textContent = `${myOverdue} assigned to you`;
         document.getElementById('myInProgressCount').textContent = `${myInProgress} assigned to you`;
@@ -1248,65 +1274,8 @@
     function showComingSoon(feature) {
       const msg = getCurrentLanguage() === 'es' ? 
         `${feature} estará disponible próximamente.` : 
-        `${feature} will be available soon.`;
-      alert(msg);
-    }
-    
-    function showBatchUpload() {
-      const msg = getCurrentLanguage() === 'es' ?
-        'Módulo de Carga en Lote: Disponible vía línea de comandos.\n\nUsar: node batch-upload-agreements.js --file archivo.csv --type aphis' :
-        'Batch Upload Module: Available via command line.\n\nUse: node batch-upload-agreements.js --file file.csv --type aphis';
-      alert(msg);
-    }
-
-    // Función para mostrar acuerdos filtrados por estado
-    function showAgreementsByStatus(status) {
-      // Set explicit modal status (used by display/applyFilters)
-      currentModalStatus = status || 'all';
-      const modal = new bootstrap.Modal(document.getElementById('agreementsModal'));
-      const modalTitle = document.getElementById('modalTitle');
-      const loadingIndicator = document.getElementById('loadingIndicator');
-      const agreementsList = document.getElementById('agreementsList');
-      const agreementsCount = document.getElementById('agreementsCount');
-      
-      // Configurar título del modal
-      const titles = {
-        'all': { es: 'Todos los Acuerdos', en: 'All Agreements' },
-        'Pendiente': { es: 'Acuerdos Pendientes', en: 'Pending Agreements' },
-        'Vencidos': { es: 'Acuerdos Vencidos', en: 'Overdue Agreements' },
-        'En Progreso': { es: 'Acuerdos en Progreso', en: 'In Progress Agreements' },
-        'Completado': { es: 'Acuerdos Completados', en: 'Completed Agreements' }
-      };
-      
-      const currentLang = getCurrentLanguage();
-      modalTitle.textContent = titles[status] ? titles[status][currentLang] : titles['all'][currentLang];
-      
-      // Populate responsible filter dropdown with APHIS users
-      const filterResponsible = document.getElementById('filterResponsible');
-      if (filterResponsible && window.gobmxAuth && window.gobmxAuth.aphisUsers) {
-        filterResponsible.innerHTML = '<option value="">Todos los responsables</option>';
-        window.gobmxAuth.aphisUsers.forEach(user => {
-          const option = document.createElement('option');
-          option.value = user.nombre || user.correo || user.email;
-          option.textContent = user.nombre || user.correo || user.email;
-          filterResponsible.appendChild(option);
-        });
-      }
-      
-      // Add event listeners for real-time filtering
-      document.getElementById('searchAgreements').addEventListener('input', applyFilters);
-      document.getElementById('filterResponsible').addEventListener('change', applyFilters);
-      
-      // Mostrar modal y loading
-      modal.show();
-      loadingIndicator.style.display = 'block';
-      agreementsList.innerHTML = '';
-      agreementsCount.textContent = currentLang === 'es' ? 'Cargando...' : 'Loading...';
-      
-      // Obtener acuerdos de Firestore
-      fetchAgreementsByStatus(status);
-    }
-
+        try {
+          // Cargar datos de acuerdos APHIS
     // Función para obtener acuerdos de Firestore
     async function fetchAgreementsByStatus(status) {
       try {
