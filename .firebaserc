@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "ceso-aphis-yuc"
+    "default": "ceso-aphis-yuc",
+    "staging": "ceso-aphis-yuc"
   },
   "targets": {
     "ceso-aphis-yuc": {

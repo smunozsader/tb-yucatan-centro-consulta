@@ -1034,6 +1034,34 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   
   <script>
+// Global function to open modal and filter agreements by status
+function showAgreementsByStatus(status) {
+  try {
+    currentModalStatus = status || 'all';
+    const modal = new bootstrap.Modal(document.getElementById('agreementsModal'));
+    const modalTitle = document.getElementById('modalTitle');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const agreementsList = document.getElementById('agreementsList');
+    const agreementsCount = document.getElementById('agreementsCount');
+    const titles = {
+      'all': { es: 'Todos los Acuerdos', en: 'All Agreements' },
+      'Pendiente': { es: 'Acuerdos Pendientes', en: 'Pending Agreements' },
+      'Vencidos': { es: 'Acuerdos Vencidos', en: 'Overdue Agreements' },
+      'En Progreso': { es: 'Acuerdos en Progreso', en: 'In Progress Agreements' },
+      'Completado': { es: 'Acuerdos Completados', en: 'Completed Agreements' }
+    };
+    const currentLang = getCurrentLanguage();
+    modalTitle.textContent = titles[status] ? titles[status][currentLang] : titles['all'][currentLang];
+    modal.show();
+    loadingIndicator.style.display = 'block';
+    agreementsList.innerHTML = '';
+    agreementsCount.textContent = currentLang === 'es' ? 'Cargando...' : 'Loading...';
+    fetchAgreementsByStatus(status);
+  } catch (err) {
+    console.error('Error in showAgreementsByStatus:', err);
+    alert('No se pudo mostrar los acuerdos para el estado seleccionado.');
+  }
+}
   // Global variable to store original agreements data for filtering
   let originalAgreements = [];
   // Current modal status (explicit), avoids parsing modal title text which is localization-dependent
@@ -1137,7 +1165,6 @@
         // Cargar datos de acuerdos APHIS
         const collections = ['acuerdos-aphis', 'acuerdos_aphis', 'acuerdos'];
         let snapshot = null;
-        
         for (const collName of collections) {
           try {
             snapshot = await db.collection(collName).get();
@@ -1146,37 +1173,52 @@
             console.log(`Collection ${collName} not found, trying next...`);
           }
         }
-        
         if (!snapshot || snapshot.size === 0) {
           showError('No agreement data found');
           return;
         }
-        
-        // Analizar estadísticas
+        // Analizar estadsticas
         const currentUser = window.gobmxAuth.getCurrentUser();
         const userEmail = currentUser?.email?.toLowerCase() || '';
-        
         let total = 0, pending = 0, overdue = 0, inProgress = 0, completed = 0;
         let myPending = 0, myOverdue = 0, myInProgress = 0, myCompleted = 0;
         const criticalIssues = [];
-        
         const now = new Date();
-        
+        function parseDate(dueDate) {
+          if (!dueDate) return null;
+          if (typeof dueDate === 'number') {
+            // Excel serial date (days since 1900-01-01)
+            const excelEpoch = new Date(1900, 0, 1);
+            return new Date(excelEpoch.getTime() + (dueDate - 1) * 24 * 60 * 60 * 1000);
+          }
+          if (typeof dueDate === 'string') {
+            // Try ISO or locale string
+            const parsed = Date.parse(dueDate);
+            return isNaN(parsed) ? null : new Date(parsed);
+          }
+          return dueDate instanceof Date ? dueDate : null;
+        }
+        function normalizeStatus(status) {
+          if (!status) return 'Pending';
+          status = status.toLowerCase();
+          if (status.includes('completado') || status.includes('cumplido') || status.includes('perman') || status.includes('completed')) return 'Completed';
+          if (status.includes('vencido') || status.includes('overdue')) return 'Overdue';
+          if (status.includes('progreso') || status.includes('progress')) return 'In Progress';
+          return 'Pending';
+        }
         snapshot.forEach(doc => {
           const data = doc.data();
-          const status = (data.status || data.estatus || data.Estado || '').toLowerCase();
+          const statusRaw = data.status || data.estatus || data.Estado || '';
+          const status = normalizeStatus(statusRaw);
           const responsible = (data.responsible || data.responsable || data['Responsable del Seguimiento'] || '').toLowerCase();
-          const dueDate = data.complianceDate || data.fecha_cumplimiento || data['Fecha de Cumplimiento'];
-          
+          const dueDateRaw = data.complianceDate || data.fecha_cumplimiento || data['Fecha de Cumplimiento'];
+          const dueDate = parseDate(dueDateRaw);
           total++;
-          
           const isMyTask = responsible.includes(userEmail) || responsible.includes(currentUser?.name?.toLowerCase() || '');
-          
-          // Treat 'permanente' as a completed-like status (enforced/permanent), so it should not be counted as pending
-          if (status.includes('completado') || status.includes('cumplido') || status.includes('perman') || status.includes('completed')) {
+          if (status === 'Completed') {
             completed++;
             if (isMyTask) myCompleted++;
-          } else if (status.includes('vencido') || status.includes('overdue') || (dueDate && new Date(dueDate) < now)) {
+          } else if (status === 'Overdue' || (dueDate && dueDate < now)) {
             overdue++;
             if (isMyTask) {
               myOverdue++;
@@ -1185,7 +1227,7 @@
                 description: 'Overdue agreement requires immediate attention'
               });
             }
-          } else if (status.includes('progreso') || status.includes('progress')) {
+          } else if (status === 'In Progress') {
             inProgress++;
             if (isMyTask) myInProgress++;
           } else {
@@ -1193,28 +1235,21 @@
             if (isMyTask) myPending++;
           }
         });
-        
         // Actualizar UI
         document.getElementById('totalAgreements').textContent = total;
         document.getElementById('pendingAgreements').textContent = pending;
         document.getElementById('overdueAgreements').textContent = overdue;
-        document.getElementById('inProgressAgreements').textContent = inProgress;
-        document.getElementById('completedAgreements').textContent = completed;
-        
         document.getElementById('myPendingCount').textContent = `${myPending} assigned to you`;
         document.getElementById('myOverdueCount').textContent = `${myOverdue} assigned to you`;
         document.getElementById('myInProgressCount').textContent = `${myInProgress} assigned to you`;
         document.getElementById('myCompletedCount').textContent = `${myCompleted} assigned to you`;
-        
-        // Mostrar alertas críticas si las hay
+        // Mostrar alertas crticas si las hay
         if (criticalIssues.length > 0) {
           const alertsDiv = document.getElementById('criticalAlerts');
           const overdueCount = document.getElementById('overdueCount');
-          
           overdueCount.textContent = criticalIssues.length;
           alertsDiv.classList.remove('d-none');
         }
-        
       } catch (error) {
         console.error('Error loading statistics:', error);
         showError('Error loading statistics');
@@ -1239,65 +1274,8 @@
     function showComingSoon(feature) {
       const msg = getCurrentLanguage() === 'es' ? 
         `${feature} estará disponible próximamente.` : 
-        `${feature} will be available soon.`;
-      alert(msg);
-    }
-    
-    function showBatchUpload() {
-      const msg = getCurrentLanguage() === 'es' ?
-        'Módulo de Carga en Lote: Disponible vía línea de comandos.\n\nUsar: node batch-upload-agreements.js --file archivo.csv --type aphis' :
-        'Batch Upload Module: Available via command line.\n\nUse: node batch-upload-agreements.js --file file.csv --type aphis';
-      alert(msg);
-    }
-
-    // Función para mostrar acuerdos filtrados por estado
-    function showAgreementsByStatus(status) {
-      // Set explicit modal status (used by display/applyFilters)
-      currentModalStatus = status || 'all';
-      const modal = new bootstrap.Modal(document.getElementById('agreementsModal'));
-      const modalTitle = document.getElementById('modalTitle');
-      const loadingIndicator = document.getElementById('loadingIndicator');
-      const agreementsList = document.getElementById('agreementsList');
-      const agreementsCount = document.getElementById('agreementsCount');
-      
-      // Configurar título del modal
-      const titles = {
-        'all': { es: 'Todos los Acuerdos', en: 'All Agreements' },
-        'Pendiente': { es: 'Acuerdos Pendientes', en: 'Pending Agreements' },
-        'Vencidos': { es: 'Acuerdos Vencidos', en: 'Overdue Agreements' },
-        'En Progreso': { es: 'Acuerdos en Progreso', en: 'In Progress Agreements' },
-        'Completado': { es: 'Acuerdos Completados', en: 'Completed Agreements' }
-      };
-      
-      const currentLang = getCurrentLanguage();
-      modalTitle.textContent = titles[status] ? titles[status][currentLang] : titles['all'][currentLang];
-      
-      // Populate responsible filter dropdown with APHIS users
-      const filterResponsible = document.getElementById('filterResponsible');
-      if (filterResponsible && window.gobmxAuth && window.gobmxAuth.aphisUsers) {
-        filterResponsible.innerHTML = '<option value="">Todos los responsables</option>';
-        window.gobmxAuth.aphisUsers.forEach(user => {
-          const option = document.createElement('option');
-          option.value = user.nombre || user.correo || user.email;
-          option.textContent = user.nombre || user.correo || user.email;
-          filterResponsible.appendChild(option);
-        });
-      }
-      
-      // Add event listeners for real-time filtering
-      document.getElementById('searchAgreements').addEventListener('input', applyFilters);
-      document.getElementById('filterResponsible').addEventListener('change', applyFilters);
-      
-      // Mostrar modal y loading
-      modal.show();
-      loadingIndicator.style.display = 'block';
-      agreementsList.innerHTML = '';
-      agreementsCount.textContent = currentLang === 'es' ? 'Cargando...' : 'Loading...';
-      
-      // Obtener acuerdos de Firestore
-      fetchAgreementsByStatus(status);
-    }
-
+        try {
+          // Cargar datos de acuerdos APHIS
     // Función para obtener acuerdos de Firestore
     async function fetchAgreementsByStatus(status) {
       try {

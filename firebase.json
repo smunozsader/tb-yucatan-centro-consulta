@@ -4,6 +4,7 @@
   },
   "storage": [
     {
+      "bucket": "ceso-aphis-yuc.appspot.com",
       "target": "default",
       "rules": "storage.rules"
     }
@@ -34,7 +35,19 @@
       {
         "source": "/admin-upload",
         "function": "adminUpload"
-      }
+      },
+      { "source": "/hall-ceso", "destination": "/hall-ceso.html" },
+      { "source": "/hall-aphis", "destination": "/hall-aphis.html" },
+      { "source": "/centro-ayuda", "destination": "/centro-ayuda.html" },
+      { "source": "/repositorio-ceso", "destination": "/repositorio-ceso.html" },
+      { "source": "/repositorio-aphis", "destination": "/repositorio-aphis.html" },
+      { "source": "/batch-upload-ceso", "destination": "/batch-upload-ceso.html" },
+  { "source": "/batch-upload-aphis", "destination": "/batch-upload-aphis.html" },
+  { "source": "/acuerdos-ceso", "destination": "/acuerdos-ceso.html" },
+  { "source": "/acuerdos-ceso.html", "destination": "/acuerdos-ceso.html" },
+  { "source": "/acuerdos-aphis", "destination": "/acuerdos-aphis.html" },
+  { "source": "/acuerdos-aphis.html", "destination": "/acuerdos-aphis.html" },
+  { "source": "/favicon.ico", "destination": "/favicon.ico" }
     ]
   }
 }
