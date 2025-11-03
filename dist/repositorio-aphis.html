@@ -9,8 +9,6 @@
   <!-- REQUIRED: Official GOB.mx Framework -->
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
   <style>
     body { padding: 24px; }
@@ -305,7 +303,6 @@
   </main>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -757,7 +754,7 @@
     }
 
     // Initialize language on page load
-    document.addEventListener('DOMContentLoaded', function() {
+    $gmx(document).ready(function() {
       const currentLang = getCurrentLanguage();
       setLanguage(currentLang);
     });
@@ -766,12 +763,7 @@
     loadCategorizedDocuments();
   </script>
 
-  <!-- Vendor & platform scripts: bootstrap bundle (includes Popper), Firebase SDKs -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <!-- Vendor & platform scripts: Firebase SDKs -->
   <script src="__/firebase/init.js"></script>
   <script src="auth-system.js"></script>
 
