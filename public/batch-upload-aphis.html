@@ -485,7 +485,7 @@
       validationResults = results;
     }
 
-    function uploadFile() {
+    async function uploadFile() {
       if (!selectedFile || !validationResults || !validationResults.isValid) {
         const message = currentLanguage === 'es' ? 
           'Por favor valide el archivo primero.' : 
@@ -499,44 +499,147 @@
       const progressBar = document.getElementById('progressBar');
       const progressText = document.getElementById('progressText');
 
-      // Simulate progress (in real implementation, use AJAX calls)
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += Math.random() * 15;
-        if (progress > 95) progress = 95;
+      try {
+        // Preparar datos para enviar al Cloud Function Gen 2
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('organization', 'APHIS');
+        formData.append('apiKey', window.__ADMIN_CONFIG__.ADMIN_UPLOAD_API_KEY);
 
-        progressBar.style.width = progress + '%';
-        progressText.textContent = `Processing... ${Math.round(progress)}%`;
+        progressText.textContent = currentLanguage === 'es' ? 'Conectando al servidor...' : 'Connecting to server...';
+        progressBar.style.width = '10%';
 
-        if (progress >= 95) {
-          clearInterval(interval);
-          setTimeout(completeUpload, 1000);
+        // Llamar a la nueva función Gen 2 adminUploadV2
+        const response = await fetch('https://adminuploadv2-lwzj3v5uga-uc.a.run.app', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            // No establecer Content-Type para que el navegador maneje multipart/form-data
+          }
+        });
+
+        progressText.textContent = currentLanguage === 'es' ? 'Procesando archivo...' : 'Processing file...';
+        progressBar.style.width = '50%';
+
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status} ${response.statusText}`);
         }
-      }, 200);
+
+        const result = await response.json();
+        
+        progressText.textContent = currentLanguage === 'es' ? 'Guardando en base de datos...' : 'Saving to database...';
+        progressBar.style.width = '90%';
+
+        if (result.success) {
+          // Simulamos un poco más de tiempo para el efecto visual
+          setTimeout(() => {
+            completeUpload(result);
+          }, 1000);
+        } else {
+          throw new Error(result.error || 'Unknown server error');
+        }
+
+      } catch (error) {
+        console.error('Error en la carga:', error);
+        progressText.textContent = currentLanguage === 'es' ? 'Error en la carga' : 'Upload error';
+        progressBar.style.width = '0%';
+        progressBar.classList.add('bg-danger');
+        
+        const errorMsg = currentLanguage === 'es' ? 
+          `Error al cargar el archivo: ${error.message}\n\nPor favor verifica:\n1. Tu conexión a internet\n2. Que el archivo sea válido\n3. Que tengas permisos de administrador` :
+          `File upload error: ${error.message}\n\nPlease verify:\n1. Your internet connection\n2. That the file is valid\n3. That you have administrator permissions`;
+        
+        alert(errorMsg);
+        
+        document.getElementById('progressContainer').style.display = 'none';
+      }
     }
 
-    function completeUpload() {
+    function completeUpload(result = null) {
       const progressBar = document.getElementById('progressBar');
       const progressText = document.getElementById('progressText');
 
       progressBar.style.width = '100%';
-      progressText.textContent = 'Completed!';
+      progressText.textContent = currentLanguage === 'es' ? '¡Completado!' : 'Completed!';
 
       setTimeout(() => {
         document.getElementById('progressContainer').style.display = 'none';
-        showUploadResults();
+        showUploadResults(result);
       }, 1000);
     }
 
-    function showUploadResults() {
-      const summary = `
-        <ul class="mb-0">
-          <li><strong>${validationResults.summary.totalRecords}</strong> agreements processed</li>
-          <li><strong>${validationResults.summary.totalRecords}</strong> records created successfully</li>
-          <li><strong>0</strong> errors found</li>
-          <li>Organization: <strong>APHIS-USDA</strong></li>
-        </ul>
-      `;
+    function showUploadResults(result = null) {
+      let summary;
+      
+      if (result && result.success) {
+        // Usar datos reales del Cloud Function Gen 2
+        const successMsg = currentLanguage === 'es' ? 
+          '¡Carga exitosa! Los acuerdos han sido procesados correctamente.' :
+          'Upload successful! Agreements have been processed correctly.';
+          
+        const labels = currentLanguage === 'es' ? {
+          processed: 'acuerdos procesados',
+          created: 'registros creados exitosamente',
+          errors: 'errores encontrados',
+          organization: 'Organización',
+          processingTime: 'Tiempo de procesamiento',
+          warnings: 'Advertencias'
+        } : {
+          processed: 'agreements processed',
+          created: 'records created successfully',
+          errors: 'errors found',
+          organization: 'Organization',
+          processingTime: 'Processing time',
+          warnings: 'Warnings'
+        };
+        
+        summary = `
+          <div class="alert alert-success mb-3">
+            <i class="bi bi-check-circle me-2"></i>
+            <strong>${successMsg}</strong>
+          </div>
+          <ul class="mb-0">
+            <li><strong>${result.recordsProcessed || validationResults.summary.totalRecords}</strong> ${labels.processed}</li>
+            <li><strong>${result.recordsCreated || result.recordsProcessed || validationResults.summary.totalRecords}</strong> ${labels.created}</li>
+            <li><strong>${result.errors ? result.errors.length : 0}</strong> ${labels.errors}</li>
+            <li>${labels.organization}: <strong>APHIS-USDA</strong></li>
+            <li>${labels.processingTime}: <strong>${result.processingTime || 'N/A'}</strong></li>
+          </ul>
+        `;
+        
+        if (result.errors && result.errors.length > 0) {
+          summary += `
+            <div class="alert alert-warning mt-3">
+              <strong>${labels.warnings}:</strong>
+              <ul class="mb-0 mt-2">
+                ${result.errors.map(error => `<li>${error}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+      } else {
+        // Fallback para simulación
+        const labels = currentLanguage === 'es' ? {
+          processed: 'acuerdos procesados',
+          created: 'registros creados exitosamente',
+          errors: 'errores encontrados',
+          organization: 'Organización'
+        } : {
+          processed: 'agreements processed',
+          created: 'records created successfully',
+          errors: 'errors found',
+          organization: 'Organization'
+        };
+        
+        summary = `
+          <ul class="mb-0">
+            <li><strong>${validationResults.summary.totalRecords}</strong> ${labels.processed}</li>
+            <li><strong>${validationResults.summary.totalRecords}</strong> ${labels.created}</li>
+            <li><strong>0</strong> ${labels.errors}</li>
+            <li>${labels.organization}: <strong>APHIS-USDA</strong></li>
+          </ul>
+        `;
+      }
 
       document.getElementById('uploadSummary').innerHTML = summary;
       document.getElementById('uploadResults').style.display = 'block';

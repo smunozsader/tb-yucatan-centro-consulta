@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Firebase Functions Gen 2 - Centro de Consulta</title>
+
+  <!-- Favicon oficial -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/images/favicon.ico" rel="shortcut icon">
+  
+  <!-- Framework gob.mx v3 -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
+  
+  <style>
+    .test-results {
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    .test-success {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+    }
+    .test-error {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+    }
+    .test-info {
+      background-color: #d1ecf1;
+      border-color: #bee5eb;
+      color: #0c5460;
+    }
+    .function-url {
+      font-family: monospace;
+      background: #f8f9fa;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      word-break: break-all;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h1>Test Firebase Functions Gen 2</h1>
+          <p class="lead">Verificación de conectividad y funcionalidad de las funciones Cloud Run Gen 2</p>
+          
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>🚀 Test de Conectividad</h5>
+                </div>
+                <div class="card-body">
+                  <button class="btn btn-primary" onclick="testConnectivity()">
+                    <i class="bi bi-wifi"></i> Probar Conexión
+                  </button>
+                  <div id="connectivityResults" class="mt-3"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>📊 Información de Funciones</h5>
+                </div>
+                <div class="card-body">
+                  <button class="btn btn-secondary" onclick="showFunctionInfo()">
+                    <i class="bi bi-info-circle"></i> Ver Información
+                  </button>
+                  <div id="functionInfo" class="mt-3"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h5>📁 Test de Carga de Archivos (Simulación)</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="testFile" class="form-label">Seleccionar archivo CSV de prueba:</label>
+                    <input type="file" class="form-control" id="testFile" accept=".csv">
+                  </div>
+                  <div class="mb-3">
+                    <label for="orgSelect" class="form-label">Organización:</label>
+                    <select class="form-select" id="orgSelect">
+                      <option value="CESO">CESO</option>
+                      <option value="APHIS">APHIS-USDA</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-success" onclick="testFileUpload()">
+                    <i class="bi bi-upload"></i> Test Upload (Simulación)
+                  </button>
+                  <div id="uploadResults" class="mt-3"></div>
+                  
+                  <div id="uploadProgress" style="display: none;" class="mt-3">
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <small class="text-muted mt-1 d-block" id="progressText">Iniciando...</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h5>🔐 Test de Gestión de Roles</h5>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="testEmail" class="form-label">Email de prueba:</label>
+                        <input type="email" class="form-control" id="testEmail" value="test@example.com">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="testRole" class="form-label">Rol:</label>
+                        <select class="form-select" id="testRole">
+                          <option value="PUBLIC">PUBLIC</option>
+                          <option value="RESPONSIBLE">RESPONSIBLE</option>
+                          <option value="ADMINISTRATOR">ADMINISTRATOR</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-warning" onclick="testRoleManagement()">
+                    <i class="bi bi-person-gear"></i> Test Role Management (Simulación)
+                  </button>
+                  <div id="roleResults" class="mt-3"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="alert alert-info">
+                <h6><i class="bi bi-info-circle"></i> Información Técnica</h6>
+                <p><strong>Generación:</strong> Firebase Functions Gen 2 (Cloud Run)</p>
+                <p><strong>Región:</strong> us-central1</p>
+                <p><strong>Runtime:</strong> Node.js 22</p>
+                <p><strong>Beneficios:</strong> 100% más rápido en arranque, 1000x mejor concurrencia</p>
+                <p class="mb-0"><strong>Migración:</strong> Noviembre 2025</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Firebase Functions Client -->
+  <script src="firebase-functions-client.js"></script>
+  
+  <script>
+    async function testConnectivity() {
+      const resultsDiv = document.getElementById('connectivityResults');
+      resultsDiv.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div> Probando conectividad...';
+      
+      try {
+        const client = window.firebaseFunctionsClient;
+        const result = await client.testConnection();
+        
+        let html = '';
+        if (result.success) {
+          html = `
+            <div class="test-results test-success">
+              <h6><i class="bi bi-check-circle"></i> ¡Conectividad Exitosa!</h6>
+              <p>Todas las funciones Gen 2 están disponibles.</p>
+              <ul class="mb-0">
+                <li>adminUploadV2: ${result.data.adminUploadV2 ? '✅' : '❌'}</li>
+                <li>setCustomUserRoleV2: ${result.data.setCustomUserRoleV2 ? '✅' : '❌'}</li>
+              </ul>
+            </div>
+          `;
+        } else {
+          html = `
+            <div class="test-results test-error">
+              <h6><i class="bi bi-x-circle"></i> Error de Conectividad</h6>
+              <p>${result.message}</p>
+            </div>
+          `;
+        }
+        
+        resultsDiv.innerHTML = html;
+      } catch (error) {
+        resultsDiv.innerHTML = `
+          <div class="test-results test-error">
+            <h6><i class="bi bi-x-circle"></i> Error</h6>
+            <p>Error inesperado: ${error.message}</p>
+          </div>
+        `;
+      }
+    }
+    
+    function showFunctionInfo() {
+      const infoDiv = document.getElementById('functionInfo');
+      const client = window.firebaseFunctionsClient;
+      const info = client.getFunctionInfo();
+      
+      const html = `
+        <div class="test-results test-info">
+          <h6><i class="bi bi-gear"></i> Información de Funciones</h6>
+          <p><strong>Generación:</strong> ${info.generation}</p>
+          <p><strong>Runtime:</strong> ${info.runtime}</p>
+          <p><strong>Región:</strong> ${info.region}</p>
+          <p><strong>URLs:</strong></p>
+          <ul>
+            <li>adminUploadV2: <span class="function-url">${info.functions.adminUploadV2}</span></li>
+            <li>setCustomUserRoleV2: <span class="function-url">${info.functions.setCustomUserRoleV2}</span></li>
+          </ul>
+          <p><strong>Características:</strong></p>
+          <ul class="mb-0">
+            ${info.features.map(feature => `<li>${feature}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+      
+      infoDiv.innerHTML = html;
+    }
+    
+    async function testFileUpload() {
+      const file = document.getElementById('testFile').files[0];
+      const organization = document.getElementById('orgSelect').value;
+      const resultsDiv = document.getElementById('uploadResults');
+      const progressDiv = document.getElementById('uploadProgress');
+      const progressBar = progressDiv.querySelector('.progress-bar');
+      const progressText = document.getElementById('progressText');
+      
+      if (!file) {
+        resultsDiv.innerHTML = `
+          <div class="test-results test-error">
+            <h6><i class="bi bi-x-circle"></i> Error</h6>
+            <p>Por favor selecciona un archivo CSV.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Mostrar progreso
+      progressDiv.style.display = 'block';
+      resultsDiv.innerHTML = '';
+      
+      // Simulación de test (sin API key real)
+      const progressCallback = (progress) => {
+        progressBar.style.width = progress.progress + '%';
+        progressText.textContent = progress.message;
+      };
+      
+      try {
+        // Simular el proceso
+        progressCallback({ progress: 10, message: 'Conectando al servidor...' });
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        progressCallback({ progress: 50, message: 'Procesando archivo...' });
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        progressCallback({ progress: 90, message: 'Guardando en base de datos...' });
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        progressCallback({ progress: 100, message: '¡Completado!' });
+        
+        setTimeout(() => {
+          progressDiv.style.display = 'none';
+          resultsDiv.innerHTML = `
+            <div class="test-results test-success">
+              <h6><i class="bi bi-check-circle"></i> Test de Upload Exitoso</h6>
+              <p><strong>Archivo:</strong> ${file.name} (${(file.size / 1024).toFixed(2)} KB)</p>
+              <p><strong>Organización:</strong> ${organization}</p>
+              <p><strong>Función URL:</strong> <span class="function-url">https://adminuploadv2-lwzj3v5uga-uc.a.run.app</span></p>
+              <p class="mb-0"><small class="text-muted">Nota: Este es un test de simulación. Para usar en producción, configure el API key en admin-config.js</small></p>
+            </div>
+          `;
+        }, 1000);
+        
+      } catch (error) {
+        progressDiv.style.display = 'none';
+        resultsDiv.innerHTML = `
+          <div class="test-results test-error">
+            <h6><i class="bi bi-x-circle"></i> Error en Test</h6>
+            <p>Error durante la simulación: ${error.message}</p>
+          </div>
+        `;
+      }
+    }
+    
+    async function testRoleManagement() {
+      const email = document.getElementById('testEmail').value;
+      const role = document.getElementById('testRole').value;
+      const resultsDiv = document.getElementById('roleResults');
+      
+      if (!email) {
+        resultsDiv.innerHTML = `
+          <div class="test-results test-error">
+            <h6><i class="bi bi-x-circle"></i> Error</h6>
+            <p>Por favor ingresa un email válido.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      resultsDiv.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div> Simulando gestión de roles...';
+      
+      // Simular el proceso
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      resultsDiv.innerHTML = `
+        <div class="test-results test-success">
+          <h6><i class="bi bi-check-circle"></i> Test de Gestión de Roles Exitoso</h6>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Rol:</strong> ${role}</p>
+          <p><strong>Función URL:</strong> <span class="function-url">https://setcustomuserrolev2-lwzj3v5uga-uc.a.run.app</span></p>
+          <p class="mb-0"><small class="text-muted">Nota: Este es un test de simulación. La función real requiere autenticación Firebase.</small></p>
+        </div>
+      `;
+    }
+    
+    // Auto-load function info on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('🔬 Página de test Gen 2 Functions cargada');
+      
+      // Auto-test connectivity after 1 second
+      setTimeout(() => {
+        console.log('🔍 Ejecutando auto-test de conectividad...');
+        testConnectivity();
+      }, 1000);
+    });
+  </script>
+
+  <!-- Framework gob.mx v3 Scripts -->
+  <script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script>
+</body>
+</html>

@@ -1,6 +1,15 @@
-const functions = require('firebase-functions');
+const { onRequest, onCall } = require('firebase-functions/v2/https');
+const { setGlobalOptions } = require('firebase-functions/v2');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
+
+// Set global options for all functions
+setGlobalOptions({
+  region: 'us-central1',
+  memory: '512MiB',
+  timeoutSeconds: 60,
+  maxInstances: 10
+});
 
 // Initialize admin if not already
 try {
@@ -11,16 +20,18 @@ try {
 
 const db = admin.firestore();
 
-exports.adminUpload = functions.https.onRequest((req, res) => {
-  return cors(req, res, async () => {
-    if (req.method !== 'POST') return res.status(405).send({ error: 'POST only' });
+// Gen 2 HTTPS Function - Modern architecture with better performance
+exports.adminUploadV2 = onRequest({ cors: true }, async (req, res) => {
+  // CORS is handled by the onRequest options
+  if (req.method !== 'POST') return res.status(405).send({ error: 'POST only' });
 
-    try {
-      const authHeader = req.get('Authorization') || '';
-      const apiKey = req.get('x-admin-api-key');
-      const serverKey = functions.config().admin && functions.config().admin.key;
+  try {
+    const authHeader = req.get('Authorization') || '';
+    const apiKey = req.get('x-admin-api-key');
+    // Use environment variable (now with actual existing API key)
+    const serverKey = process.env.ADMIN_UPLOAD_API_KEY;
 
-      let uploader = 'unknown';
+    let uploader = 'unknown';
 
       if (serverKey && apiKey && apiKey === serverKey) {
         uploader = 'api-key';
@@ -137,8 +148,55 @@ exports.adminUpload = functions.https.onRequest((req, res) => {
       console.error('adminUpload error:', err);
       return res.status(500).send({ error: err && err.message ? err.message : String(err) });
     }
-  });
 });
+
+// Gen 2 Callable Function - Modern user role management
+exports.setCustomUserRoleV2 = onCall(async (request) => {
+  // Check if the user is authenticated
+  if (!request.auth) {
+    throw new Error('User must be authenticated');
+  }
+
+  // Check if the user has admin privileges
+  const callerToken = request.auth.token;
+  if (!(callerToken.admin === true || callerToken.role === 'ADMINISTRATOR')) {
+    throw new Error('Only administrators can set user roles');
+  }
+
+  const { uid, role } = request.data;
+  
+  // Validate input
+  if (!uid || !role) {
+    throw new Error('uid and role are required');
+  }
+
+  // Validate role values
+  const validRoles = ['ADMINISTRATOR', 'RESPONSIBLE', 'PUBLIC'];
+  if (!validRoles.includes(role)) {
+    throw new Error(`Invalid role. Must be one of: ${validRoles.join(', ')}`);
+  }
+
+  try {
+    // Set custom claims for the user
+    await admin.auth().setCustomUserClaims(uid, { 
+      role: role,
+      admin: role === 'ADMINISTRATOR'
+    });
+
+    console.log(`Successfully set role ${role} for user ${uid}`);
+    
+    return { 
+      success: true, 
+      message: `Role ${role} set successfully for user ${uid}`,
+      uid: uid,
+      role: role
+    };
+  } catch (error) {
+    console.error('Error setting custom user claims:', error);
+    throw new Error(`Failed to set user role: ${error.message}`);
+  }
+});
+
 // Note: setCustomUserRole temporarily removed to avoid deployment issues.
 // If you need this function, restore it and ensure it's configured for the
 // correct Cloud Functions generation (Gen 1 vs Gen 2) and runtime settings.

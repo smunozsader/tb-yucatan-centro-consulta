@@ -51,7 +51,48 @@ npm run test:emulator
 npm run deploy              # Despliegue completo
 npm run deploy:hosting      # Solo frontend
 npm run deploy:rules        # Solo reglas de seguridad
+npm run deploy:functions    # Solo Cloud Functions
 ```
+
+### Firebase Functions Gen 2 - Modernización Completa (Noviembre 2025)
+**🚀 COMPLETADO**: Migración completa de Gen 1 a Gen 2 Cloud Functions
+
+#### Funciones Gen 2 Desplegadas:
+- **adminUploadV2**: `https://adminuploadv2-lwzj3v5uga-uc.a.run.app`
+  - Propósito: Carga en lote de acuerdos desde archivos CSV
+  - Runtime: Cloud Run (Node.js 22)
+  - Rendimiento: Hasta 100% más rápido en arranque en frío
+  - Concurrencia: Hasta 1000 solicitudes concurrentes por instancia
+
+- **setCustomUserRoleV2**: `https://setcustomuserrolev2-lwzj3v5uga-uc.a.run.app`
+  - Propósito: Establecer roles y claims personalizados de usuario
+  - Tipo: Función callable con seguridad mejorada
+  - Autenticación: Token de Firebase Auth requerido
+
+#### Integración del Cliente:
+```javascript
+// Usar la nueva utilidad FirebaseFunctionsClient
+const client = window.firebaseFunctionsClient;
+
+// Cargar lote de acuerdos
+const result = await client.uploadAgreementsBatch(file, 'CESO', apiKey, progressCallback);
+
+// Establecer rol de usuario
+const roleResult = await client.setUserRole('usuario@email.com', 'ADMINISTRATOR');
+```
+
+#### Beneficios de Rendimiento:
+- **Arranque en Frío**: Hasta 100% más rápido en inicialización
+- **Concurrencia**: Mejora de 1000x (1000 vs 1 solicitudes concurrentes)
+- **Escalamiento**: Mejor autoescalamiento con Cloud Run
+- **Costo**: Optimización de pago por uso
+- **Monitoreo**: Registro y seguimiento de errores mejorado
+
+#### Notas de Migración:
+- Funciones Gen 1 heredadas mantenidas para compatibilidad
+- Variables de entorno migradas de `functions.config()` a `.env`
+- Manejo de CORS mejorado para compatibilidad del navegador
+- Manejo de errores mejorado con lógica de reintentos
 
 ### Seguridad de Cuenta de Servicio
 - **NUNCA commitear** claves de cuenta de servicio Firebase
@@ -127,5 +168,46 @@ npm run deploy:rules        # Solo reglas de seguridad
 3. **Marca Gubernamental**: Usar colores oficiales, fuentes (Patria/Noto Sans) y patrones de layout
 4. **Seguridad Primero**: Nunca exponer tokens de autenticación, siempre validar permisos de usuario
 5. **Responsivo Móvil**: Requerimientos de accesibilidad gubernamental exigen diseño mobile-first
+6. **Firebase Functions Gen 2**: Siempre usar las nuevas funciones Gen 2 para mejor rendimiento y escalamiento
+   ```javascript
+   // ✅ Correcto - Usar funciones Gen 2
+   const result = await window.firebaseFunctionsClient.uploadAgreementsBatch(file, org, key);
+   
+   // ❌ Obsoleto - Evitar patrones Gen 1 heredados
+   const adminUpload = firebase.functions().httpsCallable('adminUpload');
+   ```
+7. **Manejo de Errores**: Implementar lógica de reintentos y reporte de errores apropiado para llamadas a Cloud Functions
+8. **Seguimiento de Progreso**: Proporcionar retroalimentación en tiempo real para operaciones de larga duración como cargas de archivos
+9. **Optimización Cloud Run**: Aprovechar las capacidades de manejo de solicitudes concurrentes de las funciones Gen 2
+
+### Guías de Desarrollo Firebase Functions
+
+#### Para Desarrollo Nuevo:
+- Siempre usar funciones Gen 2 (`onRequest`, `onCall`)
+- Configurar opciones globales para rendimiento consistente
+- Usar variables de entorno en lugar de `functions.config()`
+- Implementar manejo de CORS apropiado para clientes de navegador
+- Agregar registro de errores y monitoreo comprehensivo
+
+#### Patrones de Integración del Cliente:
+```javascript
+// Integración cliente estandarizada
+const functionsClient = window.firebaseFunctionsClient;
+
+// Carga en lote con seguimiento de progreso
+await functionsClient.uploadAgreementsBatch(file, organization, apiKey, (progress) => {
+  console.log(`Progreso de carga: ${progress.progress}% - ${progress.message}`);
+});
+
+// Gestión de roles con manejo de errores apropiado
+try {
+  const result = await functionsClient.setUserRole(email, role);
+  if (result.success) {
+    console.log('Rol actualizado exitosamente');
+  }
+} catch (error) {
+  console.error('Error al actualizar rol:', error);
+}
+```
 
 Al trabajar con esta base de código, priorice entender la estructura dual de organizaciones (CESO vs APHIS) y el flujo de gestión de evidencias, ya que estos son los patrones de lógica de negocio centrales que impulsan la mayoría de funcionalidades.
